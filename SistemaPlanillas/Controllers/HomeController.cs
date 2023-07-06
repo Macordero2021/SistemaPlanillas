@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SistemaPlanillas.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace SistemaPlanillas.Controllers
 {
@@ -12,18 +14,8 @@ namespace SistemaPlanillas.Controllers
         {
             return View();
         }
-
-        public ActionResult About()
+        public ActionResult FormUserCreate()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }
