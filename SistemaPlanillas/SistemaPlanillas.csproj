@@ -197,7 +197,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\User\FormUserCreate.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SQL Scripts\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
     <Content Include="Content\bootstrap.rtl.css.map" />
