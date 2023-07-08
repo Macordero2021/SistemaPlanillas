@@ -15,7 +15,7 @@ namespace SistemaPlanillas.Controllers
         // GET: User
         public ActionResult FormUserCreate()
         {
-            var departments = _db.Departments.ToList();
+            var departments = _db.departaments.ToList();
             return View(departments);
         }
 
@@ -49,7 +49,7 @@ namespace SistemaPlanillas.Controllers
                 {
                     //el correo existe en otro usuario
                     TempData["repeatEmail"] = "El correo ya existe en otro usuario";
-                    var departments3 = _db.Departments.ToList();
+                    var departments3 = _db.departaments.ToList();
                     return View("FormUserCreate", departments3);
                 }
                 else
@@ -63,14 +63,12 @@ namespace SistemaPlanillas.Controllers
                     //Guardar usuario
                     Users storeUser = new Users();
                     storeUser.name = name;
-                    storeUser.lastName = lastName;
+                    storeUser.lastname = lastName;
                     storeUser.email = email;
                     storeUser.phone = phone;
                     storeUser.password = pass1;
-                    storeUser.fkStatus = 1;
-                    storeUser.dateCreate =  fechaActual;
-                    storeUser.dateUpdate = fechaActual;
-                    storeUser.fkPaymentMethod = 1;
+                    storeUser.fk_id_status = 1;
+                    storeUser.fk_id_paymentmethod = 1;
 
                     _db.Users.Add(storeUser);
                     _db.SaveChanges();
@@ -80,7 +78,7 @@ namespace SistemaPlanillas.Controllers
             }
             TempData["contraseñaIncorrecta"] = "Las contraseñas no coinciden";
 
-            var departments2 = _db.Departments.ToList();
+            var departments2 = _db.departaments.ToList();
             return View("FormUserCreate", departments2);
 
         }

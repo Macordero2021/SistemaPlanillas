@@ -132,11 +132,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DataBaseConfig.cs" />
-    <Compile Include="Models\Departments.cs" />
-    <Compile Include="Models\PaymentMethod.cs" />
-    <Compile Include="Models\RolDepartmentUser.cs" />
+    <Compile Include="Models\departaments.cs" />
+    <Compile Include="Models\payment_method.cs" />
     <Compile Include="Models\Roles.cs" />
-    <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\Rol_Departament_User.cs" />
+    <Compile Include="Models\Status_user.cs" />
+    <Compile Include="Models\update_users.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
