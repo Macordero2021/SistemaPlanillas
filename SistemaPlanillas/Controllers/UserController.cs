@@ -72,14 +72,20 @@ namespace SistemaPlanillas.Controllers
 
                     _db.Users.Add(storeUser);
                     _db.SaveChanges();
+                    TempData["UsuarioCreadoCorrectamente"] = "Usuario Creado Exitosamente";
+                    var departments2 = _db.departaments.ToList();
+                    return View("FormUserCreate", departments2);
 
                 }
-
+                
             }
-            TempData["contraseñaIncorrecta"] = "Las contraseñas no coinciden";
+            else
+            {
+                TempData["contraseñaIncorrecta"] = "Las contraseñas no coinciden";
 
-            var departments2 = _db.departaments.ToList();
-            return View("FormUserCreate", departments2);
+                var departments2 = _db.departaments.ToList();
+                return View("FormUserCreate", departments2);
+            }
 
         }
     }
