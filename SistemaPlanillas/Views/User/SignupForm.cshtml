@@ -43,57 +43,59 @@
                     <h1>Sign Up Form</h1>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="Name" name="name">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Name" name="name" value="@ViewBag.name">
                         <label for="floatingInput"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Name</font></font></label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="Last Name" name="lastName">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Last Name" name="lastName" value="@ViewBag.lastName">
                         <label for="floatingInput"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Last Name</font></font></label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="floatingInput" placeholder="Email" name="email">
+                        <input type="email" class="form-control" id="floatingInput" placeholder="Email" name="email" value="@ViewBag.email">
                         <label for="floatingInput"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Email</font></font></label>
                         <p>@TempData["repeatEmail"]</p>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="Phone" name="phone">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Phone" name="phone" value="@ViewBag.phone">
                         <label for="floatingInput"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Phone</font></font></label>
                     </div>
 
                     <div class="form-floating">
-                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="pass1">
+                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="pass1" value="@ViewBag.pass" required>
                         <label for="floatingPassword"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Password</font></font></label>
                         <p>@TempData["contraseñaIncorrecta"]</p>
                     </div>
 
                     <div class="form-floating">
-                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password again" name="pass2">
+                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password again" name="pass2" value="@ViewBag.pass" required>
                         <label for="floatingPassword"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Password again</font></font></label>
                         <p>@TempData["contraseñaIncorrecta"]</p>
                     </div>
 
                     <div class="form-group">
                         <label for="exampleSelect1" class="form-label mt-4">Example select</label>
-                        <select class="form-select" id="exampleSelect1" name="departments">
+                        <select class="form-select" id="exampleSelect1" name="departments" required>
                             <option>Seleccione un departamento</option>
-
-                            @foreach (var department in Model)
+                            @foreach (var departments in Model)
                             {
-                                <option>@department.name_departament</option>
+                                <option>@departments.name_departament</option>
                             }
                         </select>
+                        <p>@TempData["seleccionarDepartamento"]</p>
+
                     </div>
 
                     <div class="button-container">
                         <button type="submit">Save</button>
-                        <p>@TempData["UsuarioCreadoCorrectamente"]</p>
                         <button type="reset">Cancel</button>
+                        <br />  
+                        <p>@TempData["UsuarioCreadoCorrectamente"]</p>
+
                     </div>
                 </div>
-
             </form>
         </div><!--================ End of Form container =================-->
     </div><!--================ End of Wrapper =================-->

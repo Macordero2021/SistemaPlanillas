@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,7 +10,7 @@ namespace SistemaPlanillas.Controllers
 {
     public class UserController : Controller
     {
-        private DataBaseConfig _db = new DataBaseConfig();
+        private DataBase1Config _db = new DataBase1Config();
 
         // GET: User
         public ActionResult SignupForm()
@@ -54,35 +55,60 @@ namespace SistemaPlanillas.Controllers
                 else
                 {
 
-                    DateTime fechaActual = DateTime.Now;
+                    if (departments == "Seleccione un departamento")
+                    {
+                        //El departamento no se selecciono
+                        //pasar los oldValues para los inputs en caso de que las contrasenas no coincidan
+                        ViewBag.name = name;
+                        ViewBag.lastName = lastName;
+                        ViewBag.email = email;
+                        ViewBag.phone = phone;
+                        ViewBag.pass = pass1;
 
 
-                    //RolDepartmentUser storeUserDepartment = new RolDepartmentUser();
-                    //debemos obtener el id
-                    //Guardar usuario
-                    Users storeUser = new Users();
-                    storeUser.name = name;
-                    storeUser.lastname = lastName;
-                    storeUser.email = email;
-                    storeUser.phone = phone;
-                    storeUser.password = pass1;
-                    storeUser.fk_id_status = 1;
-                    storeUser.fk_id_paymentmethod = 1;
+                        TempData["seleccionarDepartamento"] = "Debe seleccionar un departamento";
+                        var departments2 = _db.departaments.ToList();
 
-                    _db.Users.Add(storeUser);
-                    _db.SaveChanges();
-                    TempData["UsuarioCreadoCorrectamente"] = "Usuario Creado Exitosamente";
-                    var departments2 = _db.departaments.ToList();
-                    return View("SignupForm", departments2);
+                        return View("SignupForm", departments2);
 
+                    }
+                    else
+                    {
+                        //obtener fecha actual
+                        DateTime fechaActual = DateTime.Now;
+
+                        //Guardar usuario
+                        Users storeUser = new Users();
+                        storeUser.name = name;
+                        storeUser.lastname = lastName;
+                        storeUser.email = email;
+                        storeUser.phone = phone;
+                        storeUser.password = pass1;
+                        storeUser.fk_id_status = 1;
+                        storeUser.salary = "1";
+                        storeUser.fk_id_paymentmethod = 1;
+
+                        _db.Users.Add(storeUser);
+                        _db.SaveChanges();
+                        TempData["UsuarioCreadoCorrectamente"] = "Usuario Creado Exitosamente";
+                        var departments2 = _db.departaments.ToList();
+                        return View("SignupForm", departments2);
+                    }
                 }
                 
             }
             else
             {
-                TempData["contraseñaIncorrecta"] = "Las contraseñas no coinciden";
 
+                //pasar los oldValues para los inputs en caso de que las contrasenas no coincidan
+                ViewBag.name = name;
+                ViewBag.lastName = lastName;
+                ViewBag.email = email;
+                ViewBag.phone = phone;
+
+                TempData["contraseñaIncorrecta"] = "Las contraseñas no coinciden";
                 var departments2 = _db.departaments.ToList();
+
                 return View("SignupForm", departments2);
             }
 

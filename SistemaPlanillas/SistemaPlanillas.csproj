@@ -131,7 +131,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\DataBaseConfig.cs" />
+    <Compile Include="Models\DataBase1Config.cs" />
     <Compile Include="Models\departaments.cs" />
     <Compile Include="Models\payment_method.cs" />
     <Compile Include="Models\Roles.cs" />
@@ -142,9 +142,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\SistemaPlanillas.mdf" />
-    <Content Include="App_Data\SistemaPlanillas_log.ldf">
-      <DependentUpon>SistemaPlanillas.mdf</DependentUpon>
+    <Content Include="App_Data\Database1.mdf" />
+    <Content Include="App_Data\Database1_log.ldf">
+      <DependentUpon>Database1.mdf</DependentUpon>
     </Content>
     <Content Include="Assets\Home %282%29.png" />
     <Content Include="Assets\Home.png" />

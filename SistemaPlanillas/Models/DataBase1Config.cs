@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace SistemaPlanillas.Models
 {
-    public partial class DataBaseConfig : DbContext
+    public partial class DataBase1Config : DbContext
     {
-        public DataBaseConfig()
-            : base("name=DataBaseConfig")
+        public DataBase1Config()
+            : base("name=DataBase1Config")
         {
         }
 
