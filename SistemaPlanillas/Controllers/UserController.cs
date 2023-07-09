@@ -47,6 +47,14 @@ namespace SistemaPlanillas.Controllers
 
                 if (existeCorreo == 1)
                 {
+                    //El departamento no se selecciono
+                    //pasar los oldValues para los inputs en caso de que las contrasenas no coincidan
+                    ViewBag.name = name;
+                    ViewBag.lastName = lastName;
+                    ViewBag.phone = phone;
+                    ViewBag.pass = pass1;
+
+
                     //el correo existe en otro usuario
                     TempData["repeatEmail"] = "El correo ya existe en otro usuario";
                     var departments3 = _db.departaments.ToList();
@@ -74,6 +82,8 @@ namespace SistemaPlanillas.Controllers
                     }
                     else
                     {
+                        //Falta encryptar contrasena
+
                         //obtener fecha actual
                         DateTime fechaActual = DateTime.Now;
 
@@ -90,6 +100,18 @@ namespace SistemaPlanillas.Controllers
 
                         _db.Users.Add(storeUser);
                         _db.SaveChanges();
+
+
+
+                        //falta guardar en la tabla de Rol_Department_User
+                        
+
+                        //Falta guardar update_user
+
+
+
+
+
                         TempData["UsuarioCreadoCorrectamente"] = "Usuario Creado Exitosamente";
                         var departments2 = _db.departaments.ToList();
                         return View("SignupForm", departments2);
