@@ -3,7 +3,7 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-/App_Data/
+SistemaPlanillas/App_Data/
 Web.config 
 
 # User-specific files
