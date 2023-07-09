@@ -146,6 +146,8 @@
     <Content Include="App_Data\SistemaPlanillas_log.ldf">
       <DependentUpon>SistemaPlanillas.mdf</DependentUpon>
     </Content>
+    <Content Include="Assets\Home %282%29.png" />
+    <Content Include="Assets\Home.png" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
