@@ -1,0 +1,176 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&amp;display=swap');
+
+/*
+============================>   Global vars   <============================
+*/
+:root {
+    --color-primary: #6380ec;
+    --btn-1: var(--color-primary);
+    --btn-2: #ff7782;
+    --container-border-radius: 2rem;
+    --box-shadow-add: 10px 5px 5px var(--color-primary);
+    --transition: all 300ms ease;
+}
+
+
+/*
+============================>   General configs   <============================
+*/
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/*
+============================>   Carousel   <============================
+*/
+.carousel {
+    margin-bottom: 4rem;
+}
+
+.carousel-caption {
+    bottom: 3rem;
+    z-index: 10;
+}
+
+.carousel-item {
+    height: 100vh;
+}
+
+.carousel-item > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    height: 32rem;
+}
+
+/*
+============================>   Form container   <============================
+*/
+.form-container {
+    width: 550px;
+    min-height: 400px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    transition: var(--transition);
+    border-radius: var(--container-border-radius);
+    box-shadow: var(--box-shadow-add);
+}
+
+.form-container:hover {
+    box-shadow: none;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group h1 {
+    text-align: center;
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.form-floating input,
+.form-floating textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-floating label {
+    font-size: 15px;
+    color: var(--color-primary);
+}
+
+.form-floating input:focus,
+.form-floating textarea:focus {
+    outline: 2px solid var(--color-primary);
+}
+
+.form-group .form-label {
+    color: var(--color-primary);
+}
+
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+/*
+============================>   Buttons container   <============================
+*/
+.button-container {
+    display: flex;
+}
+
+.button-container button {
+    flex: 1;
+    margin-right: 5px;
+}
+
+.button-container button[type="submit"] {
+    background-color: var(--btn-1);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button-container button[type="reset"] {
+    background-color: var(--btn-2);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/*
+============================>   Responsive   <============================
+*/
+@media (min-width: 40em) {
+    .carousel-caption p {
+        margin-bottom: 1.25rem;
+        font-size: 1.25rem;
+        line-height: 1.4;
+    }
+
+    .featurette-heading {
+        font-size: 50px;
+    }
+}
+
+@media (min-width: 62em) {
+    .featurette-heading {
+        margin-top: 7rem;
+    }
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}

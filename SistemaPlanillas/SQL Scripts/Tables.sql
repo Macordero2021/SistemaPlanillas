@@ -1,99 +1,83 @@
-﻿SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Users](
-	[id] [int] NOT NULL,
-	[name] [varchar](100) NULL,
-	[lastName] [varchar](100) NULL,
-	[email] [varchar](100) NULL,
-	[phone] [varchar](100) NULL,
-	[password] [varchar](100) NULL,
-	[fkStatus] [int] NULL,
-	[dateCreate] [date] NULL,
-	[dateUpdate] [date] NULL,
-	[fkCreateUser] [int] NULL,
-	[fkUpdateUser] [int] NULL,
-	[fkPaymentMethod] [int] NULL,
-	[Salary] [varchar](100) NULL,
-	PRIMARY KEY CLUSTERED 
-(
+﻿/****** --------------------------------------------------------------------------------------- ******/
 
-	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-)ON [PRIMARY]
-/****** --------------------------------------------------------------------------------------- ******/
-
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Roles](
-	[id] [int] NOT NULL,
-	[name] [nchar](100) NULL,
- CONSTRAINT [PK_Roles] PRIMARY KEY CLUSTERED 
-(
-	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+CREATE  TABLE Roles ( 
+	id                   INT PRIMARY KEY IDENTITY(1,1),
+	name_rol             VARCHAR(100)       
+ ) ;
 
 /****** --------------------------------------------------------------------------------------- ******/
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[RolDepartmentUser](
-	[id] [int] NOT NULL,
-	[fkRoles] [int] NULL,
-	[fkDepartments] [int] NULL,
-	[fkUser] [int] NULL,
- CONSTRAINT [PK_RolDepartmentUser] PRIMARY KEY CLUSTERED 
- (
-	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+CREATE  TABLE Rol_Departament_User ( 
+	id                   INT PRIMARY KEY IDENTITY(1,1),
+	fk_id_rol            INT NOT NULL,
+	fk_id_departament    INT NOT NULL,
+	fk_id_user           INT NOT NULL      
+ );
+
+ALTER TABLE rol_departament_user ADD CONSTRAINT fk_rol_departament_user_roles FOREIGN KEY ( fk_id_rol ) REFERENCES roles( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE rol_departament_user ADD CONSTRAINT fk_rol_departament_user FOREIGN KEY ( fk_id_departament ) REFERENCES departaments( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE rol_departament_user ADD CONSTRAINT fk_rol_departament_user_users FOREIGN KEY ( fk_id_user ) REFERENCES users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /****** --------------------------------------------------------------------------------------- ******/
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Status](
-	[id] [int] NOT NULL,
-	[name] [nchar](100) NOT NULL,
- CONSTRAINT [PK_Status] PRIMARY KEY CLUSTERED 
-(
-	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+CREATE  TABLE departaments ( 
+	id                   INT PRIMARY KEY IDENTITY(1,1),
+	name_departament     VARCHAR(100)       
+ );
 
 /****** --------------------------------------------------------------------------------------- ******/
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[PaymentMethod](
-	[id] [int] NOT NULL,
-	[name] [nchar](100) NULL
-) ON [PRIMARY]
-GO
+CREATE TABLE Status_user ( 
+	id                   INT PRIMARY KEY IDENTITY(1,1),
+	name_status          VARCHAR(100)       
+ ) ;
 
 /****** --------------------------------------------------------------------------------------- ******/
 
-CREATE TABLE [dbo].[Departments](
-	[id] [int] NOT NULL,
-	[name] [nchar](100) NULL,
- CONSTRAINT [PK_Departments] PRIMARY KEY CLUSTERED 
-(
-	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+CREATE  TABLE payment_method ( 
+	id                   INT PRIMARY KEY IDENTITY(1,1),
+	name_paymentmethod   VARCHAR(100)       
+ );
 
 /****** --------------------------------------------------------------------------------------- ******/
+
+CREATE  TABLE update_users ( 
+    id                   INT PRIMARY KEY IDENTITY(1,1),
+	date_create          DATE  NOT NULL     ,
+	date_update          DATE  NOT NULL     ,
+	fk_user_create       INT  NOT NULL     ,
+	id_updateuser        INT    
+ );
+
+ALTER TABLE update_users ADD CONSTRAINT fk_update_users_users FOREIGN KEY ( fk_user_create ) REFERENCES users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/****** -------------------------------------	Tabla Users	---------------------------------- ******/
+CREATE TABLE Users (
+    id                   INT PRIMARY KEY IDENTITY(1,1),
+    name                 VARCHAR(100) NOT NULL,
+    lastname             VARCHAR(100) NOT NULL,
+    email                VARCHAR(100) NOT NULL,
+    phone                VARCHAR(100),
+    password             VARCHAR(100) NOT NULL,
+    fk_id_status         INT NOT NULL,
+    salary               VARCHAR(100),
+    fk_id_paymentmethod  INT NOT NULL,
+    CONSTRAINT AK_email UNIQUE(email),
+    CONSTRAINT fk_users_status FOREIGN KEY (fk_id_status) REFERENCES Status_user (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT fk_users_payment_method FOREIGN KEY (fk_id_paymentmethod) REFERENCES payment_method (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+
+/****** -------------------------------------	Status values	---------------------------------- ******/
+INSERT INTO Status_user (name_status)
+VALUES ('ACTIVO'), ('INACTIVO');
+
+/****** -------------------------------------	Payment methos values	---------------------------------- ******/
+INSERT INTO payment_method (name_paymentmethod)
+VALUES ('EFECTIVO'), ('DEPOSITO');
+
+/****** -------------------------------------	Departments values	---------------------------------- ******/
+INSERT INTO departaments (name_departament)
+VALUES ('ADMINISTRATIVE'), ('ACCOUNTING'), ('BODEGA');

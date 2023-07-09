@@ -14,7 +14,11 @@ namespace SistemaPlanillas.Controllers
         {
             return View();
         }
-        public ActionResult FormUserCreate()
+        public ActionResult SignupForm()
+        {
+            return View();
+        }
+        public ActionResult LoginForm()
         {
             return View();
         }

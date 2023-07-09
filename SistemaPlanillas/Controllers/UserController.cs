@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using SistemaPlanillas.Models;
 
-
 namespace SistemaPlanillas.Controllers
 {
     public class UserController : Controller
@@ -13,7 +12,7 @@ namespace SistemaPlanillas.Controllers
         private DataBaseConfig _db = new DataBaseConfig();
 
         // GET: User
-        public ActionResult FormUserCreate()
+        public ActionResult SignupForm()
         {
             var departments = _db.departaments.ToList();
             return View(departments);
@@ -50,7 +49,7 @@ namespace SistemaPlanillas.Controllers
                     //el correo existe en otro usuario
                     TempData["repeatEmail"] = "El correo ya existe en otro usuario";
                     var departments3 = _db.departaments.ToList();
-                    return View("FormUserCreate", departments3);
+                    return View("SignupForm", departments3);
                 }
                 else
                 {
@@ -74,7 +73,7 @@ namespace SistemaPlanillas.Controllers
                     _db.SaveChanges();
                     TempData["UsuarioCreadoCorrectamente"] = "Usuario Creado Exitosamente";
                     var departments2 = _db.departaments.ToList();
-                    return View("FormUserCreate", departments2);
+                    return View("SignupForm", departments2);
 
                 }
                 
@@ -84,9 +83,14 @@ namespace SistemaPlanillas.Controllers
                 TempData["contraseñaIncorrecta"] = "Las contraseñas no coinciden";
 
                 var departments2 = _db.departaments.ToList();
-                return View("FormUserCreate", departments2);
+                return View("SignupForm", departments2);
             }
 
+        }
+
+        public ActionResult LoginForm()
+        {
+            return View();
         }
     }
 }

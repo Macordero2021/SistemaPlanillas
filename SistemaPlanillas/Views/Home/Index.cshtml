@@ -3,33 +3,90 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarPage</title>
+    <title>Homepage</title>
+
+    <!-- Custom styles for this template -->
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
+    <link href="~/Content/StyleForms.css" rel="stylesheet">
 </head>
 <body>
-        <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-            <div class="container-fluid">
-                <a class="navbar-brand"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">XYZ S.A.</font></font></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Navegación de palanca">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarColor02">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "Home")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("FormUserCreate", "User")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sign Up</font></font></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Login</font></font></a>
-                        </li>
-                    </ul>
-                    <form class="d-flex">
-                    </form>
-                </div>
+    <nav  id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">XYZ S.A.</font></font></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Navegación de palanca">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Home")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("SignupForm", "User")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sign Up</font></font></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("LoginForm", "User")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Login</font></font></a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                </form>
             </div>
-        </nav>
-        <div id="4411b5c0-f318-40b5-88ed-174d92c6881e" style="display: block !important; z-index: 2147483647 !important;"></div>
+        </div>
+    </nav>
+    <div id="4411b5c0-f318-40b5-88ed-174d92c6881e" style="display: block !important; z-index: 2147483647 !important;"></div>
+
+    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#777" />
+                    <image href="https://images.pexels.com/photos/842711/pexels-photo-842711.jpeg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
+                </svg>
+            </div>
+            <div class="carousel-item">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#777" />
+                    <image href="https://images.pexels.com/photos/1183099/pexels-photo-1183099.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
+                </svg>
+            </div>
+            <div class="carousel-item">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#777" />
+                    <image href="https://images.pexels.com/photos/957039/hut-alpine-mountains-bavaria-957039.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
+                </svg>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!--Script to get the height of the carousel-->
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var navbarHeight = document.getElementById('navbar').offsetHeight; // Obtener la altura del navbar
+            var carouselItems = document.getElementsByClassName('carousel-item');
+
+            // Restar la altura del navbar del valor de 100vh para obtener la altura final del carrusel
+            var carouselHeight = window.innerHeight - navbarHeight;
+
+            // Establecer la altura calculada para cada ítem del carrusel
+            for (var i = 0; i < carouselItems.length; i++) {
+                carouselItems[i].style.height = carouselHeight + 'px';
+            }
+        });
+    </script>
+
+    @Scripts.Render("~/bundles/bootstrap")
 </body>
 </html>

@@ -8,7 +8,7 @@ namespace SistemaPlanillas.Models
     public partial class DataBaseConfig : DbContext
     {
         public DataBaseConfig()
-            : base("name=DataBaseConfig1")
+            : base("name=DataBaseConfig")
         {
         }
 
