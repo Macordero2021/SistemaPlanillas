@@ -3,15 +3,18 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-SistemaPlanillas/App_Data/
-SistemaPlanillas/Web.config 
-
 # User-specific files
 *.rsuser
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+
+# Ignore Files
+SistemaPlanillas/App_Data/
+SistemaPlanillas/Web.config 
+/App_Data/
+Web.config 
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
