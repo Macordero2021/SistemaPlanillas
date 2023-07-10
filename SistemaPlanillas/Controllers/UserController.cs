@@ -101,10 +101,21 @@ namespace SistemaPlanillas.Controllers
                         _db.Users.Add(storeUser);
                         _db.SaveChanges();
 
+                        var users = _db.Users.ToList(); // trae toda la lista de los usuarios
+                        var Lastuser = users.LastOrDefault(); // busca el ultimo usuario
+                        var idLastuser = Lastuser.id; // guarda en la variable el id del ultimo usuario
+                        update_users storeDates = new update_users();
+                        storeDates.fk_user_create = idLastuser;
+                        storeDates.id_updateuser = idLastuser;
+                        storeDates.date_create = fechaActual;
+                        storeDates.date_update = fechaActual;
 
+                        _db.update_users.Add(storeDates);
+                        _db.SaveChanges();  
+                        
 
                         //falta guardar en la tabla de Rol_Department_User
-                        
+
 
                         //Falta guardar update_user
 
