@@ -101,6 +101,7 @@ namespace SistemaPlanillas.Controllers
                         _db.Users.Add(storeUser);
                         _db.SaveChanges();
 
+                        //codigo para guardar los datos en  la tabla update_user
                         var users = _db.Users.ToList(); // trae toda la lista de los usuarios
                         var Lastuser = users.LastOrDefault(); // busca el ultimo usuario
                         var idLastuser = Lastuser.id; // guarda en la variable el id del ultimo usuario
@@ -111,13 +112,28 @@ namespace SistemaPlanillas.Controllers
                         storeDates.date_update = fechaActual;
 
                         _db.update_users.Add(storeDates);
-                        _db.SaveChanges();  
+                        _db.SaveChanges();
+
+                        // codigo para guardar el departamento y el rol del usuario creado
+                        var departamentfind = _db.departaments.Where(x => x.name_departament == departments).FirstOrDefault(); // Busca el departamento seleccionado
+                        var departmentId = departamentfind.id; // guarda el id del depártamento
+                        Rol_Departament_User storeRolsDeparment = new Rol_Departament_User();
+                        // guarda en la tabla los datos necesarios
+                        storeRolsDeparment.fk_id_user = idLastuser;
+                        storeRolsDeparment.fk_id_departament = departmentId;
+                        storeRolsDeparment.fk_id_rol = 1;
+
+                        _db.Rol_Departament_User.Add(storeRolsDeparment);
+                        _db.SaveChanges();
+
+                       
+
                         
 
-                        //falta guardar en la tabla de Rol_Department_User
 
 
-                        //Falta guardar update_user
+
+
 
 
 
