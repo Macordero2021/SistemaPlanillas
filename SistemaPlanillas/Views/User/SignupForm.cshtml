@@ -87,12 +87,21 @@
                         <p>@TempData["seleccionarDepartamento"]</p>
 
                     </div>
+                    <!--================ message modal user create success =================-->
+                    <div id="successModal" class="modal" style="width:500px;height:100px; position:fixed;top:88%;left:78%;transform:translate(-50%, -50%);cursor:pointer">
+                        <div class="modal-content">
+                            <span id="closeButton" class="close">&times;</span>
+                            <div>
+                                <h3 class="modal-title">Usuario creado exitosamente</h3>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!--================ Buttons =================-->
                     <div class="button-container">
                         <button type="submit">Save</button>
                         <button type="reset">Cancel</button>
-                        <br />  
-                        <p>@TempData["UsuarioCreadoCorrectamente"]</p>
+                        <br />
 
                     </div>
                 </div>
@@ -101,5 +110,27 @@
     </div><!--================ End of Wrapper =================-->
 
     @Scripts.Render("~/bundles/bootstrap")
+
+    <!--================ Script for message modal =================-->
+    <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+    // Obtén el elemento del modal
+    var modal = document.getElementById('successModal');
+
+    // Muestra el modal cuando se haya creado el usuario exitosamente
+    var usuarioCreadoCorrectamente = '@TempData["UsuarioCreadoCorrectamente"]';
+    if (usuarioCreadoCorrectamente) {
+    modal.style.display = 'block';
+    }
+
+    // Agrega un listener al botón de cerrar para ocultar el modal
+    var closeButton = document.getElementById('closeButton');
+    closeButton.addEventListener('click', function () {
+    modal.style.display = 'none';
+    });
+    });
+    </script>
+    <!--================ End of Script for message modal =================-->
 </body>
 </html>
