@@ -127,18 +127,6 @@ namespace SistemaPlanillas.Controllers
                         _db.SaveChanges();
 
                        
-
-                        
-
-
-
-
-
-
-
-
-
-
                         TempData["UsuarioCreadoCorrectamente"] = "Usuario Creado Exitosamente";
                         var departments2 = _db.departaments.ToList();
                         return View("SignupForm", departments2);
@@ -166,6 +154,29 @@ namespace SistemaPlanillas.Controllers
         public ActionResult LoginForm()
         {
             return View();
+        }
+
+        //Codigo para validar el login con las credenciales en la base de datos 
+
+        [HttpPost]
+        public ActionResult Login(FormCollection form)
+        {
+            string email = form["email"];
+            string password = form["pass1"];
+
+            var user = _db.Users.FirstOrDefault(u => u.email == email && u.password == password);
+
+            if (user != null)
+            {
+                // Inicio de sesión exitoso
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                // Credenciales inválidas
+                TempData["loginError"] = "Credenciales inválidas";
+                return View("LoginForm");
+            }
         }
     }
 }

@@ -38,7 +38,7 @@
 
     <div class="wrapper">
         <div class="form-container">
-            <form action="@Url.Action("storeUser", "User")" method="post">
+            <form action="@Url.Action("Login", "User")" method="post">
                 <div class="form-group">
                     <h1 style="margin-bottom:50px;">Log In Form</h1>
 
@@ -54,9 +54,10 @@
                         <p>@TempData["contraseñaIncorrecta"]</p>
                     </div>
 
+                    <p>@TempData["loginError"]</p> <!--================ Comentario de credenciales invalidas=================-->
+
                     <div class="button-container">
-                        <button type="submit">Save</button>
-                        <p>@TempData["UsuarioCreadoCorrectamente"]</p>
+                        <button type="submit">login</button>
                         <button type="reset">Cancel</button>
                     </div>
                 </div>
