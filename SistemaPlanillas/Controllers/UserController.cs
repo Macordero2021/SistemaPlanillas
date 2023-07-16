@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using SistemaPlanillas.Models;
 
@@ -126,13 +127,13 @@ namespace SistemaPlanillas.Controllers
                         _db.Rol_Departament_User.Add(storeRolsDeparment);
                         _db.SaveChanges();
 
-                       
+
                         TempData["UsuarioCreadoCorrectamente"] = "Usuario Creado Exitosamente";
                         var departments2 = _db.departaments.ToList();
                         return View("SignupForm", departments2);
                     }
                 }
-                
+
             }
             else
             {
@@ -168,8 +169,28 @@ namespace SistemaPlanillas.Controllers
 
             if (user != null)
             {
-                // Inicio de sesión exitoso
-                return RedirectToAction("Index", "Home");
+                //Obtengo el id del roll de la tabla  Rol_Departament_User para luego buscar el rol que tiene asignado este usuario
+                Rol_Departament_User idRolUser = _db.Rol_Departament_User.Where(x => x.fk_id_user == user.id).FirstOrDefault();
+
+                //obtengo el rol de ese usuario en la tabla de roles
+                Roles rolName = _db.Roles.Where(x => x.id == idRolUser.fk_id_rol).FirstOrDefault();
+             
+                //get role // name
+                Session["role"] = rolName.name_rol;
+
+
+                if (Session["role"] == null)
+                {
+                    return View("LoginForm");
+                }
+                else
+                {
+                    int userId = user.id;
+                    // Inicio de sesión exitoso
+                    return RedirectToAction("Dashboard", "User",new { userId });
+                }
+
+               
             }
             else
             {
@@ -178,5 +199,15 @@ namespace SistemaPlanillas.Controllers
                 return View("LoginForm");
             }
         }
+
+        public ActionResult Dashboard(int userId)
+        {
+
+            Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
+            return View("Dashboard", user);
+
+
+        }
+
     }
 }
