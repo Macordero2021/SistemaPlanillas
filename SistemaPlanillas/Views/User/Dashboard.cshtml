@@ -34,15 +34,22 @@
                 <div class="collapse navbar-collapse" id="navbarColor02">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "Home")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                            <a class="nav-link" href="https://localhost:44319/User/Dashboard?userId=@Model.id"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="@Url.Action("RolConfig", "Role")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-
-        <h1>@Model.name</h1>
+        <h1>Modulo de Seguridad</h1>
+        <br />
+        <h1>Admin: @Model.name</h1>
         <div id="4411b5c0-f318-40b5-88ed-174d92c6881e" style="display: block !important; z-index: 2147483647 !important;"></div>
 
 

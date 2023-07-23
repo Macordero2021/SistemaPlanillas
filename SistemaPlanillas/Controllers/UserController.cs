@@ -209,5 +209,10 @@ namespace SistemaPlanillas.Controllers
 
         }
 
+        public ActionResult RolConfig()
+        {
+            return View("RolConfig");
+        }
+
     }
 }
