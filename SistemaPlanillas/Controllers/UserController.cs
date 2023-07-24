@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using SistemaPlanillas.Controllers.Services;
 using SistemaPlanillas.Models;
 
 namespace SistemaPlanillas.Controllers
@@ -12,17 +13,34 @@ namespace SistemaPlanillas.Controllers
     public class UserController : Controller
     {
         private DataBase1Config _db = new DataBase1Config();
+        private UserService _userService;
+        private RoleService _roleService;
 
-        // GET: User
+        public UserController()
+        {
+            _userService = new UserService(_db);
+            _roleService = new RoleService(_db);
+        }
+
+        /// <summary>
+        /// Displays the signup form view with a list of departments.
+        /// </summary>
+        /// <returns>The view containing the signup form and a list of departments.</returns>
         public ActionResult SignupForm()
         {
             var departments = _db.departaments.ToList();
             return View(departments);
         }
 
+        /// <summary>
+        /// Handles the user signup form submission.
+        /// </summary>
+        /// <param name="form">The form collection containing user input data.</param>
+        /// <returns>If successful, redirects to the SignupForm view with a success message. If there are errors, redisplay the SignupForm view with appropriate error messages.</returns>
         [HttpPost]
-        public ActionResult storeUser(FormCollection form)
+        public ActionResult StoreUser(FormCollection form)
         {
+            // Retrieve user input from the form.
             string name = form["name"];
             string lastName = form["lastName"];
             string email = form["email"];
@@ -31,174 +49,101 @@ namespace SistemaPlanillas.Controllers
             string pass2 = form["pass2"];
             string departments = form["departments"];
 
-            if (pass1 == pass2)
+            // Create a new user based on the provided data using UserService.
+            var result = _userService.CreateNewUser(name, lastName, email, phone, pass1, pass2, departments);
+
+            if (result == UserServiceResult.Success)
             {
-                //las contrasenas coinciden
-                var usersData = _db.Users.ToList();
-                var existeCorreo = 0;
-
-                foreach (Users item in usersData)
-                {
-                    if (item.email == email)
-                    {
-                        existeCorreo = 1;
-                        break;
-                    }
-                }
-
-                if (existeCorreo == 1)
-                {
-                    //El departamento no se selecciono
-                    //pasar los oldValues para los inputs en caso de que las contrasenas no coincidan
-                    ViewBag.name = name;
-                    ViewBag.lastName = lastName;
-                    ViewBag.phone = phone;
-                    ViewBag.pass = pass1;
-
-
-                    //el correo existe en otro usuario
-                    TempData["repeatEmail"] = "El correo ya existe en otro usuario";
-                    var departments3 = _db.departaments.ToList();
-                    return View("SignupForm", departments3);
-                }
-                else
-                {
-
-                    if (departments == "Seleccione un departamento")
-                    {
-                        //El departamento no se selecciono
-                        //pasar los oldValues para los inputs en caso de que las contrasenas no coincidan
-                        ViewBag.name = name;
-                        ViewBag.lastName = lastName;
-                        ViewBag.email = email;
-                        ViewBag.phone = phone;
-                        ViewBag.pass = pass1;
-
-
-                        TempData["seleccionarDepartamento"] = "Debe seleccionar un departamento";
-                        var departments2 = _db.departaments.ToList();
-
-                        return View("SignupForm", departments2);
-
-                    }
-                    else
-                    {
-                        //Falta encryptar contrasena
-
-                        //obtener fecha actual
-                        DateTime fechaActual = DateTime.Now;
-
-                        //Guardar usuario
-                        Users storeUser = new Users();
-                        storeUser.name = name;
-                        storeUser.lastname = lastName;
-                        storeUser.email = email;
-                        storeUser.phone = phone;
-                        storeUser.password = pass1;
-                        storeUser.fk_id_status = 1;
-                        storeUser.salary = "1";
-                        storeUser.fk_id_paymentmethod = 1;
-
-                        _db.Users.Add(storeUser);
-                        _db.SaveChanges();
-
-                        //codigo para guardar los datos en  la tabla update_user
-                        var users = _db.Users.ToList(); // trae toda la lista de los usuarios
-                        var Lastuser = users.LastOrDefault(); // busca el ultimo usuario
-                        var idLastuser = Lastuser.id; // guarda en la variable el id del ultimo usuario
-                        update_users storeDates = new update_users();
-                        storeDates.fk_user_create = idLastuser;
-                        storeDates.id_updateuser = idLastuser;
-                        storeDates.date_create = fechaActual;
-                        storeDates.date_update = fechaActual;
-
-                        _db.update_users.Add(storeDates);
-                        _db.SaveChanges();
-
-                        // codigo para guardar el departamento y el rol del usuario creado
-                        var departamentfind = _db.departaments.Where(x => x.name_departament == departments).FirstOrDefault(); // Busca el departamento seleccionado
-                        var departmentId = departamentfind.id; // guarda el id del depártamento
-                        Rol_Departament_User storeRolsDeparment = new Rol_Departament_User();
-                        // guarda en la tabla los datos necesarios
-                        storeRolsDeparment.fk_id_user = idLastuser;
-                        storeRolsDeparment.fk_id_departament = departmentId;
-                        storeRolsDeparment.fk_id_rol = 1;
-
-                        _db.Rol_Departament_User.Add(storeRolsDeparment);
-                        _db.SaveChanges();
-
-
-                        TempData["UsuarioCreadoCorrectamente"] = "Usuario Creado Exitosamente";
-                        var departments2 = _db.departaments.ToList();
-                        return View("SignupForm", departments2);
-                    }
-                }
-
+                // User created successfully, redirect to the SignupForm view with a success message.
+                TempData["UsuarioCreadoCorrectamente"] = "User created successfully";
+                var departmentsList = _db.departaments.ToList();
+                return View("SignupForm", departmentsList);
             }
             else
             {
+                // Some criteria are incorrect, store the data in TempData for displaying errors and redisplay the SignupForm view.
+                TempData["name"] = name;
+                TempData["lastName"] = lastName;
+                TempData["email"] = email;
+                TempData["phone"] = phone;
+                TempData["departments"] = departments;
 
-                //pasar los oldValues para los inputs en caso de que las contrasenas no coincidan
-                ViewBag.name = name;
-                ViewBag.lastName = lastName;
-                ViewBag.email = email;
-                ViewBag.phone = phone;
+                switch (result)
+                {
+                    case UserServiceResult.PasswordMismatch:
+                        TempData["contraseñaIncorrecta"] = "The passwords do not match";
+                        break;
+                    case UserServiceResult.EmailAlreadyExists:
+                        TempData["repeatEmail"] = "The email already exists for another user";
+                        break;
+                    case UserServiceResult.InvalidDepartment:
+                        TempData["seleccionarDepartamento"] = "You must select a department";
+                        break;
+                }
 
-                TempData["contraseñaIncorrecta"] = "Las contraseñas no coinciden";
-                var departments2 = _db.departaments.ToList();
-
-                return View("SignupForm", departments2);
+                var departmentsList = _db.departaments.ToList();
+                return View("SignupForm", departmentsList);
             }
 
         }
 
+        /// <summary>
+        /// Displays the login form view.
+        /// </summary>
+        /// <returns>The view containing the login form.</returns>
         public ActionResult LoginForm()
         {
             return View();
         }
 
-        //Codigo para validar el login con las credenciales en la base de datos 
-
+        /// <summary>
+        /// Handles the user login form submission.
+        /// </summary>
+        /// <param name="form">The form collection containing user login credentials.</param>
+        /// <returns>If successful, redirects to the Dashboard view with the user ID. If there are errors, redisplay the LoginForm view with an appropriate error message.</returns>
         [HttpPost]
         public ActionResult Login(FormCollection form)
         {
+            // Retrieve email and password from the login form.
             string email = form["email"];
             string password = form["pass1"];
 
+            // Check if the provided credentials match any user in the database.
             var user = _db.Users.FirstOrDefault(u => u.email == email && u.password == password);
 
             if (user != null)
             {
-                //Obtengo el id del roll de la tabla  Rol_Departament_User para luego buscar el rol que tiene asignado este usuario
+                // User found, continue with the login process.
+
+                // Get the role ID from the Rol_Departament_User table to find the user's role.
                 Rol_Departament_User idRolUser = _db.Rol_Departament_User.Where(x => x.fk_id_user == user.id).FirstOrDefault();
 
-                //obtengo el rol de ese usuario en la tabla de roles
-                Roles rolName = _db.Roles.Where(x => x.id == idRolUser.fk_id_rol).FirstOrDefault();
-             
-                //get role // name
-                Session["role"] = rolName.name_rol;
+                // Get the user's role using the RoleService.
+                string rolName = _roleService.GetUserRoleName(idRolUser.fk_id_rol);
 
+                // Store the user's role name in the session.
+                Session["role"] = rolName;
 
                 if (Session["role"] == null)
                 {
+                    // Failed to retrieve role, redirect to the LoginForm view.
                     return View("LoginForm");
                 }
                 else
                 {
+                    // Successful login, redirect to the Dashboard view with the user ID.
                     int userId = user.id;
-                    // Inicio de sesión exitoso
-                    return RedirectToAction("Dashboard", "User",new { userId });
+                    return RedirectToAction("Dashboard", "User", new { userId });
                 }
-
-               
             }
             else
             {
-                // Credenciales inválidas
-                TempData["loginError"] = "Credenciales inválidas";
+                // Invalid credentials, store an error message and redisplay the LoginForm view.
+                TempData["loginError"] = "Invalid credentials";
                 return View("LoginForm");
             }
         }
+
 
         public ActionResult Dashboard(int userId)
         {

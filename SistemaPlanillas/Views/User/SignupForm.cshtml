@@ -8,6 +8,8 @@
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
     <link href="~/Content/StyleForms.css" rel="stylesheet" />
 
+    <!-- Import SweetAlert library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 </head>
 <body>
 
@@ -26,7 +28,7 @@
                         <a class="nav-link" href="@Url.Action("SignupForm", "User")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sign Up</font></font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("LoginForm", "User")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Login</font></font></a>
+                        <a class="nav-link" href="@Url.Action("LoginForm", "User")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Log In</font></font></a>
                     </li>
                 </ul>
                 <form class="d-flex">
@@ -43,24 +45,24 @@
                     <h1>Sign Up Form</h1>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="Name" name="name" value="@ViewBag.name">
-                        <label for="floatingInput"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Name</font></font></label>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Name" name="name" value="@TempData["name"]" required>
+                        <label for="floatingInput">Name</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="Last Name" name="lastName" value="@ViewBag.lastName">
-                        <label for="floatingInput"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Last Name</font></font></label>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Last Name" name="lastName" value="@TempData["lastName"]" required>
+                        <label for="floatingInput">Last Name</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="floatingInput" placeholder="Email" name="email" value="@ViewBag.email">
-                        <label for="floatingInput"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Email</font></font></label>
+                        <input type="email" class="form-control" id="floatingInput" placeholder="Email" name="email" value="@TempData["email"]" required>
+                        <label for="floatingInput">Email</label>
                         <p>@TempData["repeatEmail"]</p>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="Phone" name="phone" value="@ViewBag.phone">
-                        <label for="floatingInput"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Phone</font></font></label>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Phone" name="phone" value="@TempData["phone"]" required>
+                        <label for="floatingInput">Phone</label>
                     </div>
 
                     <div class="form-floating">
@@ -76,9 +78,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleSelect1" class="form-label mt-4">Example select</label>
+                        <label for="exampleSelect1" class="form-label mt-4">Department</label>
                         <select class="form-select" id="exampleSelect1" name="departments" required>
-                            <option>Seleccione un departamento</option>
+                            <option>Choose a department</option>
                             @foreach (var departments in Model)
                             {
                                 <option>@departments.name_departament</option>
@@ -87,15 +89,8 @@
                         <p>@TempData["seleccionarDepartamento"]</p>
 
                     </div>
-                    <!--================ message modal user create success =================-->
-                    <div id="successModal" class="modal" style="width:500px;height:100px; position:fixed;top:88%;left:78%;transform:translate(-50%, -50%);cursor:pointer">
-                        <div class="modal-content">
-                            <span id="closeButton" class="close">&times;</span>
-                            <div>
-                                <h3 class="modal-title">Usuario creado exitosamente</h3>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Add a button to trigger the SweetAlert message -->
+                    <button type="button" id="successButton" style="display:none;"></button>
 
                     <!--================ Buttons =================-->
                     <div class="button-container">
@@ -106,31 +101,27 @@
                     </div>
                 </div>
             </form>
+
         </div><!--================ End of Form container =================-->
     </div><!--================ End of Wrapper =================-->
 
     @Scripts.Render("~/bundles/bootstrap")
 
-    <!--================ Script for message modal =================-->
+    <!--================ Script for SweetAlert =================-->
     <script>
-
-    document.addEventListener('DOMContentLoaded', function () {
-    // Obtén el elemento del modal
-    var modal = document.getElementById('successModal');
-
-    // Muestra el modal cuando se haya creado el usuario exitosamente
-    var usuarioCreadoCorrectamente = '@TempData["UsuarioCreadoCorrectamente"]';
-    if (usuarioCreadoCorrectamente) {
-    modal.style.display = 'block';
-    }
-
-    // Agrega un listener al botón de cerrar para ocultar el modal
-    var closeButton = document.getElementById('closeButton');
-    closeButton.addEventListener('click', function () {
-    modal.style.display = 'none';
-    });
-    });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Show the SweetAlert message when the user is created successfully
+            var usuarioCreadoCorrectamente = '@TempData["UsuarioCreadoCorrectamente"]';
+            if (usuarioCreadoCorrectamente) {
+                Swal.fire({
+                    title: 'User created successfully',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 3000 // The message will disappear after 3 seconds
+                });
+            }
+        });
     </script>
-    <!--================ End of Script for message modal =================-->
+    <!--================ End of Script for SweetAlert =================-->
 </body>
 </html>
