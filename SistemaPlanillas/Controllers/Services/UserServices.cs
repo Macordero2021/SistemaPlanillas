@@ -82,10 +82,10 @@ namespace SistemaPlanillas.Controllers.Services
             _db.Users.Add(newUser);
             _db.SaveChanges();
 
-            // Code to save data in the update_users table
+            // Code to save data in the User_Updates table
             var lastUser = _db.Users.OrderByDescending(u => u.id).FirstOrDefault();
             var idLastUser = lastUser.id;
-            update_users storeDates = new update_users
+            User_Updates storeDates = new User_Updates
             {
                 fk_user_create = idLastUser,
                 id_updateuser = idLastUser,
@@ -93,21 +93,21 @@ namespace SistemaPlanillas.Controllers.Services
                 date_update = fechaActual
             };
 
-            _db.update_users.Add(storeDates);
+            _db.User_Updates.Add(storeDates);
             _db.SaveChanges();
 
             // Code to save the department and role of the created user
-            var departamentFind = _db.departaments.FirstOrDefault(d => d.name_departament == department);
+            var departamentFind = _db.Departaments.FirstOrDefault(d => d.name_departament == department);
             if (departamentFind != null)
             {
-                Rol_Departament_User storeRolesDepartament = new Rol_Departament_User
+                User_RolAndDepartment storeRolesDepartament = new User_RolAndDepartment
                 {
                     fk_id_user = idLastUser,
                     fk_id_departament = departamentFind.id,
                     fk_id_rol = 1
                 };
 
-                _db.Rol_Departament_User.Add(storeRolesDepartament);
+                _db.User_RolAndDepartment.Add(storeRolesDepartament);
                 _db.SaveChanges();
             }
 

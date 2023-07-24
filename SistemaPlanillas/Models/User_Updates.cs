@@ -6,7 +6,7 @@ namespace SistemaPlanillas.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class update_users
+    public partial class User_Updates
     {
         public int id { get; set; }
 

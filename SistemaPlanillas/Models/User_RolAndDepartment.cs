@@ -6,7 +6,7 @@ namespace SistemaPlanillas.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Rol_Departament_User
+    public partial class User_RolAndDepartment
     {
         public int id { get; set; }
 
@@ -16,7 +16,7 @@ namespace SistemaPlanillas.Models
 
         public int fk_id_user { get; set; }
 
-        public virtual departaments departaments { get; set; }
+        public virtual Departaments Departaments { get; set; }
 
         public virtual Roles Roles { get; set; }
 

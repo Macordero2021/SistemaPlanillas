@@ -1,59 +1,53 @@
-﻿/****** --------------------------------------------------------------------------------------- ******/
+﻿/****** -------------------------------------	Table Roles	---------------------------------- ******/
 
 CREATE  TABLE Roles ( 
 	id                   INT PRIMARY KEY IDENTITY(1,1),
 	name_rol             VARCHAR(100)       
  ) ;
 
-/****** --------------------------------------------------------------------------------------- ******/
+/****** -------------------------------------	Table Rol and departments for users	---------------------------------- ******/
 
-CREATE  TABLE Rol_Departament_User ( 
+CREATE  TABLE User_RolAndDepartment ( 
 	id                   INT PRIMARY KEY IDENTITY(1,1),
 	fk_id_rol            INT NOT NULL,
 	fk_id_departament    INT NOT NULL,
 	fk_id_user           INT NOT NULL      
  );
 
-ALTER TABLE rol_departament_user ADD CONSTRAINT fk_rol_departament_user_roles FOREIGN KEY ( fk_id_rol ) REFERENCES roles( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+/****** -------------------------------------	Table Departments	---------------------------------- ******/
 
-ALTER TABLE rol_departament_user ADD CONSTRAINT fk_rol_departament_user FOREIGN KEY ( fk_id_departament ) REFERENCES departaments( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-ALTER TABLE rol_departament_user ADD CONSTRAINT fk_rol_departament_user_users FOREIGN KEY ( fk_id_user ) REFERENCES users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-/****** --------------------------------------------------------------------------------------- ******/
-
-CREATE  TABLE departaments ( 
+CREATE  TABLE Departaments ( 
 	id                   INT PRIMARY KEY IDENTITY(1,1),
 	name_departament     VARCHAR(100)       
  );
 
-/****** --------------------------------------------------------------------------------------- ******/
+/****** -------------------------------------	Table Status	---------------------------------- ******/
 
-CREATE TABLE Status_user ( 
+CREATE TABLE User_Status ( 
 	id                   INT PRIMARY KEY IDENTITY(1,1),
 	name_status          VARCHAR(100)       
  ) ;
 
-/****** --------------------------------------------------------------------------------------- ******/
+/****** -------------------------------------	Table Payment methods	---------------------------------- ******/
 
-CREATE  TABLE payment_method ( 
+CREATE  TABLE Payment_Method ( 
 	id                   INT PRIMARY KEY IDENTITY(1,1),
 	name_paymentmethod   VARCHAR(100)       
  );
 
-/****** --------------------------------------------------------------------------------------- ******/
+/****** -------------------------------------	Table user updates	---------------------------------- ******/
 
-CREATE  TABLE update_users ( 
+CREATE  TABLE User_Updates ( 
     id                   INT PRIMARY KEY IDENTITY(1,1),
 	date_create          DATE  NOT NULL     ,
 	date_update          DATE  NOT NULL     ,
-	fk_user_create       INT  NOT NULL     ,
+	fk_user_create       INT   NOT NULL     ,
 	id_updateuser        INT    
- );
+);
 
-ALTER TABLE update_users ADD CONSTRAINT fk_update_users_users FOREIGN KEY ( fk_user_create ) REFERENCES users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE User_Updates ADD CONSTRAINT fk_User_Updates_users FOREIGN KEY ( fk_user_create ) REFERENCES Users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-/****** -------------------------------------	Tabla Users	---------------------------------- ******/
+/****** -------------------------------------	Table Users	---------------------------------- ******/
 CREATE TABLE Users (
     id                   INT PRIMARY KEY IDENTITY(1,1),
     name                 VARCHAR(100) NOT NULL,
@@ -64,20 +58,31 @@ CREATE TABLE Users (
     fk_id_status         INT NOT NULL,
     salary               VARCHAR(100),
     fk_id_paymentmethod  INT NOT NULL,
-    CONSTRAINT AK_email UNIQUE(email),
-    CONSTRAINT fk_users_status FOREIGN KEY (fk_id_status) REFERENCES Status_user (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT fk_users_payment_method FOREIGN KEY (fk_id_paymentmethod) REFERENCES payment_method (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT AK_email UNIQUE(email)
 );
+
+/****** -------------------------------------	Alter Table for  Rol and departments for users	---------------------------------- ******/
+ALTER TABLE User_RolAndDepartment ADD CONSTRAINT fk_User_RolAndDepartment_roles FOREIGN KEY ( fk_id_rol ) REFERENCES Roles( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE User_RolAndDepartment ADD CONSTRAINT fk_User_RolAndDepartment_depart FOREIGN KEY ( fk_id_departament ) REFERENCES Departaments( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE User_RolAndDepartment ADD CONSTRAINT fk_User_RolAndDepartment_users FOREIGN KEY ( fk_id_user ) REFERENCES Users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/****** -------------------------------------	Alter table for user updates	---------------------------------- ******/
+ALTER TABLE User_Updates ADD CONSTRAINT fk_User_Updates_users FOREIGN KEY ( fk_user_create ) REFERENCES Users( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/****** -------------------------------------	Alter Table for Users	---------------------------------- ******/
+ALTER TABLE Users ADD CONSTRAINT fk_Users_status FOREIGN KEY (fk_id_status) REFERENCES User_Status (id) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE Users ADD CONSTRAINT fk_Users_payment_method FOREIGN KEY (fk_id_paymentmethod) REFERENCES Payment_Method (id) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 
 
 /****** -------------------------------------	Status values	---------------------------------- ******/
-INSERT INTO Status_user (name_status)
-VALUES ('ACTIVO'), ('INACTIVO');
-
-/****** -------------------------------------	Payment methos values	---------------------------------- ******/
-INSERT INTO payment_method (name_paymentmethod)
-VALUES ('EFECTIVO'), ('DEPOSITO');
+INSERT INTO User_Status (name_status)
+VALUES ('ACTIVE'), ('INACTIVE');
 
 /****** -------------------------------------	Departments values	---------------------------------- ******/
-INSERT INTO departaments (name_departament)
-VALUES ('ADMINISTRATIVE'), ('ACCOUNTING'), ('BODEGA');
+INSERT INTO Departaments (name_departament)
+VALUES ('Operations'), ('Administrative'), ('Accounting'), ('Human Resources');
+
+/****** -------------------------------------	Roles values	---------------------------------- ******/
+INSERT INTO Roles (name_rol)
+VALUES ('Undefined'), ('Admin'), ('Employee'), ('Payroll Clerk');

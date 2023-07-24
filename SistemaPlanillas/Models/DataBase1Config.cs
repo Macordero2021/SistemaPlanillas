@@ -12,33 +12,33 @@ namespace SistemaPlanillas.Models
         {
         }
 
-        public virtual DbSet<departaments> departaments { get; set; }
-        public virtual DbSet<payment_method> payment_method { get; set; }
-        public virtual DbSet<Rol_Departament_User> Rol_Departament_User { get; set; }
+        public virtual DbSet<Departaments> Departaments { get; set; }
+        public virtual DbSet<Payment_Method> Payment_Method { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
-        public virtual DbSet<Status_user> Status_user { get; set; }
-        public virtual DbSet<update_users> update_users { get; set; }
+        public virtual DbSet<User_RolAndDepartment> User_RolAndDepartment { get; set; }
+        public virtual DbSet<User_Status> User_Status { get; set; }
+        public virtual DbSet<User_Updates> User_Updates { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<departaments>()
+            modelBuilder.Entity<Departaments>()
                 .Property(e => e.name_departament)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<departaments>()
-                .HasMany(e => e.Rol_Departament_User)
-                .WithRequired(e => e.departaments)
+            modelBuilder.Entity<Departaments>()
+                .HasMany(e => e.User_RolAndDepartment)
+                .WithRequired(e => e.Departaments)
                 .HasForeignKey(e => e.fk_id_departament)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<payment_method>()
+            modelBuilder.Entity<Payment_Method>()
                 .Property(e => e.name_paymentmethod)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<payment_method>()
+            modelBuilder.Entity<Payment_Method>()
                 .HasMany(e => e.Users)
-                .WithRequired(e => e.payment_method)
+                .WithRequired(e => e.Payment_Method)
                 .HasForeignKey(e => e.fk_id_paymentmethod)
                 .WillCascadeOnDelete(false);
 
@@ -47,18 +47,18 @@ namespace SistemaPlanillas.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Roles>()
-                .HasMany(e => e.Rol_Departament_User)
+                .HasMany(e => e.User_RolAndDepartment)
                 .WithRequired(e => e.Roles)
                 .HasForeignKey(e => e.fk_id_rol)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Status_user>()
+            modelBuilder.Entity<User_Status>()
                 .Property(e => e.name_status)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Status_user>()
+            modelBuilder.Entity<User_Status>()
                 .HasMany(e => e.Users)
-                .WithRequired(e => e.Status_user)
+                .WithRequired(e => e.User_Status)
                 .HasForeignKey(e => e.fk_id_status)
                 .WillCascadeOnDelete(false);
 
@@ -87,13 +87,13 @@ namespace SistemaPlanillas.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Users>()
-                .HasMany(e => e.Rol_Departament_User)
+                .HasMany(e => e.User_RolAndDepartment)
                 .WithRequired(e => e.Users)
                 .HasForeignKey(e => e.fk_id_user)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Users>()
-                .HasMany(e => e.update_users)
+                .HasMany(e => e.User_Updates)
                 .WithRequired(e => e.Users)
                 .HasForeignKey(e => e.fk_user_create)
                 .WillCascadeOnDelete(false);

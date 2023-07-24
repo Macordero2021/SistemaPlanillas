@@ -6,10 +6,10 @@ namespace SistemaPlanillas.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Status_user
+    public partial class User_Status
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Status_user()
+        public User_Status()
         {
             Users = new HashSet<Users>();
         }

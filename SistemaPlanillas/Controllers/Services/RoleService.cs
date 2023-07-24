@@ -22,7 +22,8 @@ namespace SistemaPlanillas.Controllers.Services
         /// <returns>User's role name or null if no role is assigned.</returns>
         public string GetUserRoleName(int userId)
         {
-            var roleUser = _db.Rol_Departament_User.FirstOrDefault(x => x.fk_id_user == userId);
+            var roleUser = _db.User_RolAndDepartment.FirstOrDefault(x => x.fk_id_user == userId);
+            Console.WriteLine(roleUser.fk_id_rol);
             if (roleUser != null)
             {
                 var role = _db.Roles.FirstOrDefault(x => x.id == roleUser.fk_id_rol);

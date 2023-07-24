@@ -11,7 +11,7 @@ namespace SistemaPlanillas.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Roles()
         {
-            Rol_Departament_User = new HashSet<Rol_Departament_User>();
+            User_RolAndDepartment = new HashSet<User_RolAndDepartment>();
         }
 
         public int id { get; set; }
@@ -20,6 +20,6 @@ namespace SistemaPlanillas.Models
         public string name_rol { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Rol_Departament_User> Rol_Departament_User { get; set; }
+        public virtual ICollection<User_RolAndDepartment> User_RolAndDepartment { get; set; }
     }
 }

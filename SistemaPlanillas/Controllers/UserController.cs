@@ -28,7 +28,7 @@ namespace SistemaPlanillas.Controllers
         /// <returns>The view containing the signup form and a list of departments.</returns>
         public ActionResult SignupForm()
         {
-            var departments = _db.departaments.ToList();
+            var departments = _db.Departaments.ToList();
             return View(departments);
         }
 
@@ -56,7 +56,8 @@ namespace SistemaPlanillas.Controllers
             {
                 // User created successfully, redirect to the SignupForm view with a success message.
                 TempData["UsuarioCreadoCorrectamente"] = "User created successfully";
-                var departmentsList = _db.departaments.ToList();
+                var departmentsList = _db.Departaments.ToList();
+                Console.WriteLine("New user created: " + name + " " + lastName + " - " + email); // Agregar esta línea para imprimir los datos del usuario recién creado
                 return View("SignupForm", departmentsList);
             }
             else
@@ -81,7 +82,7 @@ namespace SistemaPlanillas.Controllers
                         break;
                 }
 
-                var departmentsList = _db.departaments.ToList();
+                var departmentsList = _db.Departaments.ToList();
                 return View("SignupForm", departmentsList);
             }
 
@@ -115,11 +116,13 @@ namespace SistemaPlanillas.Controllers
             {
                 // User found, continue with the login process.
 
-                // Get the role ID from the Rol_Departament_User table to find the user's role.
-                Rol_Departament_User idRolUser = _db.Rol_Departament_User.Where(x => x.fk_id_user == user.id).FirstOrDefault();
+                // Get the role ID from the User_RolAndDepartment table to find the user's role.
+                User_RolAndDepartment idRolUser = _db.User_RolAndDepartment.Where(x => x.fk_id_user == user.id).FirstOrDefault();
 
                 // Get the user's role using the RoleService.
-                string rolName = _roleService.GetUserRoleName(idRolUser.fk_id_rol);
+                string rolName = _roleService.GetUserRoleName(idRolUser.fk_id_user);
+
+                Console.WriteLine(rolName);
 
                 // Store the user's role name in the session.
                 Session["role"] = rolName;
