@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.UI;
 using SistemaPlanillas.Controllers.Services;
 using SistemaPlanillas.Models;
 
@@ -51,7 +53,7 @@ namespace SistemaPlanillas.Controllers
 
             // Create a new user based on the provided data using UserService.
             var result = _userService.CreateNewUser(name, lastName, email, phone, pass1, pass2, departments);
-
+            
             if (result == UserServiceResult.Success)
             {
                 // User created successfully, redirect to the SignupForm view with a success message.
@@ -85,7 +87,7 @@ namespace SistemaPlanillas.Controllers
                 var departmentsList = _db.Departaments.ToList();
                 return View("SignupForm", departmentsList);
             }
-
+          
         }
 
         /// <summary>
@@ -157,10 +159,6 @@ namespace SistemaPlanillas.Controllers
 
         }
 
-        public ActionResult RolConfig()
-        {
-            return View("RolConfig");
-        }
 
     }
 }
