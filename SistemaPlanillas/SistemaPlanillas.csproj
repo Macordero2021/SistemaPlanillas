@@ -195,6 +195,7 @@
     <Content Include="Web.config" />
     <Content Include="Views\User\Dashboard.cshtml" />
     <Content Include="Views\Role\RolConfig.cshtml" />
+    <Content Include="Views\Role\EditRolConfig.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -156,7 +156,6 @@ namespace SistemaPlanillas.Controllers
             Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
             return View("Dashboard", user);
 
-
         }
 
 

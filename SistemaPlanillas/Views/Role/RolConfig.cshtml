@@ -13,10 +13,9 @@
 </head>
 <body>
 
-
-
-
-
+    @{
+        string idModel = ViewBag.idModel;
+    }
 
 
     @if (Session["role"] == null || Session["role"].ToString() == "Undefined" || string.IsNullOrEmpty(Session["role"].ToString()))
@@ -30,24 +29,56 @@
     }
 
 
-    else if (Session["role"].ToString() == "Admin")
+    else if (Session["role"].ToString() == "ADMIN")
     {
+
+
+        <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">XYZ S.A.</font></font></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Navegación de palanca">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarColor02">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://localhost:44319/User/Dashboard?userId=@idModel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color:white">Home</font></font></a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="@Url.Action("RolConfig", "Role")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color: white">Roles</font></font></a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color: white">Assign Roles</font></font></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+
+
+
         <h1>Modulo CRUD Roles</h1>
 
         <br /> <br /><br />
 
 
 
-                     <form action="@Url.Action("storeRol", "Role")" method="post">
-                         <div class="mb-3">
-                             <label for="nameRol" class="form-label">Nombre del rol</label>
-                             <input type="text" class="form-control" name="rol">
-                         </div>
-                         <button type="submit" class="btn btn-primary">Guardar rol</button>
-                         <br />
-                         <p>@TempData["repeatNameRol"]</p>
+        <form action="@Url.Action("StoreRol", "Role", new { id = @idModel })" method="post">
+            <div class="mb-3">
+                <label for="nameRol" class="form-label">Nombre del rol</label>
+                <input type="text" style="text-transform:uppercase" oninput="this.value = this.value.toUpperCase();" class="form-control" name="rol">
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar rol</button>
+            <br />
+            <br />
+            <p>@TempData["repeatNameRol"]</p>
+            <p>@TempData["successRol"]</p>
+            <p>@TempData["deleteSuccess"]</p>
 
-                     </form>
+
+        </form>
 
         <br /> <br /><br />
 
@@ -68,29 +99,25 @@
                 {
                     <tr>
                         <td>@roles.name_rol</td>
-                        <td>Editar</td>
-                        <td>Eliminar</td>
+                        <td>
+                            <form action="@Url.Action("FormEditRol", "Role")" method="get">
+                                <input type="hidden" name="idUser" value="@idModel" />
+                                <input type="hidden" name="id" value="@roles.id" />
+                                <button type="submit" class="btn btn-primary">Editar</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="@Url.Action("DeleteRol", "Role")" method="post">
+                                <input type="hidden" name="idUser" value="@idModel" />
+                                <input type="hidden" name="id" value="@roles.id" />
+                                <button type="submit" class="btn btn-primary">Eliminar</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </body>
