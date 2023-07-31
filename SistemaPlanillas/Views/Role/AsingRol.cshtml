@@ -75,40 +75,39 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var users in Model.User)
+                @foreach (var users2 in Model.User)
                 {
                     <tr>
-                        <td>@users.name</td>
-                        <td>@users.email</td>
-                       <td>
-                          @foreach (var RDU in Model.RoleDeparmentUser)
-                          {
-                              if (users.id == RDU.fk_id_user)
-                              {
-                                 foreach (var roles in Model.Role)
-                                 {
-                                     if (RDU.fk_id_rol == roles.id)
-                                     {
-                                         @roles.name_rol
-                                     }
-                                 }
-                              }
-                          }
-                       </td>
-                       <td>
-                           @foreach (var users2 in Model.User)
-                           {
-                               foreach (var status in Model.Status)
-                               {
-                                   if (users2.fk_id_status == status.id)
-                                   {
-                                       @status.name_status
-                                       break;
-                                   }
-                               }
-                           }
+                        <td>@users2.name</td>
+                        <td>@users2.email</td>
+                        <td>
+                            @foreach (var RDU in Model.RoleDeparmentUser)
+                            {
+                                if (users2.id == RDU.fk_id_user)
+                                {
+                                    foreach (var roles in Model.Role)
+                                    {
+                                        if (RDU.fk_id_rol == roles.id)
+                                        {
+                                            @roles.name_rol
+                                        }
+                                    }
+                                }
+                            }
+                        </td>
+                        <td>
+                            
+                                @foreach (var status in Model.Status)
+                                {
+                                    if (users2.fk_id_status == status.id)
+                                    {
+                                        @status.name_status
+                                        break;
+                                    }
+                                }
+                            
 
-                       </td>
+                        </td>
 
                     </tr>
                 }
