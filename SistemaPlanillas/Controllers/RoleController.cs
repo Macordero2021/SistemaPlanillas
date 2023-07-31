@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -174,8 +175,28 @@ namespace SistemaPlanillas.Controllers
 
         }
 
+        public ActionResult AsingRol(int id)
+        {
+            List<Roles> roles = _db.Roles.ToList();
+            List<Users> users = _db.Users.ToList();
+            List<User_RolAndDepartment> RolesDeparmentsUser1 = _db.User_RolAndDepartment.ToList();
+            List<User_Status> Status1 = _db.User_Status.ToList();
 
 
-    }
-       
+            modelCompuesto viewModel = new modelCompuesto
+            {
+                Role = roles,
+                User = users,
+                RoleDeparmentUser = RolesDeparmentsUser1,
+                Status = Status1    
+            };
+
+            //es el de la url del usuario que esta logeado
+            var idModel = id.ToString();
+            ViewBag.idModel = idModel;
+
+
+            return View("AsingRol", viewModel);
+        }
+    }      
 }

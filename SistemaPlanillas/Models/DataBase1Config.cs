@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
@@ -98,5 +99,12 @@ namespace SistemaPlanillas.Models
                 .HasForeignKey(e => e.fk_user_create)
                 .WillCascadeOnDelete(false);
         }
+    }
+    public  class modelCompuesto
+    {
+        public List<Roles> Role { get; set; }
+        public List<Users> User { get; set; }
+        public List<User_RolAndDepartment> RoleDeparmentUser { get; set; }
+        public List<User_Status> Status { get; set; }
     }
 }

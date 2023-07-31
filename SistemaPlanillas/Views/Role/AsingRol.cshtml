@@ -1,12 +1,12 @@
-﻿
-@model List<SistemaPlanillas.Models.Roles>
+﻿@model SistemaPlanillas.Models.modelCompuesto
+
 
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>AsingRoles</title>
 
     <!-- Custom styles for this template -->
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
@@ -47,76 +47,90 @@
                             <a class="nav-link" href="https://localhost:44319/User/Dashboard?userId=@idModel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color:white">Home</font></font></a>
                         </li>
                         <li>
-                            <a class="nav-link" href="@Url.Action("RolConfig", "Role")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color: white">Roles</font></font></a>
+                            <a class="nav-link" href="@Url.Action("RolConfig", "Role", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color: white">Roles</font></font></a>
                         </li>
+
                     </ul>
                 </div>
             </div>
         </nav>
+        <h1>ASIGNAR ROL A USUARIO</h1>
 
 
 
 
 
-        <h1>Modulo CRUD Roles</h1>
-
-        <br /> <br /><br />
 
 
-
-        <form action="@Url.Action("StoreRol", "Role", new { id = @idModel })" method="post">
-            <div class="mb-3">
-                <label for="nameRol" class="form-label">Nombre del rol</label>
-                <input type="text" style="text-transform:uppercase" oninput="this.value = this.value.toUpperCase();" class="form-control" name="rol">
-            </div>
-            <button type="submit" class="btn btn-primary">Guardar rol</button>
-            <br />
-            <br />
-            <p>@TempData["repeatNameRol"]</p>
-            <p>@TempData["successRol"]</p>
-            <p>@TempData["deleteSuccess"]</p>
-
-
-        </form>
-
-        <br /> <br /><br />
-
-        <h1>Tabla de roles</h1>
 
 
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Accion</th>
-                    <th scope="col">Accion</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Estado</th>
 
                 </tr>
             </thead>
             <tbody>
-                @foreach (var roles in Model)
+                @foreach (var users in Model.User)
                 {
                     <tr>
-                        <td>@roles.name_rol</td>
-                        <td>
-                            <form action="@Url.Action("FormEditRol", "Role")" method="get">
-                                <input type="hidden" name="idUser" value="@idModel" />
-                                <input type="hidden" name="id" value="@roles.id" />
-                                <button type="submit" class="btn btn-primary">Editar</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="@Url.Action("DeleteRol", "Role")" method="post">
-                                <input type="hidden" name="idUser" value="@idModel" />
-                                <input type="hidden" name="id" value="@roles.id" />
-                                <button type="submit" class="btn btn-primary">Eliminar</button>
-                            </form>
-                        </td>
+                        <td>@users.name</td>
+                        <td>@users.email</td>
+                       <td>
+                          @foreach (var RDU in Model.RoleDeparmentUser)
+                          {
+                              if (users.id == RDU.fk_id_user)
+                              {
+                                 foreach (var roles in Model.Role)
+                                 {
+                                     if (RDU.fk_id_rol == roles.id)
+                                     {
+                                         @roles.name_rol
+                                     }
+                                 }
+                              }
+                          }
+                       </td>
+                       <td>
+                           @foreach (var users2 in Model.User)
+                           {
+                               foreach (var status in Model.Status)
+                               {
+                                   if (users2.fk_id_status == status.id)
+                                   {
+                                       @status.name_status
+                                       break;
+                                   }
+                               }
+                           }
+
+                       </td>
+
                     </tr>
                 }
             </tbody>
         </table>
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </body>
