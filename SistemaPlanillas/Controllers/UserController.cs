@@ -53,7 +53,7 @@ namespace SistemaPlanillas.Controllers
 
             // Create a new user based on the provided data using UserService.
             var result = _userService.CreateNewUser(name, lastName, email, phone, pass1, pass2, departments);
-            
+
             if (result == UserServiceResult.Success)
             {
                 // User created successfully, redirect to the SignupForm view with a success message.
@@ -87,7 +87,7 @@ namespace SistemaPlanillas.Controllers
                 var departmentsList = _db.Departaments.ToList();
                 return View("SignupForm", departmentsList);
             }
-          
+
         }
 
         /// <summary>
@@ -114,50 +114,51 @@ namespace SistemaPlanillas.Controllers
             // Check if the provided credentials match any user in the database.
             var user = _db.Users.FirstOrDefault(u => u.email == email && u.password == password);
 
+            // User found, continue with the login process.
             if (user != null)
             {
-                // User found, continue with the login process.
-
                 // Get the role ID from the User_RolAndDepartment table to find the user's role.
-                User_RolAndDepartment idRolUser = _db.User_RolAndDepartment.Where(x => x.fk_id_user == user.id).FirstOrDefault();
+                User_RolAndDepartment idRolUser = _db.User_RolAndDepartment.FirstOrDefault(x => x.fk_id_user == user.id);
 
-                // Get the user's role using the RoleService.
-                string rolName = _roleService.GetUserRoleName(idRolUser.fk_id_user);
+                if (idRolUser != null)
+                {
+                    // Get the user's role using the RoleService.
+                    string rolName = _roleService.GetUserRoleName(idRolUser.fk_id_user);
 
-                Console.WriteLine(rolName);
+                    Console.WriteLine(rolName);
 
-                // Store the user's role name in the session.
-                Session["role"] = rolName;
+                    // Store the user's role name in the session.
+                    Session["role"] = rolName;
 
-                if (Session["role"] == null)
+                    int userId = user.id;
+
+                    // Successful login, redirect to the corresponding action based on the user's role.
+                    switch (rolName)
+                    {
+                        case "UNDEFINED":
+                            return RedirectToAction("UndefinedView", "Role", new { userId });
+                        case "ADMIN":
+                            return RedirectToAction("AdminView", "Role", new { userId });
+                        case "EMPLOYEE":
+                            return RedirectToAction("EmployeeView", "Role", new { userId });
+                        case "PAYROLL CLERK":
+                            return RedirectToAction("PayrollView", "Role", new { userId });
+                        default:
+                            // If the role is not recognized or doesn't have a specific action, redirect to LoginForm
+                            return RedirectToAction("LoginForm", "User");
+                    }
+                }
+                else
                 {
                     // Failed to retrieve role, redirect to the LoginForm view.
                     return View("LoginForm");
                 }
-                else
-                {
-                    // Successful login, redirect to the Dashboard view with the user ID.
-                    int userId = user.id;
-                    return RedirectToAction("Dashboard", "User", new { userId });
-                }
             }
-            else
-            {
-                // Invalid credentials, store an error message and redisplay the LoginForm view.
-                TempData["loginError"] = "Invalid credentials";
-                return View("LoginForm");
-            }
+
+            // Invalid credentials or no role found, store an error message and redisplay the LoginForm view.
+            TempData["loginError"] = "Invalid credentials";
+            return View("LoginForm");
         }
-
-
-        public ActionResult Dashboard(int userId)
-        {
-
-            Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
-            return View("Dashboard", user);
-
-        }
-
 
     }
 }
