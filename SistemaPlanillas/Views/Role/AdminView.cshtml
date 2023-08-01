@@ -1,5 +1,9 @@
 ﻿﻿@model SistemaPlanillas.Models.Users
 
+@{ 
+    ViewBag.Title = "EmployeeView";
+}
+
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
 <head>
     <meta charset="utf-8">
@@ -8,7 +12,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
-    <link href="~/Content/StyleForms.css" rel="stylesheet">
+    <link href="~/Content/StyleForms.css" rel="stylesheet" />
 </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -33,9 +37,36 @@
         </div>
     </nav>
 
-    <h1>Modulo de Seguridad</h1>
-    <br />
-    <h1>Admin's name: @Model.name</h1>
+    <main class="layout-page-content">
+        <div class="row">
+
+            <div class="column">
+                <div class="profile-container-left">
+                    <img src="~/Assets/UsersIcon.svg" class="image" alt="" />
+                    <h1>Welcome Again!</h1>
+                    <p>@Model.name</p>
+                    <p>@ViewBag.UserRole</p>
+                </div>
+            </div>
+            <div class="column">
+                <div class="profile-container-right">
+                    <img src="~/Assets/WelcomoIcon.svg" class="image" alt="" />
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="row">
+            <div class="content-container">
+                <h1>Your information:</h1>
+                <p>Admin's name: @Model.name</p>
+                <p>Admin's email: @Model.email</p>
+            </div>
+        </div>
+    </main>
+
     <div id="4411b5c0-f318-40b5-88ed-174d92c6881e" style="display: block !important; z-index: 2147483647 !important;"></div>
 
     @Scripts.Render("~/bundles/bootstrap")

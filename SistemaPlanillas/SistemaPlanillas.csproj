@@ -148,6 +148,8 @@
   <ItemGroup>
     <Content Include="Assets\Home %282%29.png" />
     <Content Include="Assets\Home.png" />
+    <Content Include="Assets\UsersIcon.svg" />
+    <Content Include="Assets\WelcomoIcon.svg" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />

@@ -5,6 +5,8 @@
 */
 :root {
     --color-primary: #6380ec;
+    --color-white: #fff;
+
     --btn-1: var(--color-primary);
     --btn-2: #ff7782;
     --container-border-radius: 2rem;
@@ -21,15 +23,8 @@ body {
     margin: 0;
 }
 
-.wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
 /*
-============================>   Carousel   <============================
+============================>   Carousel Home   <============================
 */
 .carousel {
     margin-bottom: 4rem;
@@ -52,13 +47,29 @@ body {
     height: 32rem;
 }
 
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
 /*
 ============================>   Form container   <============================
 */
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
 .form-container {
     width: 550px;
     min-height: 400px;
-    background-color: #f4f4f4;
+    background-color:var(--color-white);
     padding: 20px;
     border-radius: 8px;
     transition: var(--transition);
@@ -141,36 +152,114 @@ body {
 }
 
 /*
+============================>   ADMIN VIEW   <============================
+*/
+.layout-page-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto 0; /* Margen superior de 20px, margen derecho e izquierdo automático */
+}
+
+.layout-page-content h1{
+    margin-bottom: 0.8rem;
+    font-size: 32px;
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.column {
+    width: 50%; 
+}
+
+/*================ profile-container =================*/
+.profile-container-left {
+    width: 50%;
+    padding: 20px;
+    background-color: var(--color-white);
+    border-radius: 8px;
+    transition: var(--transition);
+    border-radius: var(--container-border-radius);
+    box-shadow: var(--box-shadow-add);
+}
+
+.profile-container-left:hover {
+    box-shadow: none;
+}
+
+.profile-container-left .image {
+    width: 150px;
+    height: 150px;
+    margin-right: 20px; /* Margen derecho de la imagen */
+    margin-bottom: 15px; /* Margen inferior de 10px para el img */
+    position: relative; /* Habilita el posicionamiento relativo */
+    top: 10px; /* Mueve la imagen hacia abajo */
+    left: 5px; /* Mueve la imagen hacia la derecha */
+}
+
+.profile-container-left p{
+    margin-bottom: 0.8rem;
+    font-size: 22px;
+}
+
+
+.profile-container-right .image {
+
+}
+
+/*================ .content-container =================*/
+.content-container {
+    width: 100%; /* Ocupa el 100% del ancho de su contenedor (la fila) */
+    padding: 20px;
+    background-color: var(--color-white);
+    border-radius: 8px;
+    transition: var(--transition);
+    border-radius: var(--container-border-radius);
+    box-shadow: var(--box-shadow-add);
+}
+
+.content-container:hover {
+    box-shadow: none;
+}
+
+
+/*
 ============================>   Responsive   <============================
 */
+/* Media Query 1 - A partir de 640px */
 @media (min-width: 40em) {
-    .carousel-caption p {
-        margin-bottom: 1.25rem;
-        font-size: 1.25rem;
-        line-height: 1.4;
+    .layout-page-content h1 {
+        font-size: 2rem;
     }
 
-    .featurette-heading {
-        font-size: 50px;
+    .profile-container-left .image {
+        width: 10vw; /* Utilizamos unidades vw para disminuir el tamaño con el ancho de la ventana */
+        height: 10vw; /* Utilizamos unidades vw para mantener una proporción cuadrada */
     }
 }
 
+/* Media Query 3 - A partir de 768px */
+@media (min-width: 768px) {
+    .profile-container-left .image {
+        width: 10vw;
+        height: 10vw;
+    }
+}
+
+/* Media Query 2 - A partir de 992px */
 @media (min-width: 62em) {
+    .layout-page-content h1 {
+        font-size: 2.5rem;
+    }
+
     .featurette-heading {
         margin-top: 7rem;
-    }
-}
-
-.bd-placeholder-img {
-    font-size: 1.125rem;
-    text-anchor: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-}
-
-@media (min-width: 768px) {
-    .bd-placeholder-img-lg {
-        font-size: 3.5rem;
     }
 }

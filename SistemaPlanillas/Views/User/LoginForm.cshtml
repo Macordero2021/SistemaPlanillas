@@ -7,7 +7,8 @@
     <title>FormUserCreate</title>
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
     <link href="~/Content/StyleForms.css" rel="stylesheet" />
-
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
 
 <body>
@@ -41,6 +42,8 @@
             <form action="@Url.Action("Login", "User")" method="post">
                 <div class="form-group">
                     <h1 style="margin-bottom:50px;">Log In Form</h1>
+
+                    <ion-icon name="person-outline"></ion-icon>
 
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control" id="floatingInput" placeholder="Email" name="email">

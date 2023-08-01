@@ -36,7 +36,8 @@ namespace SistemaPlanillas.Controllers
         public ActionResult AdminView(int userId)
         {
             Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
-
+            var userRole = Session["role"];
+            ViewBag.UserRole = userRole;
             return View(user);
         }
 
@@ -250,28 +251,66 @@ namespace SistemaPlanillas.Controllers
         /// </summary>
         /// <param name="id">The ID of the user.</param>
         /// <returns>The view for assigning roles to users.</returns>
-        public ActionResult AsignRol(int id)
+        public ActionResult AsignRol(int id, string nameOrEmail)
         {
-            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
-            List<Roles> roles = _db.Roles.ToList();
-            List<Users> users = _db.Users.ToList();
-            List<User_RolAndDepartment> RolesDeparmentsUser1 = _db.User_RolAndDepartment.ToList();
-            List<User_Status> Status1 = _db.User_Status.ToList();
+            string nameOrEmail2 = nameOrEmail;
 
-            // Create a view model containing all the retrieved lists and pass it to the view.
-            modelCompuesto viewModel = new modelCompuesto
+            if (nameOrEmail2 == null || nameOrEmail2 == "")
             {
-                Role = roles,
-                User = users,
-                RoleDeparmentUser = RolesDeparmentsUser1,
-                Status = Status1    
-            };
+                // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
+                List<Roles> roles = _db.Roles.ToList();
+                List<Users> users = _db.Users.ToList();
+                List<User_RolAndDepartment> RolesDeparmentsUser1 = _db.User_RolAndDepartment.ToList();
+                List<User_Status> Status1 = _db.User_Status.ToList();
 
-            // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
-            var idModel = id.ToString();
-            ViewBag.idModel = idModel;
+                // Create a view model containing all the retrieved lists and pass it to the view.
+                modelCompuesto viewModel = new modelCompuesto
+                {
+                    Role = roles,
+                    User = users,
+                    RoleDeparmentUser = RolesDeparmentsUser1,
+                    Status = Status1    
+                };
 
-            return View("~/Views/Role/AdminModules/AsignRol.cshtml", viewModel);
+                // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
+                var idModel = id.ToString();
+                ViewBag.idModel = idModel;
+
+                return View("~/Views/Role/AdminModules/AsignRol.cshtml", viewModel);
+
+            }
+            else
+            {
+                //aqui ya se realizo la busqueda 
+                // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
+                List<Roles> roles = _db.Roles.ToList();
+                List<Users> users = _db.Users.Where(x => x.name.Contains(nameOrEmail2) || x.email.Contains(nameOrEmail2)).ToList(); 
+                List<User_RolAndDepartment> RolesDeparmentsUser1 = _db.User_RolAndDepartment.ToList();
+                List<User_Status> Status1 = _db.User_Status.ToList();
+
+                // Create a view model containing all the retrieved lists and pass it to the view.
+                modelCompuesto viewModel = new modelCompuesto
+                {
+                    Role = roles,
+                    User = users,
+                    RoleDeparmentUser = RolesDeparmentsUser1,
+                    Status = Status1
+                };
+
+                // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
+                var idModel = id.ToString();
+                ViewBag.idModel = idModel;
+
+                return View("~/Views/Role/AdminModules/AsignRol.cshtml", viewModel);
+
+            }
+
+
+        }
+
+        public ActionResult formEditUserEmailStatus(string id)
+        {
+            return View();  
         }
     }      
 }
