@@ -308,7 +308,7 @@ namespace SistemaPlanillas.Controllers
 
         }
 
-        public ActionResult formEditUserEmailStatus(string id)
+        public ActionResult formEditUser(string id)
         {
             return View();  
         }
