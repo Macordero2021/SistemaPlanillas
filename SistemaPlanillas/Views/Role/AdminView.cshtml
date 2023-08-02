@@ -27,29 +27,30 @@
                         <a class="nav-link" href="@Url.Action("Index", "Home")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("RolConfig", "Role", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("RoleModule", "Role", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("AsignRol", "Role", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("AssignRole", "Role", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <main class="layout-page-content">
+    <main class="admin-page">
         <div class="row">
 
             <div class="column">
-                <div class="profile-container-left">
+                <div class="profile-left">
                     <img src="~/Assets/UsersIcon.svg" class="image" alt="" />
                     <h1>Welcome Again!</h1>
                     <p>@Model.name</p>
                     <p>@ViewBag.UserRole</p>
                 </div>
             </div>
+
             <div class="column">
-                <div class="profile-container-right">
+                <div class="profile-right">
                     <img src="~/Assets/WelcomoIcon.svg" class="image" alt="" />
                 </div>
             </div>

@@ -63,15 +63,19 @@ namespace SistemaPlanillas.Controllers
             return View(user);
         }
 
-        public ActionResult RolConfig(int id)
+        /// <summary>
+        /// Action method for displaying the view of the "RoleModule"."
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult RoleModule(int id)
         {
             var idModel = id.ToString();
             ViewBag.idModel = idModel;
 
             var Roles = _db.Roles.ToList();
-            return View("~/Views/Role/AdminModules/RolConfig.cshtml", Roles);
+            return View("AdminModules/RoleModule", Roles);
         }
-
 
         /// <summary>
         /// Action method for storing a new role
@@ -79,17 +83,17 @@ namespace SistemaPlanillas.Controllers
         /// <param name="form">The form data submitted by the user.</param>
         /// <param name="id">The ID of the role.</param>
         /// <returns>
-        ///     If successful, redirects to the "RolConfig" action with the updated role list.
-        ///     If the role name already exists, redirects to the "RolConfig" action with an error message.
+        ///     If successful, redirects to the "RoleModule" action with the updated role list.
+        ///     If the role name already exists, redirects to the "RoleModule" action with an error message.
         /// </returns>
         [HttpPost]
-        public ActionResult StoreRol(FormCollection form,int id)
+        public ActionResult CreateRole(FormCollection form,int id)
         {
             var idModel = id;
 
 
-            // Retrieve nameRol input from the form.
-            string nameRol = form["rol"];
+            // Retrieve nameRole input from the form.
+            string nameRole = form["rol"];
 
             // Retrieve all roles from the database.
             var Roles = _db.Roles.ToList();
@@ -98,14 +102,14 @@ namespace SistemaPlanillas.Controllers
             // Check if the list of roles is empty.
             if (Roles == null) {
                 // If the list is empty, create a new role, save it to the database, and show success message.
-                Roles storeRol = new Roles();
-                storeRol.name_rol = nameRol;
-                _db.Roles.Add(storeRol);
+                Roles storeRole = new Roles();
+                storeRole.name_rol = nameRole;
+                _db.Roles.Add(storeRole);
                 _db.SaveChanges();
 
-                TempData["successRol"] = "El rol se guardo correctamente";
+                TempData["successRol"] = "The new role was created succesfully";
 
-                return RedirectToAction("RolConfig", "Role", new { id = idModel });
+                return RedirectToAction("RoleModule", "Role", new { id = idModel });
             }
             else
             {
@@ -114,7 +118,7 @@ namespace SistemaPlanillas.Controllers
 
                 foreach (var item in Roles)
                 {
-                    if (item.name_rol == nameRol)
+                    if (item.name_rol == nameRole)
                     {
                         existe = 1;
                         break;
@@ -124,68 +128,68 @@ namespace SistemaPlanillas.Controllers
                 // If the role name does not exist, create a new role, save it to the database, and show success message.
                 if (existe == 0) {
 
-                    Roles storeRol = new Roles();
-                    storeRol.name_rol = nameRol;
-                    _db.Roles.Add(storeRol);
+                    Roles storeRole = new Roles();
+                    storeRole.name_rol = nameRole;
+                    _db.Roles.Add(storeRole);
                     _db.SaveChanges();
 
-                    TempData["successRol"] = "El rol se guardo correctamente";
+                    TempData["successRol"] = "The new role was created succesfully";
 
-                    return RedirectToAction("RolConfig", "Role", new { id = idModel });
+                    return RedirectToAction("RoleModule", "Role", new { id = idModel });
                 }
                 else
                 {
                     // If the role name already exists, show an error message and return to the view.
                     TempData["repeatNameRol"] = "El nombre del rol ya existe";
 
-                    return RedirectToAction("RolConfig", "Role", new { id = idModel });
+                    return RedirectToAction("RoleModule", "Role", new { id = idModel });
                 }
             }
-        } //End of ActionResult StoreRol
+        }
 
         /// <summary>
         /// Action method for deleting a role.
         /// </summary>
         /// <param name="form">The form data submitted by the user.</param>
         /// <returns>
-        ///     If successful, redirects to the "RolConfig" action with the updated role list.
+        ///     If successful, redirects to the "RolModule" action with the updated role list.
         /// </returns>
         [HttpPost]
-        public ActionResult DeleteRol(FormCollection form)
+        public ActionResult DeleteRole(FormCollection form)
         {
             var idModel = form["idUser"];
 
             // Retrieve idRol input from the form.
-            string idRol = form["id"];
-            var idInt = int.Parse(idRol);
+            string idRole = form["id"];
+            var idInt = int.Parse(idRole);
 
             // Find the role in the database, remove it, and save changes.
-            Roles deleteRol = _db.Roles.Where(x => x.id == idInt).FirstOrDefault(); 
-            _db.Roles.Remove(deleteRol);
+            Roles deleteRole = _db.Roles.Where(x => x.id == idInt).FirstOrDefault(); 
+            _db.Roles.Remove(deleteRole);
             _db.SaveChanges();
 
             TempData["deleteSuccess"] = "Rol eliminado correctamente";
 
-            return RedirectToAction("RolConfig", "Role", new { id = idModel });
+            return RedirectToAction("RoleModule", "Role", new { id = idModel });
         }
 
         /// <summary>
         /// Action method for displaying the edit role form.
         /// </summary>
         /// <returns>The view for editing a role.</returns>
-        public ActionResult FormEditRol()
+        public ActionResult EditRoleForm()
         {
             // Get the values sent via GET from the form.
             var idModel = Request.QueryString["idUser"];
             ViewBag.idModel = idModel;
 
-            var idRol = Request.QueryString["id"];
-            var idInt = int.Parse(idRol);
+            var idRole = Request.QueryString["id"];
+            var idInt = int.Parse(idRole);
 
             // Find the role in the database and pass it to the view.
-            Roles editRol = _db.Roles.Where(x => x.id == idInt).FirstOrDefault();
+            Roles editRole = _db.Roles.Where(x => x.id == idInt).FirstOrDefault();
            
-            return View("~/Views/Role/AdminModules/EditRolConfig.cshtml", editRol);
+            return View("AdminModules/EditRoleForm", editRole);
         }
 
         /// <summary>
@@ -194,23 +198,23 @@ namespace SistemaPlanillas.Controllers
         /// <param name="form">The form data submitted by the user.</param>
         /// <param name="id">The ID of the role.</param>
         /// <returns>
-        ///     If successful, redirects to the "RolConfig" action with the updated role list.
-        ///     If the role name already exists, redirects to the "RolConfig" action with an error message.
+        ///     If successful, redirects to the "RoleModule" action with the updated role list.
+        ///     If the role name already exists, redirects to the "RoleModule" action with an error message.
         /// </returns>
         [HttpPost]
-        public ActionResult StoreEditRol(FormCollection form, int id)
+        public ActionResult StoreEditedRole(FormCollection form, int id)
         {
             // Get the id of the logged-in user from the URL.
             var idModel = id;
 
             // Retrieve the new and old names of the role from the form data.
-            string newNameRol = form["rol"];
-            string oldNameRol = form["oldRol"];
+            string newNameRole = form["rol"];
+            string oldNameRole = form["oldRol"];
 
             // If the new name is the same as the old name, no changes are made, and the user is redirected.
-            if (newNameRol == oldNameRol) {
+            if (newNameRole == oldNameRole) {
 
-                return RedirectToAction("RolConfig", "Role", new { id = idModel });
+                return RedirectToAction("RoleModule", "Role", new { id = idModel });
             }
             else
             {
@@ -222,7 +226,7 @@ namespace SistemaPlanillas.Controllers
 
                 foreach (var item in Roles)
                 {
-                    if (item.name_rol == newNameRol)
+                    if (item.name_rol == newNameRole)
                     {
                         existe = 1;
                         break;
@@ -232,16 +236,16 @@ namespace SistemaPlanillas.Controllers
                 // If the new role name already exists, redirect with a message.
                 if (existe == 1) {
                     //ADD MESSAJE THAT A ROLE ALREADY EXISTS WITH THAT NAME
-                    return RedirectToAction("RolConfig", "Role", new { id = idModel });
+                    return RedirectToAction("RoleModule", "Role", new { id = idModel });
                 }
                 else
                 {
                     // Update the role's name and save changes to the database.
-                    Roles editRol = _db.Roles.Where(x => x.name_rol == oldNameRol).FirstOrDefault();
-                    editRol.name_rol = newNameRol;  
+                    Roles editRole = _db.Roles.Where(x => x.name_rol == oldNameRole).FirstOrDefault();
+                    editRole.name_rol = newNameRole;  
                     _db.SaveChanges();
 
-                    return RedirectToAction("RolConfig", "Role", new { id = idModel });
+                    return RedirectToAction("RoleModule", "Role", new { id = idModel });
                 }
             }   
         }
@@ -251,7 +255,7 @@ namespace SistemaPlanillas.Controllers
         /// </summary>
         /// <param name="id">The ID of the user.</param>
         /// <returns>The view for assigning roles to users.</returns>
-        public ActionResult AsignRol(int id, string nameOrEmail)
+        public ActionResult AssignRole(int id, string nameOrEmail)
         {
             string nameOrEmail2 = nameOrEmail;
 
@@ -276,7 +280,7 @@ namespace SistemaPlanillas.Controllers
                 var idModel = id.ToString();
                 ViewBag.idModel = idModel;
 
-                return View("~/Views/Role/AdminModules/AsignRol.cshtml", viewModel);
+                return View("AdminModules/AssignRole", viewModel);
 
             }
             else
@@ -301,16 +305,17 @@ namespace SistemaPlanillas.Controllers
                 var idModel = id.ToString();
                 ViewBag.idModel = idModel;
 
-                return View("~/Views/Role/AdminModules/AsignRol.cshtml", viewModel);
+                return View("AdminModules/AssignRole", viewModel);
 
             }
 
 
         }
 
-        public ActionResult formEditUser(string id)
+
+        public ActionResult AssignRoleForm(string id)
         {
-            return View();  
+            return View("AdminModules/AssignRoleForm");  
         }
     }      
 }

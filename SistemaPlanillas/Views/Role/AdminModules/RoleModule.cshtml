@@ -28,16 +28,21 @@
                         <a class="nav-link" href="https://localhost:44319/Role/AdminView?userId=@idModel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color:white">Home</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("RolConfig", "Role")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color: white">Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("RoleModule", "Role")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color: white">Roles</font></font></a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
+
+    <main>
+
+
+    </main>
     <h1 style="margin-bottom:50px;">Modulo CRUD Roles</h1>
 
-    <form action="@Url.Action("StoreRol", "Role", new { id = @idModel })" method="post" style="margin-bottom:50px;">
+    <form action="@Url.Action("CreateRole", "Role", new { id = @idModel })" method="post" style="margin-bottom:50px;">
         <div class="mb-3">
             <label for="nameRol" class="form-label">Nombre del rol</label>
             <input type="text" style="text-transform:uppercase" oninput="this.value = this.value.toUpperCase();" class="form-control" name="rol">
@@ -69,14 +74,14 @@
                 <tr>
                     <td>@roles.name_rol</td>
                     <td>
-                        <form action="@Url.Action("FormEditRol", "Role")" method="get">
+                        <form action="@Url.Action("EditRoleForm", "Role")" method="get">
                             <input type="hidden" name="idUser" value="@idModel" />
                             <input type="hidden" name="id" value="@roles.id" />
                             <button type="submit" class="btn btn-primary">Editar</button>
                         </form>
                     </td>
                     <td>
-                        <form action="@Url.Action("DeleteRol", "Role")" method="post">
+                        <form action="@Url.Action("DeleteRole", "Role")" method="post">
                             <input type="hidden" name="idUser" value="@idModel" />
                             <input type="hidden" name="id" value="@roles.id" />
                             <button type="submit" class="btn btn-primary">Eliminar</button>

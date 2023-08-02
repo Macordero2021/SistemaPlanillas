@@ -28,10 +28,10 @@
                         <a class="nav-link" href="https://localhost:44319/Role/AdminView?userId=@idModel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color:white">Home</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("RolConfig", "Role", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color: white">Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("RoleModule", "Role", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color: white">Roles</font></font></a>
                     </li>
                     <li>
-                        <form action="@Url.Action("AsignRol", "Role", new { id = @idModel })" method="get">
+                        <form action="@Url.Action("AssignRole", "Role", new { id = @idModel })" method="get">
                             <div class="input-group">
                                 <div class="form-outline">
                                     <input name="nameOrEmail" style="width: 450px;" placeholder="Búsqueda de usuarios por nombre o correo electrónico." class="form-control" />
@@ -92,7 +92,7 @@
                         }
                     </td>
                     <td>
-                        <form action="@Url.Action("formEditUser", "Role", new { id = @idModel })" method="get">
+                        <form action="@Url.Action("AssignRoleForm", "Role", new { id = @idModel })" method="get">
                             <input type="hidden" name="id"  value="@users2.id"/>
                             <button type="submit" class="btn btn-primary">Editar </button>
                         </form>

@@ -195,13 +195,14 @@
     <Content Include="Views\User\SignupForm.cshtml" />
     <Content Include="Views\User\LoginForm.cshtml" />
     <Content Include="Web.config" />
-    <Content Include="Views\Role\AdminModules\AsignRol.cshtml" />
-    <Content Include="Views\Role\AdminModules\EditRolConfig.cshtml" />
-    <Content Include="Views\Role\AdminModules\RolConfig.cshtml" />
+    <Content Include="Views\Role\AdminModules\AssignRole.cshtml" />
+    <Content Include="Views\Role\AdminModules\EditRoleForm.cshtml" />
+    <Content Include="Views\Role\AdminModules\RoleModule.cshtml" />
     <Content Include="Views\Role\AdminView.cshtml" />
     <Content Include="Views\Role\EmployeeView.cshtml" />
     <Content Include="Views\Role\PayrollView.cshtml" />
     <Content Include="Views\Role\UndefinedView.cshtml" />
+    <Content Include="Views\Role\AdminModules\AssignRoleForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
