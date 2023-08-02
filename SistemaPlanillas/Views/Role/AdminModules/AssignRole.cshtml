@@ -25,16 +25,22 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="https://localhost:44319/Role/AdminView?userId=@idModel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color:white">Home</font></font></a>
+                        <a class="nav-link" href="https://localhost:44319/Role/AdminView?userId=@idModel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { id = @idModel  })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("RoleModule", "Role", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color: white">Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("RoleModule", "Role", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="@Url.Action("AssignRole", "Role", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
                     </li>
                     <li>
                         <form action="@Url.Action("AssignRole", "Role", new { id = @idModel })" method="get">
                             <div class="input-group">
                                 <div class="form-outline">
-                                    <input name="nameOrEmail" style="width: 450px;" placeholder="Búsqueda de usuarios por nombre o correo electrónico." class="form-control" />
+                                    <input name="nameOrEmail" style="width: 400px;" placeholder="Búsqueda de usuarios por nombre o correo electrónico." class="form-control" />
                                 </div>
                                 <button type="submit" class="btn btn-primary" style="width:100px">
                                     Buscar
@@ -44,9 +50,15 @@
                         </form>
                     </li>
                 </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Home")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Log Out</font></font></a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
+
     <h1>ASIGNAR ROL A USUARIO</h1>
 
     <table class="table">

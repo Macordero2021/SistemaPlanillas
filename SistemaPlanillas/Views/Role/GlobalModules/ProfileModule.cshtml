@@ -1,0 +1,96 @@
+﻿@model SistemaPlanillas.Models.modelCompuestoInd
+
+@{
+    string role = ViewBag.role;
+}
+
+<html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+
+    <!-- Custom styles for this template -->
+    <link href="/Content/bootstrap-transform.css" rel="stylesheet">
+    <link href="~/Content/StyleForms.css" rel="stylesheet">
+</head>
+<body>
+    <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">XYZ S.A.</font></font></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Navegación de palanca">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://localhost:44319/Role/AdminView?userId=@Model.User.id"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="@Url.Action("RoleModule", "Role", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="@Url.Action("AssignRole", "Role", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Home")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Log Out</font></font></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="admin-content">
+        <div class="row">
+            <div class="column">
+                <div class="profile-left">
+                    <img src="~/Assets/UsersIcon.svg" class="image" alt="" />
+                    <h1>Welcome Again!</h1>
+                    <p>@ViewBag.UserRole</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Telefono</th>
+                <th scope="col">Email</th>
+                <th scope="col">Departamento</th>
+                <th scope="col">Role</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Editar</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>@Model.User.name</td>
+                <td>@Model.User.lastname</td>
+                <td>@Model.User.phone</td>
+                <td>@Model.User.email</td>
+                <td>@Model.Departaments.name_departament</td>
+                <td>@ViewBag.role</td>
+                <td>@Model.Status.name_status</td>
+                <td>
+                    <form action="@Url.Action("formEditUser", "Role", new { id = @Model.User.id })" method="get">
+                        <input type="hidden" name="id" value="" />
+                        <button type="submit" class="btn btn-primary">Editar </button>
+                    </form>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

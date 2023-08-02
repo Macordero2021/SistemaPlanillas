@@ -203,6 +203,7 @@
     <Content Include="Views\Role\PayrollView.cshtml" />
     <Content Include="Views\Role\UndefinedView.cshtml" />
     <Content Include="Views\Role\AdminModules\AssignRoleForm.cshtml" />
+    <Content Include="Views\Role\GlobalModules\ProfileModule.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -66,6 +66,9 @@ namespace SistemaPlanillas.Controllers.Services
             // Get the current date and time
             DateTime fechaActual = DateTime.Now;
 
+            //Get the id of the department
+            int idDepartment = _db.Departaments.FirstOrDefault(d => d.name_departament == department).id;
+
             // Save the user
             Users newUser = new Users
             {
@@ -76,7 +79,8 @@ namespace SistemaPlanillas.Controllers.Services
                 password = pass1,
                 fk_id_status = 1,
                 salary = "1",
-                fk_id_paymentmethod = 1
+                fk_id_paymentmethod = 1,
+                Fk_Id_Deparment = idDepartment
             };
 
             _db.Users.Add(newUser);

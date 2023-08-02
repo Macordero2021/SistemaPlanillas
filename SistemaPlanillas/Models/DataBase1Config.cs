@@ -28,6 +28,11 @@ namespace SistemaPlanillas.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Departaments>()
+                .HasMany(e => e.Users)
+                .WithOptional(e => e.Departaments)
+                .HasForeignKey(e => e.Fk_Id_Deparment);
+
+            modelBuilder.Entity<Departaments>()
                 .HasMany(e => e.User_RolAndDepartment)
                 .WithRequired(e => e.Departaments)
                 .HasForeignKey(e => e.fk_id_departament)
@@ -100,11 +105,22 @@ namespace SistemaPlanillas.Models
                 .WillCascadeOnDelete(false);
         }
     }
-    public  class modelCompuesto
+
+    //Composite model to retrieve the information of all the users
+    public class modelCompuesto
     {
         public List<Roles> Role { get; set; }
         public List<Users> User { get; set; }
         public List<User_RolAndDepartment> RoleDeparmentUser { get; set; }
         public List<User_Status> Status { get; set; }
+    }
+
+    //Composite model to retrieve the information of and specific user
+    public class modelCompuestoInd
+    {
+        public Users User { get; set; }
+        public User_RolAndDepartment RoleDeparmentUser { get; set; }
+        public Departaments Departaments { get; set; }
+        public User_Status Status { get; set; }
     }
 }

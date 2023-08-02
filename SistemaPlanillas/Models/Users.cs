@@ -43,6 +43,10 @@ namespace SistemaPlanillas.Models
 
         public int fk_id_paymentmethod { get; set; }
 
+        public int? Fk_Id_Deparment { get; set; }
+
+        public virtual Departaments Departaments { get; set; }
+
         public virtual Payment_Method Payment_Method { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

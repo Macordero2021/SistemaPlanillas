@@ -64,6 +64,36 @@ namespace SistemaPlanillas.Controllers
         }
 
         /// <summary>
+        /// Action method for displaying the view "
+        /// </summary>
+        /// <returns>The view displaying information related to the user role.</returns>
+        public ActionResult ProfileModule(int id)
+        {
+            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
+
+            Users user = _db.Users.Where(x => x.id == id).FirstOrDefault();
+            User_Status status = _db.User_Status.Where(x => x.id == user.fk_id_status).FirstOrDefault();
+            var role = Session["role"];
+            User_RolAndDepartment rolAndDepart = _db.User_RolAndDepartment.Where(x => x.fk_id_user == id).FirstOrDefault();
+            Departaments departament = _db.Departaments.Where(x => x.id == user.Fk_Id_Deparment).FirstOrDefault();
+            var nameDepartment = departament.name_departament;
+
+
+            // Create a view model containing all the retrieved lists and pass it to the view.
+            modelCompuestoInd viewModel = new modelCompuestoInd
+            {
+                User = user,
+                RoleDeparmentUser = rolAndDepart,
+                Departaments = departament,
+                Status = status
+            };
+
+            ViewBag.role = role;
+
+            return View("GlobalModules/ProfileModule", viewModel);
+        }
+
+        /// <summary>
         /// Action method for displaying the view of the "RoleModule"."
         /// </summary>
         /// <param name="id"></param>
@@ -306,10 +336,7 @@ namespace SistemaPlanillas.Controllers
                 ViewBag.idModel = idModel;
 
                 return View("AdminModules/AssignRole", viewModel);
-
             }
-
-
         }
 
 
