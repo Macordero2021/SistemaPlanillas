@@ -45,51 +45,78 @@
         </div>
     </nav>
 
-    <main class="admin-content">
-        <div class="row">
-            <div class="column">
-                <div class="profile-left">
-                    <img src="~/Assets/UsersIcon.svg" class="image" alt="" />
-                    <h1>Welcome Again!</h1>
-                    <p>@ViewBag.UserRole</p>
-                </div>
+    <main class="profile-wrapper">
+        <div class="profile-container">
+            <div>
+                <h1 style="margin-bottom:50px;">Hi @Model.User.name!</h1>
             </div>
+
+            <h1 class="table-title">Your personal Information</h1>
+            <table class="table">
+
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="input-container">
+                                <strong>Name:</strong> @Model.User.name
+                                <div class="input-wrapper">
+                                    <input type="text" name="name" value="" />
+                                    <button>Update</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-container"><strong>Department:</strong> @Model.Departaments.name_departament</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-container">
+                                <strong>Last Name(s):</strong> @Model.User.lastname
+                                <div class="input-wrapper">
+                                    <input type="text" name="name" value="" />
+                                    <button>Update</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-container"><strong>Your Role:</strong> @ViewBag.role</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-container">
+                                <strong>Phone Number:</strong> @Model.User.phone
+                                <div class="input-wrapper">
+                                    <input type="text" name="name" value="" />
+                                    <button>Update</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-container"><strong>Tipo de pago:</strong> @Model.Status.name_status</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-container">
+                                <strong>Email:</strong> @Model.User.email
+                                <div class="input-wrapper">
+                                    <input type="text" name="name" value="" />
+                                    <button>Update</button>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="input-container"><strong>Monto del salario:</strong> @Model.Status.name_status</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
     </main>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
-                <th scope="col">Telefono</th>
-                <th scope="col">Email</th>
-                <th scope="col">Departamento</th>
-                <th scope="col">Role</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Editar</th>
-
-            </tr>
-        </thead>
-        <tbody>
-
-            <tr>
-                <td>@Model.User.name</td>
-                <td>@Model.User.lastname</td>
-                <td>@Model.User.phone</td>
-                <td>@Model.User.email</td>
-                <td>@Model.Departaments.name_departament</td>
-                <td>@ViewBag.role</td>
-                <td>@Model.Status.name_status</td>
-                <td>
-                    <form action="@Url.Action("formEditUser", "Role", new { id = @Model.User.id })" method="get">
-                        <input type="hidden" name="id" value="" />
-                        <button type="submit" class="btn btn-primary">Editar </button>
-                    </form>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
 
     @Scripts.Render("~/bundles/bootstrap")
 </body>

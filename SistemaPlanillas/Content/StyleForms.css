@@ -5,8 +5,9 @@
 */
 :root {
     --color-primary: #6380ec;
+    --color-primary-variant: #3E64CC;
     --color-white: #fff;
-
+    --color-dark-variant: #677483;
     --btn-1: var(--color-primary);
     --btn-2: #ff7782;
     --container-border-radius: 2rem;
@@ -21,6 +22,11 @@
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
+}
+
+h1 {
+    font-weight: bold;
+    color: var(--color-primary);
 }
 
 /*
@@ -87,8 +93,6 @@ body {
 
 .form-group h1 {
     text-align: center;
-    font-weight: bold;
-    color: var(--color-primary);
 }
 
 .form-floating input,
@@ -159,7 +163,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 10px auto 0; /* Margen superior de 20px, margen derecho e izquierdo automático */
+    margin: 40px auto 0; /* Margen superior de 20px, margen derecho e izquierdo automático */
 }
 
 .admin-page h1{
@@ -179,23 +183,19 @@ body {
     width: 50%; 
 }
 
-/*================ profile-container =================*/
-.profile-left {
-    width: 50%;
+/*================ profile-container-left =================*/
+.admin-page .profile-left {
+    width: 100%;
     padding: 20px;
     background-color: var(--color-white);
-    border-radius: 8px;
     transition: var(--transition);
     border-radius: var(--container-border-radius);
     box-shadow: var(--box-shadow-add);
 }
 
-.profile-left:hover {
-    box-shadow: none;
-}
-
-.profile-left .image {
+.admin-page .profile-left .image {
     width: 50%;
+    max-width:250px;
     margin-right: 20px; /* Margen derecho de la imagen */
     margin-bottom: 15px; /* Margen inferior de 10px para el img */
     position: relative; /* Habilita el posicionamiento relativo */
@@ -203,64 +203,132 @@ body {
     left: 5px; /* Mueve la imagen hacia la derecha */
 }
 
-.profile-left p{
+.admin-page .profile-left p{
     margin-bottom: 0.8rem;
     font-size: 22px;
 }
 
 /*================ .profile-container-right =================*/
-.profile-right {
+.admin-page .profile-right {
     width: 100%;
     height: 100%;
     padding: 20px;
-}
-
-.profile-right .image {
-    width: 100%;
-    padding: 20px;
-    position: relative; /* Habilita el posicionamiento relativo */
-}
-    
-/*================ .content-container =================*/
-.content-container {
-    width: 100%; /* Ocupa el 100% del ancho de su contenedor (la fila) */
-    padding: 20px;
     background-color: var(--color-white);
-    border-radius: 8px;
     transition: var(--transition);
     border-radius: var(--container-border-radius);
     box-shadow: var(--box-shadow-add);
 }
 
-.content-container:hover {
+.admin-page .profile-right .image {
+    width: 100%;
+    padding: 20px;
+    position: relative;
+}
+
+/*
+============================>   PROFILE VIEW   <============================
+*/
+.profile-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto 0;
+}
+
+.profile-wrapper .profile-container {
+    width: 90%;
+    padding: 20px;
+    background-color: var(--color-white);
+    transition: var(--transition);
+    border-radius: var(--container-border-radius);
+    box-shadow: var(--box-shadow-add);
+}
+
+.profile-wrapper h1 {
+    text-align: center;
+}
+
+.profile-wrapper .table-title {
+    font-size: 30px;
+    font-weight: normal;
+}
+
+.profile-wrapper table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    width: 100%;
+}
+
+.profile-wrapper table td {
+    width:50%;
+    padding: 20px;
+    background-color: var(--color-white);
+}
+
+.profile-wrapper table td .input-container{
+    width:90%;
+    padding: 20px;
+    background-color: var(--color-white);
+    transition: var(--transition);
+    border: 1px solid var(--color-dark-variant);
+    border-radius: var(--container-border-radius);
+    box-shadow: var(--box-shadow-add);
+}
+
+.profile-wrapper table td .input-container:hover{
     box-shadow: none;
 }
 
+.profile-wrapper table tr td strong{
+    margin-right: 20px;
+}
+
+.profile-wrapper .input-container {
+    display: flex;
+    align-items: center;
+}
+
+.profile-wrapper .input-wrapper {
+    margin-left: auto;
+}
+
+.profile-wrapper .input-wrapper button{
+    padding: 10px;
+    border:none;
+    color: var(--color-white);
+    background-color:var(--color-primary);
+    border-radius: var(--container-border-radius);
+}
+
+.profile-wrapper .input-wrapper button:hover{
+    background-color: var(--color-primary-variant);
+}
 
 /*
 ============================>   Media Queries: Small Laptops/Big Tablets  <============================
 */
-@media screen and (max-width: 1200px) {
-    .featurette-heading {
-        margin-top: 7rem;
+    @media screen and (max-width: 1200px) {
+        .featurette-heading {
+            margin-top: 7rem;
+        }
     }
-}
- /*
+    /*
 ============================>   Media Queries: Small Tablet/Phones   <============================
 */
-@media screen and (max-width: 768px) {
-    .admin-page h1, .admin-page p{
-        font-size: 1rem;
-    }
+    @media screen and (max-width: 768px) {
+        .admin-page h1, .admin-page p {
+            font-size: 1rem;
+        }
 
-    .profile-left .image {
-        min-width: 55px;
-    }
+        .admin-page .profile-left .image {
+            min-width: 55px;
+        }
 
-    .profile-right .image {
-        min-width: 300px;
-        padding: 0;
-        top: 10px;
-        right: 125px;
+        .admin-page .profile-right .image {
+            min-width: 200px;
+            padding: 0;
+            top: 10px;
+            right: 20px;
+        }
     }
-}
