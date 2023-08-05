@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -296,6 +297,7 @@ namespace SistemaPlanillas.Controllers
                 List<Users> users = _db.Users.ToList();
                 List<User_RolAndDepartment> RolesDeparmentsUser1 = _db.User_RolAndDepartment.ToList();
                 List<User_Status> Status1 = _db.User_Status.ToList();
+                List<Departaments> Departaments1 = _db.Departaments.ToList();
 
                 // Create a view model containing all the retrieved lists and pass it to the view.
                 modelCompuesto viewModel = new modelCompuesto
@@ -303,7 +305,9 @@ namespace SistemaPlanillas.Controllers
                     Role = roles,
                     User = users,
                     RoleDeparmentUser = RolesDeparmentsUser1,
-                    Status = Status1    
+                    Status = Status1,
+                    Departaments = Departaments1
+                    
                 };
 
                 // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
@@ -340,9 +344,31 @@ namespace SistemaPlanillas.Controllers
         }
 
 
-        public ActionResult AssignRoleForm(string id)
+        public ActionResult AssignRoleForm(int id2)
         {
-            return View("AdminModules/AssignRoleForm");  
+
+         
+            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
+
+            List<Roles> roles = _db.Roles.ToList();
+            Users users = _db.Users.Where(x => x.id == id2).FirstOrDefault();
+            List<User_RolAndDepartment> RolesDeparmentsUser1 = _db.User_RolAndDepartment.ToList();
+            List<User_Status> Status1 = _db.User_Status.ToList();
+
+            // Create a view model containing all the retrieved lists and pass it to the view.
+            modelCompuesto viewModel = new modelCompuesto
+            {
+                Role = roles,
+                User2 = users,
+                RoleDeparmentUser = RolesDeparmentsUser1,
+                Status = Status1
+            };
+
+            // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
+            var idModel = id2.ToString();
+            ViewBag.idModel = idModel;
+
+            return View("AdminModules/AssignRoleForm", viewModel);  
         }
     }      
 }

@@ -68,7 +68,7 @@
                 <th scope="col">Email</th>
                 <th scope="col">Role</th>
                 <th scope="col">Estado</th>
-                <th scope="col">Editar</th>
+                <th scope="col">Acción</th>
 
             </tr>
         </thead>
@@ -105,7 +105,7 @@
                     </td>
                     <td>
                         <form action="@Url.Action("AssignRoleForm", "Role", new { id = @idModel })" method="get">
-                            <input type="hidden" name="id"  value="@users2.id"/>
+                            <input type="hidden" name="id2"  value="@users2.id"/>
                             <button type="submit" class="btn btn-primary">Editar </button>
                         </form>
                     </td>

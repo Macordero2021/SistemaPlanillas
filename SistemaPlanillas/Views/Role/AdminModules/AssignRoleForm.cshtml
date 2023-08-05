@@ -1,7 +1,92 @@
-﻿
+﻿@model SistemaPlanillas.Models.modelCompuesto
+
 @{
-    ViewBag.Title = "AssignRoleForm";
+    string idModel = ViewBag.idModel;
 }
 
-<h2>AssignRolForm</h2>
+<html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormUserCreate</title>
+    <link href="/Content/bootstrap-transform.css" rel="stylesheet">
+    <link href="~/Content/StyleForms.css" rel="stylesheet" />
 
+    <!-- Import SweetAlert library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">XYZ S.A.</font></font></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Navegación de palanca">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://localhost:44319/Role/AdminView?userId=@idModel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new {  @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="@Url.Action("RoleModule", "Role", new {  @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="@Url.Action("AssignRole", "Role", new { @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div id="4411b5c0-f318-40b5-88ed-174d92c6881e" style="display: block !important; z-index: 2147483647 !important;"></div>
+
+    <div class="wrapper">
+        <div class="form-container">
+            <form action="@Url.Action("storeUser", "User")" method="post">
+                <div class="form-group">
+                    <h1>Edit Role Form</h1>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Name" name="name" value="@Model.User2.name"  disabled>
+                        <label for="floatingInput">Name</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Last Name" name="lastName" value="@Model.User2.lastname"disabled>
+                        <label for="floatingInput">Last Name</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="floatingInput" placeholder="Email" name="email" value="@Model.User2.email" required>
+                        <label for="floatingInput">Email</label>
+                        <p>@TempData["repeatEmail"]</p>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Status" name="Status" value="" required>
+                        <label for="floatingInput">Status</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Role" name="Role" value="@TempData["Role"]" required>
+                        <label for="floatingInput">Role</label>
+                    </div>
+                </div>
+                <!--================ Buttons =================-->
+                <div class="button-container">
+                    <button type="submit">Save</button>
+                    <button type="reset">Cancel</button>
+                    <br />
+
+                </div>
+        </form>
+
+    </div><!--================ End of Form container =================-->
+    </div><!--================ End of Wrapper =================-->
+</body>
+</html>
