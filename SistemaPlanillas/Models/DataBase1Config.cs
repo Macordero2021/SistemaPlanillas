@@ -111,7 +111,6 @@ namespace SistemaPlanillas.Models
     {
         public List<Roles> Role { get; set; }
         public List<Users> User { get; set; }
-
         public Users User2 { get; set; }
         public List<User_RolAndDepartment> RoleDeparmentUser { get; set; }
         public List<User_Status> Status { get; set; }

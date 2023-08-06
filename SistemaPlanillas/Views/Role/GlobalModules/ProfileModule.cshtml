@@ -13,6 +13,8 @@
     <!-- Custom styles for this template -->
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
     <link href="~/Content/StyleForms.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -52,15 +54,19 @@
             </div>
 
             <h1 class="table-title">Your personal Information</h1>
+            <input type="hidden" id="userId" value="@Model.User.id" />
             <table class="table">
 
                 <tbody>
                     <tr>
+                        <!-- Fila #1 -->
                         <td>
                             <div class="input-container">
                                 <strong>Name:</strong> @Model.User.name
                                 <div class="input-wrapper">
-                                    <input type="text" name="name" value="" />
+                                    <input type="text" name="name" value="" data-field="name" />
+                                    <button type="button" class="btn-update">Update</button>
+                                    <button type="reset" class="btn-cancel">Cancel</button>
                                 </div>
                             </div>
                         </td>
@@ -69,11 +75,14 @@
                         </td>
                     </tr>
                     <tr>
+                        <!-- Fila #2 -->
                         <td>
                             <div class="input-container">
                                 <strong>Last Name(s):</strong> @Model.User.lastname
                                 <div class="input-wrapper">
-                                    <input type="text" name="name" value="" />
+                                    <input type="text" name="name" value="" data-field="lastname" />
+                                    <button type="button" class="btn-update">Update</button>
+                                    <button type="reset" class="btn-cancel">Cancel</button>
                                 </div>
                             </div>
                         </td>
@@ -82,11 +91,14 @@
                         </td>
                     </tr>
                     <tr>
+                        <!-- Fila #3 -->
                         <td>
                             <div class="input-container">
                                 <strong>Phone Number:</strong> @Model.User.phone
                                 <div class="input-wrapper">
-                                    <input type="text" name="name" value="" />
+                                    <input type="text" name="name" value="" data-field="phone" />
+                                    <button type="button" class="btn-update">Update</button>
+                                    <button type="reset" class="btn-cancel">Cancel</button>
                                 </div>
                             </div>
                         </td>
@@ -95,26 +107,28 @@
                         </td>
                     </tr>
                     <tr>
+                        <!-- Fila #4 -->
                         <td>
                             <div class="input-container">
                                 <strong>Email:</strong> @Model.User.email
                                 <div class="input-wrapper">
-                                    <input type="text" name="name" value="" />
+                                    <input type="text" name="name" value="" data-field="email" />
+                                    <button type="button" class="btn-update">Update</button>
+                                    <button type="reset" class="btn-cancel">Cancel</button>
                                 </div>
                             </div>
                         </td>
-
-
                         <td>
                             <div class="input-container"><strong>Monto del salario:</strong> @Model.Status.name_status</div>
                         </td>
-
                     </tr>
                 </tbody>
             </table>
-            <button type="button">Update</button>
+
         </div>
     </main>
+
+    <script src="~/Scripts/JS/profile.js"></script>
 
     @Scripts.Render("~/bundles/bootstrap")
 </body>

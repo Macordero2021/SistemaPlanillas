@@ -6,11 +6,16 @@
 :root {
     --color-primary: #6380ec;
     --color-primary-variant: #3E64CC;
+    --color-danger: #ff7782;
+    --color-danger-variant: #D65361;
+    --color-success: #00CFB8;
+    --color-success-variant: #00ACAF;
     --color-white: #fff;
     --color-dark-variant: #677483;
     --btn-1: var(--color-primary);
     --btn-2: #ff7782;
     --container-border-radius: 2rem;
+    --border-radius: 1rem;
     --box-shadow-add: 10px 5px 5px var(--color-primary);
     --transition: all 300ms ease;
 }
@@ -274,6 +279,7 @@ h1 {
     border: 1px solid var(--color-dark-variant);
     border-radius: var(--container-border-radius);
     box-shadow: var(--box-shadow-add);
+    color: var(--color-primary);
 }
 
 .profile-wrapper table td .input-container:hover{
@@ -293,16 +299,55 @@ h1 {
     margin-left: auto;
 }
 
+/* Estilo para los botones */
 .profile-wrapper .input-wrapper button{
     padding: 10px;
     border:none;
     color: var(--color-white);
-    background-color:var(--color-primary);
-    border-radius: var(--container-border-radius);
+    border-radius: var(--border-radius);
 }
 
-.profile-wrapper .input-wrapper button:hover{
+/* Estilo para los botones "Update" */
+.profile-wrapper .input-wrapper .btn-update {
+    background-color:var(--color-primary);
+}
+
+.profile-wrapper .input-wrapper .btn-update:hover{
     background-color: var(--color-primary-variant);
+}
+
+/* Estilo para los botones "Cancel" */
+.profile-wrapper .input-wrapper .btn-cancel {
+    background-color:var(--color-danger);
+}
+
+.profile-wrapper .input-wrapper .btn-cancel:hover{
+    background-color: var(--color-danger-variant);
+}
+
+/* Estilo para los botones "Save" */
+.profile-wrapper .input-wrapper .button-save {
+    background-color: var(--color-success); 
+}
+
+.profile-wrapper .input-wrapper .button-save:hover {
+    background-color: var(--color-success-variant);
+}
+
+/* Estilo para ocultar el btn y el input*/
+.profile-wrapper .input-wrapper input,
+.profile-wrapper .input-wrapper button[type="reset"] {
+    display: none;
+}
+
+/* Estilo para el input*/
+.profile-wrapper .input-wrapper input{
+    border-radius: var(--border-radius);
+    border-color: var(--color-primary);
+    border: 10px thin;
+    outline-color: var(--color-primary-variant);
+    color: var(--color-dark-variant);
+    padding:5px;
 }
 
 /*

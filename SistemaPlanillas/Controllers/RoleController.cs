@@ -1,4 +1,5 @@
-﻿using SistemaPlanillas.Models;
+﻿using SistemaPlanillas.Controllers.Services;
+using SistemaPlanillas.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
-
+using static SistemaPlanillas.Controllers.Services.ProfileService;
 
 namespace SistemaPlanillas.Controllers
 {
@@ -17,6 +18,13 @@ namespace SistemaPlanillas.Controllers
     {
 
         private DataBase1Config _db = new DataBase1Config();
+
+        private ProfileService _profileService;
+
+        public RoleController()
+        {
+            _profileService = new ProfileService(_db);
+        }
 
 
         /// <summary>
@@ -343,7 +351,6 @@ namespace SistemaPlanillas.Controllers
             }
         }
 
-
         public ActionResult AssignRoleForm(int id2)
         {
 
@@ -370,5 +377,38 @@ namespace SistemaPlanillas.Controllers
 
             return View("AdminModules/AssignRoleForm", viewModel);  
         }
+
+        /// <summary>
+        /// Action method for updating user information.
+        /// </summary>
+        /// <param name="userId">The ID of the user to update.</param>
+        /// <param name="fieldName">The name of the field to update.</param>
+        /// <param name="value">The new value to assign to the field.</param>
+        /// <returns>
+        /// A JSON result indicating the outcome of the update operation.
+        /// </returns>
+        [HttpPost]
+        public ActionResult UpdateUserInfo(int userId, string fieldName, string value)
+        {
+            var result = _profileService.UpdateProfileField(userId, fieldName, value);
+
+            switch (result)
+            {
+                case UpdateResult.Success:
+                    return Json(new { success = true, message = "User information updated successfully" });
+                case UpdateResult.UserNotFound:
+                    return Json(new { error = "User not found" });
+                case UpdateResult.EmailExists:
+                    return Json(new { error = "Email already exists" });
+                case UpdateResult.NoChangesMade:
+                    return Json(new { error = "No changes made" });
+                case UpdateResult.InvalidField:
+                    return Json(new { error = "Invalid field" });
+                case UpdateResult.ErrorUpdatingUser:
+                default:
+                    return Json(new { error = "Error updating user" });
+            }
+        }
+
     }      
 }
