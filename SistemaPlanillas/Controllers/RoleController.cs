@@ -126,7 +126,7 @@ namespace SistemaPlanillas.Controllers
         ///     If the role name already exists, redirects to the "RoleModule" action with an error message.
         /// </returns>
         [HttpPost]
-        public ActionResult CreateRole(FormCollection form,int id)
+        public ActionResult CreateRole(FormCollection form, int id)
         {
             var idModel = id;
 
@@ -139,7 +139,8 @@ namespace SistemaPlanillas.Controllers
 
 
             // Check if the list of roles is empty.
-            if (Roles == null) {
+            if (Roles == null)
+            {
                 // If the list is empty, create a new role, save it to the database, and show success message.
                 Roles storeRole = new Roles();
                 storeRole.name_rol = nameRole;
@@ -165,7 +166,8 @@ namespace SistemaPlanillas.Controllers
                 }
 
                 // If the role name does not exist, create a new role, save it to the database, and show success message.
-                if (existe == 0) {
+                if (existe == 0)
+                {
 
                     Roles storeRole = new Roles();
                     storeRole.name_rol = nameRole;
@@ -203,7 +205,7 @@ namespace SistemaPlanillas.Controllers
             var idInt = int.Parse(idRole);
 
             // Find the role in the database, remove it, and save changes.
-            Roles deleteRole = _db.Roles.Where(x => x.id == idInt).FirstOrDefault(); 
+            Roles deleteRole = _db.Roles.Where(x => x.id == idInt).FirstOrDefault();
             _db.Roles.Remove(deleteRole);
             _db.SaveChanges();
 
@@ -227,7 +229,7 @@ namespace SistemaPlanillas.Controllers
 
             // Find the role in the database and pass it to the view.
             Roles editRole = _db.Roles.Where(x => x.id == idInt).FirstOrDefault();
-           
+
             return View("AdminModules/EditRoleForm", editRole);
         }
 
@@ -251,7 +253,8 @@ namespace SistemaPlanillas.Controllers
             string oldNameRole = form["oldRol"];
 
             // If the new name is the same as the old name, no changes are made, and the user is redirected.
-            if (newNameRole == oldNameRole) {
+            if (newNameRole == oldNameRole)
+            {
 
                 return RedirectToAction("RoleModule", "Role", new { id = idModel });
             }
@@ -273,7 +276,8 @@ namespace SistemaPlanillas.Controllers
                 }
 
                 // If the new role name already exists, redirect with a message.
-                if (existe == 1) {
+                if (existe == 1)
+                {
                     //ADD MESSAJE THAT A ROLE ALREADY EXISTS WITH THAT NAME
                     return RedirectToAction("RoleModule", "Role", new { id = idModel });
                 }
@@ -281,12 +285,12 @@ namespace SistemaPlanillas.Controllers
                 {
                     // Update the role's name and save changes to the database.
                     Roles editRole = _db.Roles.Where(x => x.name_rol == oldNameRole).FirstOrDefault();
-                    editRole.name_rol = newNameRole;  
+                    editRole.name_rol = newNameRole;
                     _db.SaveChanges();
 
                     return RedirectToAction("RoleModule", "Role", new { id = idModel });
                 }
-            }   
+            }
         }
 
         /// <summary>
@@ -315,7 +319,7 @@ namespace SistemaPlanillas.Controllers
                     RoleDeparmentUser = RolesDeparmentsUser1,
                     Status = Status1,
                     Departaments = Departaments1
-                    
+
                 };
 
                 // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
@@ -330,9 +334,10 @@ namespace SistemaPlanillas.Controllers
                 //aqui ya se realizo la busqueda 
                 // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
                 List<Roles> roles = _db.Roles.ToList();
-                List<Users> users = _db.Users.Where(x => x.name.Contains(nameOrEmail2) || x.email.Contains(nameOrEmail2)).ToList(); 
+                List<Users> users = _db.Users.Where(x => x.name.Contains(nameOrEmail2) || x.email.Contains(nameOrEmail2)).ToList();
                 List<User_RolAndDepartment> RolesDeparmentsUser1 = _db.User_RolAndDepartment.ToList();
                 List<User_Status> Status1 = _db.User_Status.ToList();
+                List<Departaments> departaments = _db.Departaments.ToList();
 
                 // Create a view model containing all the retrieved lists and pass it to the view.
                 modelCompuesto viewModel = new modelCompuesto
@@ -340,7 +345,8 @@ namespace SistemaPlanillas.Controllers
                     Role = roles,
                     User = users,
                     RoleDeparmentUser = RolesDeparmentsUser1,
-                    Status = Status1
+                    Status = Status1,
+                    Departaments = departaments
                 };
 
                 // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
@@ -354,29 +360,72 @@ namespace SistemaPlanillas.Controllers
         public ActionResult AssignRoleForm(int id2)
         {
 
-         
+
             // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
 
-            List<Roles> roles = _db.Roles.ToList();
             Users users = _db.Users.Where(x => x.id == id2).FirstOrDefault();
-            List<User_RolAndDepartment> RolesDeparmentsUser1 = _db.User_RolAndDepartment.ToList();
-            List<User_Status> Status1 = _db.User_Status.ToList();
+            User_RolAndDepartment RoleDeparment = _db.User_RolAndDepartment.Where(x => x.fk_id_user == id2).FirstOrDefault();
+            User_Status Status1 = _db.User_Status.Where(x => x.id == users.fk_id_status).FirstOrDefault();
+            Roles roles = _db.Roles.Where(x => x.id == RoleDeparment.fk_id_rol).FirstOrDefault();
+            List<User_Status> status2 = _db.User_Status.ToList();
+            List<Roles> roles2 = _db.Roles.ToList();
 
-            // Create a view model containing all the retrieved lists and pass it to the view.
-            modelCompuesto viewModel = new modelCompuesto
+           // Create a view model containing all the retrieved lists and pass it to the view.
+           UserAsingEdit viewModel = new UserAsingEdit
             {
-                Role = roles,
                 User2 = users,
-                RoleDeparmentUser = RolesDeparmentsUser1,
-                Status = Status1
-            };
+                Status = Status1,
+                roles = roles,
+                Status2 = status2,
+                Role = roles2
+           };
 
             // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
             var idModel = id2.ToString();
             ViewBag.idModel = idModel;
 
-            return View("AdminModules/AssignRoleForm", viewModel);  
+            return View("AdminModules/AssignRoleForm", viewModel);
         }
+
+        public ActionResult StoreEditAssignRoleForm(FormCollection form, int userid)
+        {
+            // Get the id of the logged-in user from the URL.
+                        var idModel = userid;
+
+            // Retrieve the new and old names of the role from the form data.
+                        string newStatus = form["newStatus"];
+                        string oldStatus = form["oldStatus"];
+                        string newRole = form["newRol"];
+                        string oldRole = form["oldRol"];
+                        string newEmail = form["newEmail"];
+                        string oldEmail = form["oldEmail"];
+
+
+                    // Retrieve all roles from the database.
+                        var status = _db.User_Status.ToList();
+                        var Roles = _db.Roles.ToList();
+                        var email = _db.Users.ToList();
+
+            // Update the role's name and save changes to the database.
+
+                        
+                        Users Userid2 = _db.Users.Where(x => x.id == userid).FirstOrDefault();
+                        Userid2.email = newEmail;
+                        
+                        var idstatus = _db.User_Status.Where(x => x.name_status == newStatus).FirstOrDefault();
+                        
+                          
+                       
+
+                        Roles editRole = _db.Roles.Where(x => x.name_rol == oldRole).FirstOrDefault();
+                        editRole.name_rol = newRole;
+                        _db.SaveChanges();
+                         
+
+                        return RedirectToAction("AdminModules/AssignRole", idModel);
+        }
+            
+        
 
         /// <summary>
         /// Action method for updating user information.
@@ -409,6 +458,5 @@ namespace SistemaPlanillas.Controllers
                     return Json(new { error = "Error updating user" });
             }
         }
-
-    }      
+    }
 }

@@ -125,4 +125,21 @@ namespace SistemaPlanillas.Models
         public Departaments Departaments { get; set; }
         public User_Status Status { get; set; }
     }
+
+    public class UserAsingEdit 
+    {
+
+        public Users User2 { get; set; }
+
+        public User_Status Status { get; set; }
+
+        public Roles roles { get; set; }
+
+        public List<Roles> Role { get; set; }
+
+        public List<User_Status> Status2 { get; set; }
+
+
+
+    }
 }
