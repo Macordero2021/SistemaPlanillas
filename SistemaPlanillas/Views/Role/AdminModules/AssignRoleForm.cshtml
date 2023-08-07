@@ -29,13 +29,13 @@
                         <a class="nav-link" href="https://localhost:44319/Role/AdminView?userId=@idModel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new {  @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                        <a class="nav-link" href="https://localhost:44319/Role/ProfileModule/@idModel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("RoleModule", "Role", new {  @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
+                        <a class="nav-link" href="https://localhost:44319/Role/RoleModule/@idModel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("AssignRole", "Role", new { @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
+                        <a class="nav-link" href="https://localhost:44319/Role/AssignRole/@idModel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
                     </li>
                 </ul>
                 <form class="d-flex">
@@ -78,14 +78,14 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="newEmail" placeholder="Email" name="newEmail" value="Ingrese el nuevo email">
+                        <input type="email" class="form-control" id="newEmail" name="newEmail">
                         <label for="floatingInput">Nuevo Email</label>
                     </div>
 
 
                     <div class="form-group">
                         <label for="newStatus" class="form-label mt-4">New Status</label>
-                        <select class="form-select" id="newStatus" name="newStatus">
+                        <select class="form-select" id="newStatus" name="newStatus" required>
                             <option>Choose a new Status</option>
                             @foreach (var RDU in Model.Status2)
                             {
@@ -98,7 +98,7 @@
 
                     <div class="form-group">
                         <label for="newRol" class="form-label mt-4">Role</label>
-                        <select class="form-select" id="newRole" name="newRol">
+                        <select class="form-select" id="newRole" name="newRol" required>
                             <option>Choose a new Role</option>
                             @foreach (var RDU in Model.Role)
                             {
@@ -109,6 +109,9 @@
                         </select>
                     </div>
                 </div>
+
+                <input type="hidden" name="id" value="@Model.User2.id" />
+                <input type="hidden" name="idUserAdmin" value="@idModel" />
                 <!--================ Buttons =================-->
                 <div class="button-container">
                     <button type="submit">Save</button>

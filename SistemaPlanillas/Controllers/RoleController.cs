@@ -360,6 +360,7 @@ namespace SistemaPlanillas.Controllers
         public ActionResult AssignRoleForm(int id2)
         {
 
+            string idUserLogin = Request.QueryString["idUserLogin"];
 
             // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
 
@@ -381,51 +382,56 @@ namespace SistemaPlanillas.Controllers
            };
 
             // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
-            var idModel = id2.ToString();
-            ViewBag.idModel = idModel;
+            var idModel = idUserLogin.ToString(); //aqui tiene que ir el usuario que esta logueado
+            ViewBag.idModel = idModel; //aqui tiene que ir el usuario que esta logueado
 
             return View("AdminModules/AssignRoleForm", viewModel);
         }
 
-        public ActionResult StoreEditAssignRoleForm(FormCollection form, int? userid)
+        public ActionResult StoreEditAssignRoleForm(FormCollection form)
         {
             // Get the id of the logged-in user from the URL.
-                        var idModel = userid;
+                        var idModel = form["idUserAdmin"]; ; 
 
             // Retrieve the new and old names of the role from the form data.
+
                         string newStatus = form["newStatus"];
-                        string oldStatus = form["oldStatus"];
                         string newRole = form["newRol"];
-                        string oldRole = form["oldRol"];
                         string newEmail = form["newEmail"];
-                        string oldEmail = form["oldEmail"];
+                        string idEdit = form["id"];
+                        int idEditInt = int.Parse(idEdit.ToString());
 
 
-                    // Retrieve all roles from the database.
-                        var status = _db.User_Status.ToList();
-                        var Roles = _db.Roles.ToList();
-                        var email = _db.Users.ToList();
 
             // Update the role's name and save changes to the database.
 
-                        
-                        Users Userid2 = _db.Users.Where(x => x.id == userid).FirstOrDefault();
-                        Userid2.email = newEmail;
-                        
-                        var idstatus = _db.User_Status.Where(x => x.name_status == newStatus).FirstOrDefault();
-                        
-                          
-                       
 
-                        Roles editRole = _db.Roles.Where(x => x.name_rol == oldRole).FirstOrDefault();
-                        editRole.name_rol = newRole;
+            /*
+            Roles editRole = _db.Roles.Where(x => x.name_rol == oldNameRole).FirstOrDefault();
+            editRole.name_rol = newNameRole;
+            _db.SaveChanges();
+            */
+                         Users Userid2 = _db.Users.Where(x => x.id == idEditInt).FirstOrDefault();
+                        if (newEmail != "")
+                        {
+                            Userid2.email = newEmail;
+                        }
+                        if (newStatus != "Choose a new Status") {
+                            var idstatus = _db.User_Status.Where(x => x.name_status == newStatus).FirstOrDefault();
+                            Userid2.fk_id_status = idstatus.id;    
+                        }
+                        if (newRole != "Choose a new Role")
+                        {
+                            var idRoll = _db.Roles.Where(x => x.name_rol == newRole).FirstOrDefault();
+                            User_RolAndDepartment userDepartmentRol = _db.User_RolAndDepartment.Where(x => x.fk_id_user == idEditInt).FirstOrDefault();
+                            userDepartmentRol.fk_id_rol = idRoll.id;    
+                        }
+
                         _db.SaveChanges();
-                         
-
-                        return RedirectToAction("AdminModules/AssignRole", idModel);
+            return RedirectToAction("AssignRole", new { id = idModel, nameOrEmail = "" });
         }
-            
-        
+
+
 
         /// <summary>
         /// Action method for updating user information.

@@ -104,8 +104,9 @@
                         }
                     </td>
                     <td>
-                        <form action="@Url.Action("AssignRoleForm", "Role", new { id = @idModel })" method="get">
-                            <input type="hidden" name="id2"  value="@users2.id"/>
+                        <form action=  "/Role/AssignRoleForm" method="get">
+                            <input type="hidden" name="id2" value="@users2.id" />
+                            <input type="hidden" name="idUserLogin" value="@idModel" />
                             <button type="submit" class="btn btn-primary">Editar </button>
                         </form>
                     </td>
