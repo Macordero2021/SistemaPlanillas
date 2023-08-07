@@ -387,7 +387,7 @@ namespace SistemaPlanillas.Controllers
             return View("AdminModules/AssignRoleForm", viewModel);
         }
 
-        public ActionResult StoreEditAssignRoleForm(FormCollection form, int userid)
+        public ActionResult StoreEditAssignRoleForm(FormCollection form, int? userid)
         {
             // Get the id of the logged-in user from the URL.
                         var idModel = userid;

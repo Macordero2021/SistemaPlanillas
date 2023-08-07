@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FormUserCreate</title>
+    <title>AssingRoleForm</title>
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
     <link href="~/Content/StyleForms.css" rel="stylesheet" />
 
@@ -47,7 +47,7 @@
 
     <div class="wrapper">
         <div class="form-container">
-            <form action="@Url.Action("StoreEditAssignRoleForm", "Role" , new { id=Model.User2.id })" method="post">
+            <form action="@Url.Action("StoreEditAssignRoleForm", "Role" , new { id = @Model.User2.id })" method="post"><!-- user2.id llega null corregir -->
                 <div class="form-group">
                     <h1>Edit Role Form</h1>
 
@@ -115,7 +115,7 @@
                     <button type="reset">Cancel</button>
                     <br />
                 </div>
-        </form>
+            </form>
 
     </div><!--================ End of Form container =================-->
     </div><!--================ End of Wrapper =================-->
