@@ -32,6 +32,7 @@
     <link href="~/Content/StyleForms.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -102,6 +103,7 @@
                         <!-- Fila #1 -->
                         <td>
                             <div class="input-container">
+                                <i class='bx bx-user-circle'></i>
                                 <strong>Name:</strong> @Model.User.name
                                 <div class="input-wrapper">
                                     <input type="text" name="name" value="" data-field="name" />
@@ -111,13 +113,17 @@
                             </div>
                         </td>
                         <td>
-                            <div class="input-container"><strong>Department:</strong> @Model.Department.name_departament</div>
+                            <div class="input-container">
+                                <i class='bx bx-buildings'></i>
+                                <strong>Department:</strong> @Model.Department.name_departament
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <!-- Fila #2 -->
                         <td>
                             <div class="input-container">
+                                <i class='bx bx-user-circle'></i>
                                 <strong>Last Name(s):</strong> @Model.User.lastname
                                 <div class="input-wrapper">
                                     <input type="text" name="name" value="" data-field="lastname" />
@@ -127,13 +133,17 @@
                             </div>
                         </td>
                         <td>
-                            <div class="input-container"><strong>Your Role:</strong> @ViewBag.UserRole</div>
+                            <div class="input-container">
+                                <i class='bx bx-user-voice'></i>
+                                <strong>Your Role:</strong> @ViewBag.UserRole
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <!-- Fila #3 -->
                         <td>
                             <div class="input-container">
+                                <i class='bx bx-phone'></i>
                                 <strong>Phone Number:</strong> @Model.User.phone
                                 <div class="input-wrapper">
                                     <input type="text" name="name" value="" data-field="phone" />
@@ -143,13 +153,17 @@
                             </div>
                         </td>
                         <td>
-                            <div class="input-container"><strong>Tipo de pago:</strong> @Model.Status.name_status</div>
+                            <div class="input-container">
+                                <i class='bx bx-credit-card'></i>
+                                <strong>Tipo de pago:</strong> @Model.Status.name_status
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <!-- Fila #4 -->
                         <td>
                             <div class="input-container">
+                                <i class='bx bx-envelope'></i>
                                 <strong>Email:</strong> @Model.User.email
                                 <div class="input-wrapper">
                                     <input type="text" name="name" value="" data-field="email" />
@@ -159,7 +173,10 @@
                             </div>
                         </td>
                         <td>
-                            <div class="input-container"><strong>Monto del salario:</strong> @Model.Status.name_status</div>
+                            <div class="input-container">
+                                <i class='bx bx-money'></i>
+                                <strong>Monto del salario:</strong> @Model.Status.name_status
+                            </div>
                         </td>
                     </tr>
                 </tbody>

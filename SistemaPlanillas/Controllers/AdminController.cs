@@ -207,6 +207,12 @@ namespace SistemaPlanillas.Controllers
         /// <returns>The view for assigning roles to users.</returns>
         public ActionResult AssignRole(int id, string nameOrEmail)
         {
+            // Verificar si nameOrEmail no es nulo y luego eliminar los espacios en blanco del inicio y final
+            if (nameOrEmail != null)
+            {
+                nameOrEmail = nameOrEmail.Trim();
+            }
+
             List<Users> users;
 
             if (string.IsNullOrEmpty(nameOrEmail))
