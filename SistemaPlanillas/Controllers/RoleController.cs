@@ -34,7 +34,8 @@ namespace SistemaPlanillas.Controllers
         public ActionResult UndefinedView(int userId)
         {
             Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
-
+            var userRole = Session["role"];
+            ViewBag.UserRole = userRole;
             return View(user);
         }
 
@@ -57,7 +58,8 @@ namespace SistemaPlanillas.Controllers
         public ActionResult EmployeeView(int userId)
         {
             Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
-
+            var userRole = Session["role"];
+            ViewBag.UserRole = userRole;
             return View(user);
         }
 
@@ -68,7 +70,8 @@ namespace SistemaPlanillas.Controllers
         public ActionResult PayrollView(int userId)
         {
             Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
-
+            var userRole = Session["role"];
+            ViewBag.UserRole = userRole;
             return View(user);
         }
 
@@ -372,13 +375,13 @@ namespace SistemaPlanillas.Controllers
             List<Roles> roles2 = _db.Roles.ToList();
 
            // Create a view model containing all the retrieved lists and pass it to the view.
-           UserAsingEdit viewModel = new UserAsingEdit
-            {
-                User2 = users,
-                Status = Status1,
-                roles = roles,
-                Status2 = status2,
-                Role = roles2
+           UserToEdit viewModel = new UserToEdit
+           {
+                userToEdit = users,
+                statusToEdit = Status1,
+                roleToEdit = roles,
+                StatusList = status2,
+                RolesList = roles2
            };
 
             // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
@@ -390,44 +393,42 @@ namespace SistemaPlanillas.Controllers
 
         public ActionResult StoreEditAssignRoleForm(FormCollection form)
         {
-            // Get the id of the logged-in user from the URL.
-                        var idModel = form["idUserAdmin"]; ; 
+            var idModel = form["idUserAdmin"]; ; 
 
             // Retrieve the new and old names of the role from the form data.
-
-                        string newStatus = form["newStatus"];
-                        string newRole = form["newRol"];
-                        string newEmail = form["newEmail"];
-                        string idEdit = form["id"];
-                        int idEditInt = int.Parse(idEdit.ToString());
-
-
+            string newStatus = form["newStatus"];
+            string newRole = form["newRol"];
+            string newEmail = form["newEmail"];
+            string idEdit = form["id"];
+            int idEditInt = int.Parse(idEdit.ToString());
 
             // Update the role's name and save changes to the database.
-
 
             /*
             Roles editRole = _db.Roles.Where(x => x.name_rol == oldNameRole).FirstOrDefault();
             editRole.name_rol = newNameRole;
             _db.SaveChanges();
             */
-                         Users Userid2 = _db.Users.Where(x => x.id == idEditInt).FirstOrDefault();
-                        if (newEmail != "")
-                        {
-                            Userid2.email = newEmail;
-                        }
-                        if (newStatus != "Choose a new Status") {
-                            var idstatus = _db.User_Status.Where(x => x.name_status == newStatus).FirstOrDefault();
-                            Userid2.fk_id_status = idstatus.id;    
-                        }
-                        if (newRole != "Choose a new Role")
-                        {
-                            var idRoll = _db.Roles.Where(x => x.name_rol == newRole).FirstOrDefault();
-                            User_RolAndDepartment userDepartmentRol = _db.User_RolAndDepartment.Where(x => x.fk_id_user == idEditInt).FirstOrDefault();
-                            userDepartmentRol.fk_id_rol = idRoll.id;    
-                        }
+            Users Userid2 = _db.Users.Where(x => x.id == idEditInt).FirstOrDefault();
 
-                        _db.SaveChanges();
+            if (newEmail != "")
+            {
+                Userid2.email = newEmail;
+            }
+
+            if (newStatus != "Choose a new Status") {
+                var idstatus = _db.User_Status.Where(x => x.name_status == newStatus).FirstOrDefault();
+                Userid2.fk_id_status = idstatus.id;    
+            }
+
+            if (newRole != "Choose a new Role")
+            {
+                var idRoll = _db.Roles.Where(x => x.name_rol == newRole).FirstOrDefault();
+                User_RolAndDepartment userDepartmentRol = _db.User_RolAndDepartment.Where(x => x.fk_id_user == idEditInt).FirstOrDefault();
+                userDepartmentRol.fk_id_rol = idRoll.id;    
+            }
+
+            _db.SaveChanges();
             return RedirectToAction("AssignRole", new { id = idModel, nameOrEmail = "" });
         }
 

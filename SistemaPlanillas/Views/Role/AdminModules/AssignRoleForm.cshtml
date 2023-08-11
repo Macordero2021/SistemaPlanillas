@@ -1,4 +1,4 @@
-﻿@model SistemaPlanillas.Models.UserAsingEdit
+﻿@model SistemaPlanillas.Models.UserToEdit
 
 @{
     string idModel = ViewBag.idModel;
@@ -47,33 +47,33 @@
 
     <div class="wrapper">
         <div class="form-container">
-            <form action="@Url.Action("StoreEditAssignRoleForm", "Role" , new { id = @Model.User2.id })" method="post"><!-- user2.id llega null corregir -->
+            <form action="@Url.Action("StoreEditAssignRoleForm", "Role" , new { id = @Model.userToEdit.id })" method="post"><!-- user2.id llega null corregir -->
                 <div class="form-group">
                     <h1>Edit Role Form</h1>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="Name" name="name" value="@Model.User2.name" disabled>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Name" name="name" value="@Model.userToEdit.name" disabled>
                         <label for="floatingInput">Name</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="Last Name" name="lastName" value="@Model.User2.lastname" disabled>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Last Name" name="lastName" value="@Model.userToEdit.lastname" disabled>
                         <label for="floatingInput">Last Name</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="oldEmail" placeholder="Email" name="oldEmail" value="@Model.User2.email" disabled>
+                        <input type="email" class="form-control" id="oldEmail" placeholder="Email" name="oldEmail" value="@Model.userToEdit.email" disabled>
                         <label for="floatingInput">Old Email</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="oldRole" placeholder="Email" name="oldRol" value="@Model.roles.name_rol" disabled>
+                        <input type="email" class="form-control" id="oldRole" placeholder="Email" name="oldRol" value="@Model.roleToEdit.name_rol" disabled>
                         <label for="floatingInput">Old Role</label>
                     </div>
 
 
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="oldStatus" placeholder="Email" name="oldStatus" value="@Model.User2.User_Status.name_status" disabled>
+                        <input type="email" class="form-control" id="oldStatus" placeholder="Email" name="oldStatus" value="@Model.userToEdit.User_Status.name_status" disabled>
                         <label for="floatingInput">Old Status</label>
                     </div>
 
@@ -87,7 +87,7 @@
                         <label for="newStatus" class="form-label mt-4">New Status</label>
                         <select class="form-select" id="newStatus" name="newStatus" required>
                             <option>Choose a new Status</option>
-                            @foreach (var RDU in Model.Status2)
+                            @foreach (var RDU in Model.StatusList)
                             {
                                 {
                                     <option>@RDU.name_status</option>
@@ -100,7 +100,7 @@
                         <label for="newRol" class="form-label mt-4">Role</label>
                         <select class="form-select" id="newRole" name="newRol" required>
                             <option>Choose a new Role</option>
-                            @foreach (var RDU in Model.Role)
+                            @foreach (var RDU in Model.RolesList)
                             {
                                 {
                                     <option>@RDU.name_rol</option>
@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                <input type="hidden" name="id" value="@Model.User2.id" />
+                <input type="hidden" name="id" value="@Model.userToEdit.id" />
                 <input type="hidden" name="idUserAdmin" value="@idModel" />
                 <!--================ Buttons =================-->
                 <div class="button-container">

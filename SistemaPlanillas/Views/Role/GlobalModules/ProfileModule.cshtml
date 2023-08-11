@@ -31,12 +31,32 @@
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("RoleModule", "Role", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("AssignRole", "Role", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
-                    </li>
+
+                    @if (ViewBag.role == "ADMIN")
+                    {
+                        <li>
+                            <a class="nav-link" href="@Url.Action("RoleModule", "Role", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="@Url.Action("AssignRole", "Role", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
+                        </li>
+                    }
+                    else if (ViewBag.role == "UNDEFINED")
+                    {
+                    }
+                    else if (ViewBag.role == "EMPLOYEE")
+                    {
+                        <li>
+                            <a class="nav-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Consultas</font></font></a>
+                        </li>
+                    }
+                    else if (ViewBag.role == "PAYROLL CLERK")
+                    {
+                        <li>
+                            <a class="nav-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                        </li>
+                    }
+
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">

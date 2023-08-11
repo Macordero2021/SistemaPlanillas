@@ -9,13 +9,22 @@ namespace SistemaPlanillas.Models
     public partial class DataBase1Config : DbContext
     {
         public DataBase1Config()
-            : base("name=DataBase1Config")
+            : base("name=DataBase1Config1")
         {
         }
 
+        public virtual DbSet<Deduction_type> Deduction_type { get; set; }
+        public virtual DbSet<Deductions> Deductions { get; set; }
         public virtual DbSet<Departaments> Departaments { get; set; }
+        public virtual DbSet<Extraordinary_payment> Extraordinary_payment { get; set; }
+        public virtual DbSet<hourly_payroll> hourly_payroll { get; set; }
+        public virtual DbSet<Monthly_payroll> Monthly_payroll { get; set; }
         public virtual DbSet<Payment_Method> Payment_Method { get; set; }
+        public virtual DbSet<payment_type> payment_type { get; set; }
+        public virtual DbSet<Payroll_history> Payroll_history { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
+        public virtual DbSet<Salary_type> Salary_type { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<User_RolAndDepartment> User_RolAndDepartment { get; set; }
         public virtual DbSet<User_Status> User_Status { get; set; }
         public virtual DbSet<User_Updates> User_Updates { get; set; }
@@ -23,6 +32,23 @@ namespace SistemaPlanillas.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Deduction_type>()
+                .Property(e => e.deduction_name)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Deduction_type>()
+                .HasMany(e => e.Deductions)
+                .WithOptional(e => e.Deduction_type)
+                .HasForeignKey(e => e.fk_idDeductionType);
+
+            modelBuilder.Entity<Deductions>()
+                .Property(e => e.notes)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Deductions>()
+                .Property(e => e.deduction_value)
+                .HasPrecision(10, 2);
+
             modelBuilder.Entity<Departaments>()
                 .Property(e => e.name_departament)
                 .IsUnicode(false);
@@ -38,6 +64,34 @@ namespace SistemaPlanillas.Models
                 .HasForeignKey(e => e.fk_id_departament)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Extraordinary_payment>()
+                .Property(e => e.notes)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Extraordinary_payment>()
+                .Property(e => e.payment_value)
+                .HasPrecision(10, 2);
+
+            modelBuilder.Entity<hourly_payroll>()
+                .Property(e => e.work_day)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<hourly_payroll>()
+                .Property(e => e.notes)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<hourly_payroll>()
+                .Property(e => e.total_earnings)
+                .HasPrecision(10, 2);
+
+            modelBuilder.Entity<Monthly_payroll>()
+                .Property(e => e.notes)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Monthly_payroll>()
+                .Property(e => e.total_earnings)
+                .HasPrecision(10, 2);
+
             modelBuilder.Entity<Payment_Method>()
                 .Property(e => e.name_paymentmethod)
                 .IsUnicode(false);
@@ -48,6 +102,28 @@ namespace SistemaPlanillas.Models
                 .HasForeignKey(e => e.fk_id_paymentmethod)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<payment_type>()
+                .Property(e => e.payment_name)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<payment_type>()
+                .HasMany(e => e.Extraordinary_payment)
+                .WithOptional(e => e.payment_type)
+                .HasForeignKey(e => e.fk_id_payment);
+
+            modelBuilder.Entity<payment_type>()
+                .HasMany(e => e.Payroll_history)
+                .WithOptional(e => e.payment_type)
+                .HasForeignKey(e => e.fk_id_payment);
+
+            modelBuilder.Entity<Payroll_history>()
+                .Property(e => e.payment_day)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Payroll_history>()
+                .Property(e => e.payment_amount)
+                .HasPrecision(10, 2);
+
             modelBuilder.Entity<Roles>()
                 .Property(e => e.name_rol)
                 .IsUnicode(false);
@@ -57,6 +133,15 @@ namespace SistemaPlanillas.Models
                 .WithRequired(e => e.Roles)
                 .HasForeignKey(e => e.fk_id_rol)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Salary_type>()
+                .Property(e => e.salaryName)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Salary_type>()
+                .HasMany(e => e.Users)
+                .WithOptional(e => e.Salary_type)
+                .HasForeignKey(e => e.fk_salary);
 
             modelBuilder.Entity<User_Status>()
                 .Property(e => e.name_status)
@@ -89,8 +174,29 @@ namespace SistemaPlanillas.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Users>()
-                .Property(e => e.salary)
-                .IsUnicode(false);
+                .HasMany(e => e.Deductions)
+                .WithOptional(e => e.Users)
+                .HasForeignKey(e => e.fk_idUser);
+
+            modelBuilder.Entity<Users>()
+                .HasMany(e => e.Extraordinary_payment)
+                .WithOptional(e => e.Users)
+                .HasForeignKey(e => e.fk_idUser);
+
+            modelBuilder.Entity<Users>()
+                .HasMany(e => e.hourly_payroll)
+                .WithOptional(e => e.Users)
+                .HasForeignKey(e => e.fk_iduser);
+
+            modelBuilder.Entity<Users>()
+                .HasMany(e => e.Monthly_payroll)
+                .WithOptional(e => e.Users)
+                .HasForeignKey(e => e.fk_iduser);
+
+            modelBuilder.Entity<Users>()
+                .HasMany(e => e.Payroll_history)
+                .WithOptional(e => e.Users)
+                .HasForeignKey(e => e.fk_idUser);
 
             modelBuilder.Entity<Users>()
                 .HasMany(e => e.User_RolAndDepartment)
@@ -114,7 +220,7 @@ namespace SistemaPlanillas.Models
         public Users User2 { get; set; }
         public List<User_RolAndDepartment> RoleDeparmentUser { get; set; }
         public List<User_Status> Status { get; set; }
-        public List<Departaments> Departaments { get; set;}
+        public List<Departaments> Departaments { get; set; }
     }
 
     //Composite model to retrieve the information of and specific user
@@ -126,20 +232,12 @@ namespace SistemaPlanillas.Models
         public User_Status Status { get; set; }
     }
 
-    public class UserAsingEdit 
+    public class UserToEdit
     {
-
-        public Users User2 { get; set; }
-
-        public User_Status Status { get; set; }
-
-        public Roles roles { get; set; }
-
-        public List<Roles> Role { get; set; }
-
-        public List<User_Status> Status2 { get; set; }
-
-
-
+        public Users userToEdit { get; set; }
+        public User_Status statusToEdit { get; set; }
+        public Roles roleToEdit { get; set; }
+        public List<Roles> RolesList { get; set; }
+        public List<User_Status> StatusList { get; set; }
     }
 }
