@@ -83,22 +83,19 @@ namespace SistemaPlanillas.Controllers
 
             Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
             User_Status status = _db.User_Status.Where(x => x.id == user.fk_id_status).FirstOrDefault();
-            var role = Session["role"];
             User_RolAndDepartment rolAndDepart = _db.User_RolAndDepartment.Where(x => x.fk_id_user == userId).FirstOrDefault();
-            Departaments departament = _db.Departaments.Where(x => x.id == user.Fk_Id_Deparment).FirstOrDefault();
-            var nameDepartment = departament.name_departament;
-
+            var department = _db.Departaments.Where(x => x.id == user.Fk_Id_Deparment).FirstOrDefault();
+            var userRole = Session["role"];
 
             // Create a view model containing all the retrieved lists and pass it to the view.
-            modelCompuestoInd viewModel = new modelCompuestoInd
+            UserCompositeModel viewModel = new UserCompositeModel
             {
                 User = user,
-                RoleDeparmentUser = rolAndDepart,
-                Departaments = departament,
+                Department = department,
                 Status = status
             };
 
-            ViewBag.role = role;
+            ViewBag.UserRole = userRole;
 
             return View("GlobalModules/ProfileModule", viewModel);
         }

@@ -1,4 +1,4 @@
-﻿@model SistemaPlanillas.Models.modelCompuesto
+﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
 
 @{
     string idModel = ViewBag.idModel;
@@ -60,7 +60,6 @@
     </nav>
 
     <h1>ASIGNAR ROL A USUARIO</h1>
-
     <table class="table">
         <thead>
             <tr>
@@ -73,41 +72,18 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var users2 in Model.User)
+            @foreach (var UserCompositeModel in Model)
             {
                 <tr>
-                    <td>@users2.name</td>
-                    <td>@users2.email</td>
-                    <td>
-                        @foreach (var RDU in Model.RoleDeparmentUser)
-                        {
-                            if (users2.id == RDU.fk_id_user)
-                            {
-                                foreach (var roles in Model.Role)
-                                {
-                                    if (RDU.fk_id_rol == roles.id)
-                                    {
-                                        @roles.name_rol
-                                    }
-                                }
-                            }
-                        }
-                    </td>
-                    <td>
-                        @foreach (var status in Model.Status)
-                        {
-                            if (users2.fk_id_status == status.id)
-                            {
-                                @status.name_status
-                                break;
-                            }
-                        }
-                    </td>
+                    <td>@UserCompositeModel.User.name</td>
+                    <td>@UserCompositeModel.User.email</td>
+                    <td>@UserCompositeModel.Role.name_rol</td>
+                    <td>@UserCompositeModel.Status.name_status</td>
                     <td>
                         <form action="/Admin/AssignRoleForm" method="get">
-                            <input type="hidden" name="id2" value="@users2.id" />
+                            <input type="hidden" name="id2" value="@UserCompositeModel.User.id" />
                             <input type="hidden" name="idUserLogin" value="@idModel" />
-                            <button type="submit" class="btn btn-primary">Editar </button>
+                            <button type="submit" class="btn btn-primary">Editar</button>
                         </form>
                     </td>
                 </tr>

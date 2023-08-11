@@ -212,26 +212,16 @@ namespace SistemaPlanillas.Models
         }
     }
 
-    //Composite model to retrieve the information of all the users
-    public class modelCompuesto
-    {
-        public List<Roles> Role { get; set; }
-        public List<Users> User { get; set; }
-        public Users User2 { get; set; }
-        public List<User_RolAndDepartment> RoleDeparmentUser { get; set; }
-        public List<User_Status> Status { get; set; }
-        public List<Departaments> Departaments { get; set; }
-    }
-
-    //Composite model to retrieve the information of and specific user
-    public class modelCompuestoInd
+    //Composite model to retrieve the information for an user or users
+    public class UserCompositeModel
     {
         public Users User { get; set; }
-        public User_RolAndDepartment RoleDeparmentUser { get; set; }
-        public Departaments Departaments { get; set; }
+        public Roles Role { get; set; }
+        public Departaments Department { get; set; }
         public User_Status Status { get; set; }
     }
 
+    //Composite model to retrieve the information of all the users
     public class UserToEdit
     {
         public Users userToEdit { get; set; }

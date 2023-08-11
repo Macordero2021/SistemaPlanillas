@@ -207,61 +207,36 @@ namespace SistemaPlanillas.Controllers
         /// <returns>The view for assigning roles to users.</returns>
         public ActionResult AssignRole(int id, string nameOrEmail)
         {
-            string nameOrEmail2 = nameOrEmail;
+            List<Users> users;
 
-            if (nameOrEmail2 == null || nameOrEmail2 == "")
+            if (string.IsNullOrEmpty(nameOrEmail))
             {
-                // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
-                List<Roles> roles = _db.Roles.ToList();
-                List<Users> users = _db.Users.ToList();
-                List<User_RolAndDepartment> RolesDeparmentsUser1 = _db.User_RolAndDepartment.ToList();
-                List<User_Status> Status1 = _db.User_Status.ToList();
-                List<Departaments> Departaments1 = _db.Departaments.ToList();
-
-                // Create a view model containing all the retrieved lists and pass it to the view.
-                modelCompuesto viewModel = new modelCompuesto
-                {
-                    Role = roles,
-                    User = users,
-                    RoleDeparmentUser = RolesDeparmentsUser1,
-                    Status = Status1,
-                    Departaments = Departaments1
-
-                };
-
-                // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
-                var idModel = id.ToString();
-                ViewBag.idModel = idModel;
-
-                return View(viewModel);
-
+                // Retrieve all users if no nameOrEmail provided.
+                users = _db.Users.ToList();
             }
             else
             {
-                //aqui ya se realizo la busqueda 
-                // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
-                List<Roles> roles = _db.Roles.ToList();
-                List<Users> users = _db.Users.Where(x => x.name.Contains(nameOrEmail2) || x.email.Contains(nameOrEmail2)).ToList();
-                List<User_RolAndDepartment> RolesDeparmentsUser1 = _db.User_RolAndDepartment.ToList();
-                List<User_Status> Status1 = _db.User_Status.ToList();
-                List<Departaments> departaments = _db.Departaments.ToList();
-
-                // Create a view model containing all the retrieved lists and pass it to the view.
-                modelCompuesto viewModel = new modelCompuesto
-                {
-                    Role = roles,
-                    User = users,
-                    RoleDeparmentUser = RolesDeparmentsUser1,
-                    Status = Status1,
-                    Departaments = departaments
-                };
-
-                // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
-                var idModel = id.ToString();
-                ViewBag.idModel = idModel;
-
-                return View(viewModel);
+                // Retrieve users matching the provided nameOrEmail.
+                users = _db.Users.Where(x => x.name.Contains(nameOrEmail) || x.email.Contains(nameOrEmail)).ToList();
             }
+
+            var usersWithInfo = (from user in users
+                                 join roleDept in _db.User_RolAndDepartment on user.id equals roleDept.fk_id_user
+                                 join role in _db.Roles on roleDept.fk_id_rol equals role.id
+                                 join dept in _db.Departaments on roleDept.fk_id_departament equals dept.id
+                                 join status in _db.User_Status on user.fk_id_status equals status.id
+                                 select new UserCompositeModel
+                                 {
+                                     User = user,
+                                     Role = role,
+                                     Department = dept,
+                                     Status = status
+                                 }).ToList();
+
+            // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
+            ViewBag.idModel = id.ToString();
+
+            return View(usersWithInfo);
         }
 
         public ActionResult AssignRoleForm(int id2)

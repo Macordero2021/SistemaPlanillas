@@ -215,11 +215,11 @@
     <Content Include="Views\Role\GlobalModules\ProfileModule.cshtml" />
     <Content Include="Views\Payroll\HumanResources.cshtml" />
     <Content Include="Views\Payroll\PayrollModule.cshtml" />
-    <Content Include="Views\Admin\AssignRole.cshtml" />
     <Content Include="Views\Admin\AssignRoleForm.cshtml" />
     <Content Include="Views\Admin\EditRoleForm.cshtml" />
     <Content Include="Views\Admin\RoleModule.cshtml" />
     <Content Include="Views\Employee\ConsultModule.cshtml" />
+    <Content Include="Views\Admin\AssignRole.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
