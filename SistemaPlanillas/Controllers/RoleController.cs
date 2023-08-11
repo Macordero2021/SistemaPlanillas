@@ -465,5 +465,12 @@ namespace SistemaPlanillas.Controllers
                     return Json(new { error = "Error updating user" });
             }
         }
+
+        // Modulo Payroll 
+
+        public ActionResult PayrollAsing ()
+        {
+             return View("PayrollAsing");
+        }
     }
 }

@@ -215,6 +215,7 @@
     <Content Include="Views\Role\UndefinedView.cshtml" />
     <Content Include="Views\Role\AdminModules\AssignRoleForm.cshtml" />
     <Content Include="Views\Role\GlobalModules\ProfileModule.cshtml" />
+    <Content Include="Views\Role\PayrollAsing.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -226,7 +227,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="SQL Scripts\" />
     <Folder Include="Views\Role\EmployeeModules\" />
-    <Folder Include="Views\Role\PayrollModules\" />
     <Folder Include="Views\Role\UndefinedModules\" />
   </ItemGroup>
   <ItemGroup>
