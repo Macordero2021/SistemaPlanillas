@@ -31,13 +31,13 @@
                         <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { id = @idModel  })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("RoleModule", "Role", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("RoleModule", "Admin", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("AssignRole", "Role", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("AssignRole", "Admin", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
                     </li>
                     <li>
-                        <form action="@Url.Action("AssignRole", "Role", new { id = @idModel })" method="get">
+                        <form action="@Url.Action("AssignRole", "Admin", new { id = @idModel })" method="get">
                             <div class="input-group">
                                 <div class="form-outline">
                                     <input name="nameOrEmail" style="width: 400px;" placeholder="Búsqueda de usuarios por nombre o correo electrónico." class="form-control" />
@@ -104,7 +104,7 @@
                         }
                     </td>
                     <td>
-                        <form action=  "/Role/AssignRoleForm" method="get">
+                        <form action="/Admin/AssignRoleForm" method="get">
                             <input type="hidden" name="id2" value="@users2.id" />
                             <input type="hidden" name="idUserLogin" value="@idModel" />
                             <button type="submit" class="btn btn-primary">Editar </button>

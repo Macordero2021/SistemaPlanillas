@@ -29,7 +29,7 @@
                         <a class="nav-link" href="https://localhost:44319/Role/AdminView?userId=@idModel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color:white">Home</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("RoleModule", "Role" , new { id=@idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color: white">Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("RoleModule", "Admin" , new { id=@idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit; color: white">Roles</font></font></a>
                     </li>
 
                 </ul>
@@ -39,7 +39,7 @@
 
     <h1>Editar rol</h1>
 
-    <form action="@Url.Action("StoreEditedRole", "Role" , new { id=@idModel })" method="post">
+    <form action="@Url.Action("StoreEditedRole", "Admin" , new { id=@idModel })" method="post">
         <div class="mb-3">
             <label for="nameRol" class="form-label">Nombre del rol</label>
             <input type="hidden" style="text-transform:uppercase" name="oldRol" value="@Model.name_rol">

@@ -31,10 +31,10 @@
                         <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { id = @idModel  })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("RoleModule", "Role", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("RoleModule", "Admin", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("AssignRole", "Role", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("AssignRole", "Admin", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -53,7 +53,7 @@
     </main>
     <h1 style="margin-bottom:50px;">Modulo CRUD Roles</h1>
 
-    <form action="@Url.Action("CreateRole", "Role", new { id = @idModel })" method="post" style="margin-bottom:50px;">
+    <form action="@Url.Action("CreateRole", "Admin", new { id = @idModel })" method="post" style="margin-bottom:50px;">
         <div class="mb-3">
             <label for="nameRol" class="form-label">Nombre del rol</label>
             <input type="text" style="text-transform:uppercase" oninput="this.value = this.value.toUpperCase();" class="form-control" name="rol">
@@ -85,14 +85,14 @@
                 <tr>
                     <td>@roles.name_rol</td>
                     <td>
-                        <form action="@Url.Action("EditRoleForm", "Role")" method="get">
+                        <form action="@Url.Action("EditRoleForm", "Admin")" method="get">
                             <input type="hidden" name="idUser" value="@idModel" />
                             <input type="hidden" name="id" value="@roles.id" />
                             <button type="submit" class="btn btn-primary">Editar</button>
                         </form>
                     </td>
                     <td>
-                        <form action="@Url.Action("DeleteRole", "Role")" method="post">
+                        <form action="@Url.Action("DeleteRole", "Admin")" method="post">
                             <input type="hidden" name="idUser" value="@idModel" />
                             <input type="hidden" name="id" value="@roles.id" />
                             <button type="submit" class="btn btn-primary">Eliminar</button>

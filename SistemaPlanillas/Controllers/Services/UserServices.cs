@@ -17,7 +17,6 @@ namespace SistemaPlanillas.Controllers.Services
         InvalidDepartment       // An invalid department was selected during user creation.
     }
 
-
     public class UserService
     {
         private DataBase1Config _db;

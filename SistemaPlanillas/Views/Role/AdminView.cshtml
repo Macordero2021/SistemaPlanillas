@@ -1,7 +1,7 @@
 ﻿﻿@model SistemaPlanillas.Models.Users
 
 @{ 
-    ViewBag.Title = "EmployeeView";
+    ViewBag.Title = "AdminView";
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -30,10 +30,10 @@
                         <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("RoleModule", "Role", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("RoleModule", "Admin", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("AssignRole", "Role", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("AssignRole", "Admin", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">

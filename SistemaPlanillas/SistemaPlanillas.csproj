@@ -127,9 +127,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\PayrollController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\Services\ProfileService.cs" />
     <Compile Include="Controllers\Services\RoleService.cs" />
     <Compile Include="Controllers\Services\UserServices.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -206,16 +208,17 @@
     <Content Include="Views\User\SignupForm.cshtml" />
     <Content Include="Views\User\LoginForm.cshtml" />
     <Content Include="Web.config" />
-    <Content Include="Views\Role\AdminModules\AssignRole.cshtml" />
-    <Content Include="Views\Role\AdminModules\EditRoleForm.cshtml" />
-    <Content Include="Views\Role\AdminModules\RoleModule.cshtml" />
     <Content Include="Views\Role\AdminView.cshtml" />
     <Content Include="Views\Role\EmployeeView.cshtml" />
     <Content Include="Views\Role\PayrollView.cshtml" />
     <Content Include="Views\Role\UndefinedView.cshtml" />
-    <Content Include="Views\Role\AdminModules\AssignRoleForm.cshtml" />
     <Content Include="Views\Role\GlobalModules\ProfileModule.cshtml" />
-    <Content Include="Views\Role\PayrollAsing.cshtml" />
+    <Content Include="Views\Payroll\HumanResources.cshtml" />
+    <Content Include="Views\Payroll\PayrollModule.cshtml" />
+    <Content Include="Views\Admin\AssignRole.cshtml" />
+    <Content Include="Views\Admin\AssignRoleForm.cshtml" />
+    <Content Include="Views\Admin\EditRoleForm.cshtml" />
+    <Content Include="Views\Admin\RoleModule.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -226,8 +229,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="SQL Scripts\" />
-    <Folder Include="Views\Role\EmployeeModules\" />
-    <Folder Include="Views\Role\UndefinedModules\" />
+    <Folder Include="Views\Employee\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

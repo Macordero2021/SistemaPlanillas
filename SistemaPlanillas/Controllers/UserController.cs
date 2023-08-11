@@ -125,8 +125,6 @@ namespace SistemaPlanillas.Controllers
                     // Get the user's role using the RoleService.
                     string rolName = _roleService.GetUserRoleName(idRolUser.fk_id_user);
 
-                    Console.WriteLine(rolName);
-
                     // Store the user's role name in the session.
                     Session["role"] = rolName;
 

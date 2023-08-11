@@ -35,10 +35,10 @@
                     @if (ViewBag.role == "ADMIN")
                     {
                         <li>
-                            <a class="nav-link" href="@Url.Action("RoleModule", "Role", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
+                            <a class="nav-link" href="@Url.Action("RoleModule", "Admin", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
                         </li>
                         <li>
-                            <a class="nav-link" href="@Url.Action("AssignRole", "Role", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
+                            <a class="nav-link" href="@Url.Action("AssignRole", "Admin", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
                         </li>
                     }
                     else if (ViewBag.role == "UNDEFINED")
