@@ -137,7 +137,7 @@ namespace SistemaPlanillas.Controllers
             // Find the role in the database and pass it to the view.
             Roles editRole = _db.Roles.Where(x => x.id == idInt).FirstOrDefault();
 
-            return View("EditRoleForm", editRole);
+            return View(editRole);
         }
 
         /// <summary>
@@ -270,7 +270,6 @@ namespace SistemaPlanillas.Controllers
             string idUserLogin = Request.QueryString["idUserLogin"];
 
             // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
-
             Users users = _db.Users.Where(x => x.id == id2).FirstOrDefault();
             User_RolAndDepartment RoleDeparment = _db.User_RolAndDepartment.Where(x => x.fk_id_user == id2).FirstOrDefault();
             User_Status Status1 = _db.User_Status.Where(x => x.id == users.fk_id_status).FirstOrDefault();
@@ -306,13 +305,7 @@ namespace SistemaPlanillas.Controllers
             string idEdit = form["id"];
             int idEditInt = int.Parse(idEdit.ToString());
 
-            // Update the role's name and save changes to the database.
-
-            /*
-            Roles editRole = _db.Roles.Where(x => x.name_rol == oldNameRole).FirstOrDefault();
-            editRole.name_rol = newNameRole;
-            _db.SaveChanges();
-            */
+            // Retrieve the user's info to update
             Users UserId2 = _db.Users.Where(x => x.id == idEditInt).FirstOrDefault();
 
             if (newEmail != "")

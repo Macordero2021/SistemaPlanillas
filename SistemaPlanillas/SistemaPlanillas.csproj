@@ -219,6 +219,7 @@
     <Content Include="Views\Admin\AssignRoleForm.cshtml" />
     <Content Include="Views\Admin\EditRoleForm.cshtml" />
     <Content Include="Views\Admin\RoleModule.cshtml" />
+    <Content Include="Views\Employee\ConsultModule.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -229,7 +230,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="SQL Scripts\" />
-    <Folder Include="Views\Employee\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

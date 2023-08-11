@@ -2,6 +2,23 @@
 
 @{
     string role = ViewBag.role;
+    string viewName = "";
+
+    switch (role)
+    {
+        case "ADMIN":
+            viewName = "AdminView";
+            break;
+        case "EMPLOYEE":
+            viewName = "EmployeeView";
+            break;
+        case "PAYROLL CLERK":
+            viewName = "PayrollView";
+            break;
+        default:
+            viewName = "UndefinedView";
+            break;
+    }
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -26,10 +43,10 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="https://localhost:44319/Role/AdminView?userId=@Model.User.id"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                        <a class="nav-link" href="@Url.Action(viewName, "Role", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
 
                     @if (ViewBag.role == "ADMIN")
@@ -47,13 +64,16 @@
                     else if (ViewBag.role == "EMPLOYEE")
                     {
                         <li>
-                            <a class="nav-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Consultas</font></font></a>
+                            <a class="nav-link" href="@Url.Action("ConsultModule", "Employee", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Consult</font></font></a>
                         </li>
                     }
                     else if (ViewBag.role == "PAYROLL CLERK")
                     {
                         <li>
-                            <a class="nav-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
                         </li>
                     }
 

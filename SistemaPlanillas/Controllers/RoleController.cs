@@ -16,7 +16,6 @@ namespace SistemaPlanillas.Controllers
 {
     public class RoleController : Controller
     {
-
         private DataBase1Config _db = new DataBase1Config();
 
         private RoleService _roleService;
@@ -78,14 +77,14 @@ namespace SistemaPlanillas.Controllers
         /// Action method for displaying the view "
         /// </summary>
         /// <returns>The view displaying information related to the user role.</returns>
-        public ActionResult ProfileModule(int id)
+        public ActionResult ProfileModule(int userId)
         {
             // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
 
-            Users user = _db.Users.Where(x => x.id == id).FirstOrDefault();
+            Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
             User_Status status = _db.User_Status.Where(x => x.id == user.fk_id_status).FirstOrDefault();
             var role = Session["role"];
-            User_RolAndDepartment rolAndDepart = _db.User_RolAndDepartment.Where(x => x.fk_id_user == id).FirstOrDefault();
+            User_RolAndDepartment rolAndDepart = _db.User_RolAndDepartment.Where(x => x.fk_id_user == userId).FirstOrDefault();
             Departaments departament = _db.Departaments.Where(x => x.id == user.Fk_Id_Deparment).FirstOrDefault();
             var nameDepartment = departament.name_departament;
 
