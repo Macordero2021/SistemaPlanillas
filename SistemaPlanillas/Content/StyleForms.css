@@ -4,8 +4,8 @@
 ============================>   Global vars   <============================
 */
 :root {
-    --color-primary: #6380ec;
-    --color-primary-variant: #3E64CC;
+    --color-primary: #3E64FF;
+    --color-primary-variant: #113CFC;
     --color-danger: #ff7782;
     --color-danger-variant: #D65361;
     --color-success: #00CFB8;
@@ -14,8 +14,6 @@
     --color-dark: #363949;
     --color-dark-variant: #677483;
     --color-info-dark: #7d8da1;
-    --btn-1: var(--color-primary);
-    --btn-2: #ff7782;
     --container-border-radius: 2rem;
     --border-radius: 1rem;
     --box-shadow-add: 10px 5px 5px var(--color-info-dark);
@@ -145,16 +143,20 @@ h1 {
 }
 
 .button-container button[type="submit"] {
-    background-color: var(--btn-1);
+    background-color: var(--color-primary);
     color: #fff;
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.button-container button[type="submit"]:hover {
+    background-color: var(--color-primary-variant);
 }
 
 .button-container button[type="reset"] {
-    background-color: var(--btn-2);
+    background-color: var(--color-danger);
     color: #fff;
     padding: 10px 20px;
     border: none;
@@ -162,6 +164,9 @@ h1 {
     cursor: pointer;
 }
 
+.button-container button[type="reset"]:hover {
+    background-color: var(--color-danger-variant);
+}
 /*
 ============================>   ADMIN VIEW   <============================
 */
@@ -198,6 +203,7 @@ h1 {
     transition: var(--transition);
     border-radius: var(--container-border-radius);
     box-shadow: var(--box-shadow-add);
+    color: var(--color-dark);
 }
 
 .admin-page .profile-left .image {
@@ -254,7 +260,7 @@ h1 {
 
 .profile-wrapper h1 {
     text-align: center;
-    color: var(--color-primary-variant);
+    color: var(--color-primary);
 }
 
 .profile-wrapper i {
@@ -284,9 +290,9 @@ h1 {
     background-color: var(--color-white);
     transition: var(--transition);
     border: 1px solid var(--color-dark-variant);
-    border-radius: var(--container-border-radius);
+    border-radius: var(--border-radius);
     box-shadow: var(--box-shadow-add);
-    color: var(--color-primary);
+    color: var(--color-primary);/*Color del texto*/
 }
 
 .profile-wrapper table td .input-container:hover{
@@ -307,6 +313,11 @@ h1 {
 }
 
 /* Estilo para los botones */
+.profile-wrapper .input-wrapper i{
+    padding-left:5px;
+    font-size:16px;
+}
+
 .profile-wrapper .input-wrapper button{
     padding: 10px;
     border:none;
@@ -366,6 +377,7 @@ h1 {
     justify-content: center;
     align-items: center;
     margin: 40px auto 0;
+    color:var(--color-dark);
 }
 
 .assign-role-wrapper h1 {
@@ -403,25 +415,57 @@ h1 {
     width: 400px;
 }
 
+.assign-role-wrapper .container .input-group input:hover{
+    width: 400px;
+}
+
+.assign-role-wrapper .container form button{
+    color:var(--color-white);
+    background-color: var(--color-primary);
+    border-radius: var(--border-radius);
+}
+
+.assign-role-wrapper .container form button:hover {
+    background-color: var(--color-primary-variant);
+}
+
+.assign-role-wrapper .container table {
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
 .assign-role-wrapper .container table th,
-.assign-role-wrapper .container table td
-{
+.assign-role-wrapper .container table td {
+    color:var(--color-primary);
     background-color: var(--color-white);
+    text-align: center;
+    border-radius: var(--border-radius);
 }
 
-.assign-role-wrapper .container table td div
-{
-    padding: 10px;
+.assign-role-wrapper .container table tbody tr{
     transition: var(--transition);
-    border: 1px solid var(--color-dark-variant);
     box-shadow: var(--box-shadow-add);
-    color: var(--color-primary);
+    outline: 1px solid var(--color-dark-variant);
+    border-radius: var(--border-radius);
 }
 
-.assign-role-wrapper .container table td div:hover
-{
-    transition: var(--transition);
+.assign-role-wrapper .container table tbody tr:hover {
     box-shadow: none;
+}
+
+.assign-role-wrapper .container table tbody td {
+    vertical-align: middle;
+}
+
+.assign-role-wrapper .container table tbody td form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.assign-role-wrapper .container table tbody td form i {
+    padding-left: 5px;
 }
 
 /*
