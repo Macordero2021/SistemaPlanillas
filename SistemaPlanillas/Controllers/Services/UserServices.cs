@@ -77,7 +77,6 @@ namespace SistemaPlanillas.Controllers.Services
                 phone = phone,
                 password = pass1,
                 fk_id_status = 1,
-                fk_salary = 1,
                 fk_id_paymentmethod = 1,
                 Fk_Id_Deparment = idDepartment
             };

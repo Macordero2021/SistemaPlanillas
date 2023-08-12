@@ -229,13 +229,11 @@ namespace SistemaPlanillas.Controllers
             var usersWithInfo = (from user in users
                                  join roleDept in _db.User_RolAndDepartment on user.id equals roleDept.fk_id_user
                                  join role in _db.Roles on roleDept.fk_id_rol equals role.id
-                                 join dept in _db.Departaments on roleDept.fk_id_departament equals dept.id
                                  join status in _db.User_Status on user.fk_id_status equals status.id
                                  select new UserCompositeModel
                                  {
                                      User = user,
                                      Role = role,
-                                     Department = dept,
                                      Status = status
                                  }).ToList();
 

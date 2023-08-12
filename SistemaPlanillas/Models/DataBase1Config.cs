@@ -219,6 +219,7 @@ namespace SistemaPlanillas.Models
         public Roles Role { get; set; }
         public Departaments Department { get; set; }
         public User_Status Status { get; set; }
+        public Salary_type Salary_Type { get; set; }
     }
 
     //Composite model to retrieve the information of all the users
