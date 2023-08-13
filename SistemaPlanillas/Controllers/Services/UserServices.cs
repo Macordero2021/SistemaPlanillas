@@ -98,6 +98,16 @@ namespace SistemaPlanillas.Controllers.Services
             _db.User_Updates.Add(storeDates);
             _db.SaveChanges();
 
+            //Code to save the salary info in the "Salary" table
+            Salary userSalary = new Salary
+            {
+                fk_user = idLastUser,
+                fk_salary_type = 3,
+                SalaryAmount = 0
+            };
+            _db.Salary.Add(userSalary);
+            _db.SaveChanges();
+
             // Code to save the department and role of the created user
             var departamentFind = _db.Departaments.FirstOrDefault(d => d.name_departament == department);
             if (departamentFind != null)
