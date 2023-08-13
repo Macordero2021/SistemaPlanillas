@@ -1,4 +1,4 @@
-﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
+﻿@model SistemaPlanillas.Models.UserToEdit
 
 @{
     string idModel = ViewBag.idModel;
@@ -46,8 +46,80 @@
         </div>
     </nav>
 
-    <h1>FormEditHuman</h1>
+    <div class="wrapper">
+        <div class="form-container">
+            <form action="@Url.Action("StoreEditHumanForm", "Payroll" , new { id = @Model.userToEdit.id })" method="post">
+                <!-- user2.id llega null corregir -->
+                <div class="form-group">
+                    <h1>Edit Human Resources</h1>
 
-    @Scripts.Render("~/bundles/bootstrap")
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Name" name="name" value="@Model.userToEdit.name" disabled>
+                        <label for="floatingInput">Name</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Email" name="Email" value="@Model.userToEdit.email" disabled>
+                        <label for="floatingInput">Email</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NewDepartments" class="form-label mt-4">Department</label>
+                        <select class="form-select" id="NewDepartments" name="NewDepartments" required>
+                            <option>Choose a new department</option>
+                            @foreach (var RDU in Model.DepartamentsList)
+                            {
+                                {
+                                    <option>@RDU.name_departament</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NewStatus" class="form-label mt-4">Status</label>
+                        <select class="form-select" id="NewStatus" name="NewStatus" required>
+                            <option>Choose a new Status</option>
+                            @foreach (var RDU in Model.StatusList)
+                            {
+                                {
+                                    <option>@RDU.name_status</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NewPaymentMethod" class="form-label mt-4">Payment Method</label>
+                        <select class="form-select" id="NewPaymentMethod" name="NewPaymentMethod" required>
+                            <option>Choose a new PaymentMethod</option>
+                            @foreach (var RDU in Model.salary_Types)
+                            {
+                                {
+                                    <option>@RDU.SalaryType</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" name="NewSalary" value="">
+                        <label for="floatingInput">Salary</label>
+                    </div>
+                </div>
+
+                <input type="hidden" name="id" value="@Model.userToEdit.id" />
+                <input type="hidden" name="idUserAdmin" value="@idModel" />
+                <!--================ Buttons =================-->
+                <div class="button-container">
+                    <button type="submit">Save</button>
+                    <button type="reset">Cancel</button>
+                    <br />
+                </div>
+            </form>
+        </div>
+    </div>
+
+            @Scripts.Render("~/bundles/bootstrap")
 </body>
 </html>

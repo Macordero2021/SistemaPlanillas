@@ -70,8 +70,67 @@ namespace SistemaPlanillas.Controllers
 
         public ActionResult EditHumanResources(int id)
         {
+            string idUserLogin = Request.QueryString["idUserLogin"];
+
+            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
+            Users users = _db.Users.Where(x => x.id == id).FirstOrDefault();
+            User_RolAndDepartment RoleDeparment = _db.User_RolAndDepartment.Where(x => x.fk_id_user == id).FirstOrDefault();
+            User_Status Status1 = _db.User_Status.Where(x => x.id == users.fk_id_status).FirstOrDefault();
+            List<User_Status> status2 = _db.User_Status.ToList();
+            List<Departaments> departaments = _db.Departaments.ToList();
+            List<Salary_Type> salary_Types = _db.Salary_Type.ToList();
+
+            // Create a view model containing all the retrieved lists and pass it to the view.
+            UserToEdit viewModel = new UserToEdit
+            {
+                userToEdit = users,
+                statusToEdit = Status1,
+                StatusList = status2,
+                DepartamentsList = departaments,
+                salary_Types = salary_Types
+            };
+
             ViewBag.idModel = id.ToString();
-            return View();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult StoreEditHumanForm(FormCollection form)
+        {
+            var idModel = form["idUserAdmin"]; ;
+
+            // Retrieve the new and old names of the role from the form data.
+            string NewDepartment = form["NewDepartaments"];
+            string NewStatus = form["NewStatus"];
+            string NewPaymentMethod = form["NewPaymentMethod"];
+            string NewSalary = form["NewSalary"];
+            string idEdit = form["id"];
+            int idEditInt = int.Parse(idEdit.ToString());
+
+            // Retrieve the user's info to update
+            Users UserId2 = _db.Users.Where(x => x.id == idEditInt).FirstOrDefault();
+
+            if (NewDepartment != "Choose a new department")
+            {
+                var idDepartament = _db.Departaments.Where(x => x.name_departament == NewDepartment).FirstOrDefault();
+               
+            }
+            
+            if (NewStatus != "Choose a new Status")
+            {
+                var idstatus = _db.User_Status.Where(x => x.name_status == NewStatus).FirstOrDefault();
+                UserId2.fk_id_status = idstatus.id;
+            }
+
+            if(NewPaymentMethod != "Choose a new PaymentMethod")
+            {
+                var salaryType = _db.Salary_Type.Where(x => x.SalaryType == NewPaymentMethod).FirstOrDefault();
+                UserId2.fk_id_paymentmethod = salaryType.id;
+            }
+
+            _db.SaveChanges();
+            return RedirectToAction("HumanResources", new { id = idModel, nameOrEmail = "" });
         }
     }
 }
+

@@ -242,5 +242,7 @@ namespace SistemaPlanillas.Models
         public Roles roleToEdit { get; set; }
         public List<Roles> RolesList { get; set; }
         public List<User_Status> StatusList { get; set; }
+        public List<Departaments> DepartamentsList { get; set; }
+        public List<Salary_Type> salary_Types { get; set; }
     }
 }

@@ -88,8 +88,8 @@
                             <td>@UserCompositeModel.Salary_Type.SalaryType</td>
                             <td>@UserCompositeModel.Salary.SalaryAmount</td>
                             <td>
-                                <form action="@Url.Action("EditHumanResources", "Payroll", new { id = idModel })" method="get">
-                                    <input type="hidden" name="id2" value="@UserCompositeModel.User.id" />
+                                <form action="/Payroll/EditHumanResources" method="get">
+                                    <input type="hidden" name="id" value="@UserCompositeModel.User.id" />
                                     <input type="hidden" name="idUserLogin" value="@idModel" />
                                     <button type="submit" class="btn btn-primary">Editar<i class='bx bx-edit-alt'></i></button>
                                 </form>
