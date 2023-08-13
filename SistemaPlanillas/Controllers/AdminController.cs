@@ -243,14 +243,14 @@ namespace SistemaPlanillas.Controllers
             return View(usersWithInfo);
         }
 
-        public ActionResult AssignRoleForm(int id2)
+        public ActionResult AssignRoleForm(int id)
         {
 
             string idUserLogin = Request.QueryString["idUserLogin"];
 
             // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
-            Users users = _db.Users.Where(x => x.id == id2).FirstOrDefault();
-            User_RolAndDepartment RoleDeparment = _db.User_RolAndDepartment.Where(x => x.fk_id_user == id2).FirstOrDefault();
+            Users users = _db.Users.Where(x => x.id == id).FirstOrDefault();
+            User_RolAndDepartment RoleDeparment = _db.User_RolAndDepartment.Where(x => x.fk_id_user == id).FirstOrDefault();
             User_Status Status1 = _db.User_Status.Where(x => x.id == users.fk_id_status).FirstOrDefault();
             Roles roles = _db.Roles.Where(x => x.id == RoleDeparment.fk_id_rol).FirstOrDefault();
             List<User_Status> status2 = _db.User_Status.ToList();

@@ -62,9 +62,9 @@ namespace SistemaPlanillas.Controllers
 
 
 
-        public ActionResult PayrollModule(int userId)
+        public ActionResult PayrollModule(int id)
         {
-            Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
+            Users user = _db.Users.Where(x => x.id == id).FirstOrDefault();
             return View(user);
         }
 
