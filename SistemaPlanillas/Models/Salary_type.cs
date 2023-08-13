@@ -6,21 +6,20 @@ namespace SistemaPlanillas.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Salary_type
+    public partial class Salary_Type
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Salary_type()
+        public Salary_Type()
         {
-            Users = new HashSet<Users>();
+            Salary = new HashSet<Salary>();
         }
 
-        [Key]
-        public int id_salaryType { get; set; }
+        public int id { get; set; }
 
-        [StringLength(50)]
-        public string salaryName { get; set; }
+        [StringLength(100)]
+        public string SalaryType { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Users> Users { get; set; }
+        public virtual ICollection<Salary> Salary { get; set; }
     }
 }

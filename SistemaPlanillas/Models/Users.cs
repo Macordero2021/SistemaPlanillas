@@ -16,6 +16,7 @@ namespace SistemaPlanillas.Models
             hourly_payroll = new HashSet<hourly_payroll>();
             Monthly_payroll = new HashSet<Monthly_payroll>();
             Payroll_history = new HashSet<Payroll_history>();
+            Salary = new HashSet<Salary>();
             User_RolAndDepartment = new HashSet<User_RolAndDepartment>();
             User_Updates = new HashSet<User_Updates>();
         }
@@ -47,8 +48,6 @@ namespace SistemaPlanillas.Models
 
         public int? Fk_Id_Deparment { get; set; }
 
-        public int? fk_salary { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Deductions> Deductions { get; set; }
 
@@ -68,7 +67,8 @@ namespace SistemaPlanillas.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Payroll_history> Payroll_history { get; set; }
 
-        public virtual Salary_type Salary_type { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Salary> Salary { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User_RolAndDepartment> User_RolAndDepartment { get; set; }

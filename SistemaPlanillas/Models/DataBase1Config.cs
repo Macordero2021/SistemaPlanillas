@@ -9,7 +9,7 @@ namespace SistemaPlanillas.Models
     public partial class DataBase1Config : DbContext
     {
         public DataBase1Config()
-            : base("name=DataBase1Config1")
+            : base("name=DataBase1Config")
         {
         }
 
@@ -23,8 +23,8 @@ namespace SistemaPlanillas.Models
         public virtual DbSet<payment_type> payment_type { get; set; }
         public virtual DbSet<Payroll_history> Payroll_history { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
-        public virtual DbSet<Salary_type> Salary_type { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<Salary> Salary { get; set; }
+        public virtual DbSet<Salary_Type> Salary_Type { get; set; }
         public virtual DbSet<User_RolAndDepartment> User_RolAndDepartment { get; set; }
         public virtual DbSet<User_Status> User_Status { get; set; }
         public virtual DbSet<User_Updates> User_Updates { get; set; }
@@ -134,14 +134,19 @@ namespace SistemaPlanillas.Models
                 .HasForeignKey(e => e.fk_id_rol)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Salary_type>()
-                .Property(e => e.salaryName)
+            modelBuilder.Entity<Salary>()
+                .Property(e => e.SalaryAmount)
+                .HasPrecision(10, 2);
+
+            modelBuilder.Entity<Salary_Type>()
+                .Property(e => e.SalaryType)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Salary_type>()
-                .HasMany(e => e.Users)
-                .WithOptional(e => e.Salary_type)
-                .HasForeignKey(e => e.fk_salary);
+            modelBuilder.Entity<Salary_Type>()
+                .HasMany(e => e.Salary)
+                .WithRequired(e => e.Salary_Type)
+                .HasForeignKey(e => e.fk_salary_type)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<User_Status>()
                 .Property(e => e.name_status)
@@ -199,6 +204,12 @@ namespace SistemaPlanillas.Models
                 .HasForeignKey(e => e.fk_idUser);
 
             modelBuilder.Entity<Users>()
+                .HasMany(e => e.Salary)
+                .WithRequired(e => e.Users)
+                .HasForeignKey(e => e.fk_user)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Users>()
                 .HasMany(e => e.User_RolAndDepartment)
                 .WithRequired(e => e.Users)
                 .HasForeignKey(e => e.fk_id_user)
@@ -219,7 +230,7 @@ namespace SistemaPlanillas.Models
         public Roles Role { get; set; }
         public Departaments Department { get; set; }
         public User_Status Status { get; set; }
-        public Salary_type Salary_Type { get; set; }
+        public Salary Salary { get; set; }
     }
 
     //Composite model to retrieve the information of all the users

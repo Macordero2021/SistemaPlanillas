@@ -149,8 +149,8 @@
     <Compile Include="Models\payment_type.cs" />
     <Compile Include="Models\Payroll_history.cs" />
     <Compile Include="Models\Roles.cs" />
-    <Compile Include="Models\Salary_type.cs" />
-    <Compile Include="Models\sysdiagrams.cs" />
+    <Compile Include="Models\Salary.cs" />
+    <Compile Include="Models\Salary_Type.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Models\User_RolAndDepartment.cs" />
     <Compile Include="Models\User_Status.cs" />
