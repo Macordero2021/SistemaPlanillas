@@ -125,25 +125,45 @@ namespace SistemaPlanillas.Controllers
                     // Get the user's role using the RoleService.
                     string rolName = _roleService.GetUserRoleName(idRolUser.fk_id_user);
 
+                     // Get the user's role using the RoleService.
+                    var deparmentName = _db.Departaments.Where(x => x.id == idRolUser.fk_id_departament).Select(x => x.name_departament).FirstOrDefault();
+
                     // Store the user's role name in the session.
                     Session["role"] = rolName;
 
                     int userId = user.id;
 
-                    // Successful login, redirect to the corresponding action based on the user's role.
-                    switch (rolName)
+
+                    if (rolName == "UNDEFINED")
                     {
-                        case "UNDEFINED":
-                            return RedirectToAction("UndefinedView", "Role", new { userId });
-                        case "ADMIN":
-                            return RedirectToAction("AdminView", "Role", new { userId });
-                        case "EMPLOYEE":
-                            return RedirectToAction("EmployeeView", "Role", new { userId });
-                        case "PAYROLL CLERK":
-                            return RedirectToAction("PayrollView", "Role", new { userId });
-                        default:
-                            // If the role is not recognized or doesn't have a specific action, redirect to LoginForm
-                            return RedirectToAction("LoginForm", "User");
+                        return RedirectToAction("UndefinedView", "Role", new { userId });
+                    }
+                    else if (rolName == "ADMIN")
+                    {
+                        return RedirectToAction("AdminView", "Role", new { userId });
+
+                    }
+                    else if (rolName == "EMPLOYEE")
+                    {
+                        return RedirectToAction("EmployeeView", "Role", new { userId });
+
+                    }
+                    else if (rolName == "PAYROLL CLERK" && deparmentName == "Human Resources")
+                    {
+                        return RedirectToAction("PayrollView", "Role", new { userId });
+
+                    }
+                    else if (rolName == "PAYROLL CLERK" && deparmentName != "Human Resources")
+                    {
+                        //aqui va el punto f.
+                        //aqui entra cualquier usuario que tenga rol planillero
+                        return RedirectToAction("PayrollView2", "Role", new { userId });
+
+                    }
+                    else
+                    {
+                        // Failed to retrieve role, redirect to the LoginForm view.
+                        return View("LoginForm");
                     }
                 }
                 else

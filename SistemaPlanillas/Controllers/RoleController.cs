@@ -73,6 +73,16 @@ namespace SistemaPlanillas.Controllers
             return View(user);
         }
 
+        public ActionResult PayrollView2(int userId)
+        {
+            //aqui entra cualquier usuario que tenga rol planillero hacerle una vista
+
+            Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
+            var userRole = Session["role"];
+            ViewBag.UserRole = userRole;
+            return View(user);
+        }
+
         /// <summary>
         /// Action method for displaying the view "
         /// </summary>
@@ -98,6 +108,30 @@ namespace SistemaPlanillas.Controllers
             ViewBag.UserRole = userRole;
 
             return View("GlobalModules/ProfileModule", viewModel);
+        }
+
+
+        public ActionResult ProfileModule2(int userId)
+        {
+            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
+
+            Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
+            User_Status status = _db.User_Status.Where(x => x.id == user.fk_id_status).FirstOrDefault();
+            User_RolAndDepartment rolAndDepart = _db.User_RolAndDepartment.Where(x => x.fk_id_user == userId).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == user.Fk_Id_Deparment).FirstOrDefault();
+            var userRole = Session["role"];
+
+            // Create a view model containing all the retrieved lists and pass it to the view.
+            UserCompositeModel viewModel = new UserCompositeModel
+            {
+                User = user,
+                Department = department,
+                Status = status
+            };
+
+            ViewBag.UserRole = userRole;
+
+            return View("GlobalModules/ProfileModule2", viewModel);
         }
 
         /// <summary>

@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HumanResources</title>
+    <title>DDoPX</title>
 
     <!-- Custom styles for this template -->
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
@@ -26,17 +26,15 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollView2", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                        <a class="nav-link" href="@Url.Action("ProfileModule2", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                        <a class="nav-link" href="@Url.Action("DDoPX", "Payroll", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Deduccion o pago extraordinario</font></font></a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
-                    </li>
+
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -51,7 +49,7 @@
         <div class="container">
             <div class="look-container">
                 <h1>LOOK UP FOR AN SPECIFIC USER</h1>
-                <form action="@Url.Action("HumanResources", "Payroll", new { id = idModel })" method="get" class="search-form">
+                <form action="@Url.Action("DDoPX", "Payroll", new { id = idModel })" method="get" class="search-form">
                     <div class="input-group">
                         <div class="form-outline">
                             <input name="nameOrEmail" placeholder="Search for an user using the name or email" class="form-control" />
