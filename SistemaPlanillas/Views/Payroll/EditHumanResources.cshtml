@@ -1,17 +1,19 @@
-﻿
+﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
+
 @{
-    ViewBag.Title = "PayrollView";
+    string idModel = ViewBag.idModel;
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>HumanResources</title>
 
     <!-- Custom styles for this template -->
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
     <link href="~/Content/StyleForms.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -23,16 +25,16 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                        <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -44,28 +46,7 @@
         </div>
     </nav>
 
-    <main class="admin-page">
-        <div class="row">
-
-            <div class="column">
-                <div class="profile-left">
-                    <img src="~/Assets/UsersIcon.svg" class="image" alt="" />
-                    <h1>Welcome Again!</h1>
-                    <p>@Model.name</p>
-                    <p>@ViewBag.UserRole</p>
-                </div>
-            </div>
-
-            <div class="column">
-                <div class="profile-right">
-                    <img src="~/Assets/WelcomoIcon.svg" class="image" alt="" />
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <div id="4411b5c0-f318-40b5-88ed-174d92c6881e" style="display: block !important; z-index: 2147483647 !important;"></div>
+    <h1>FormEditHuman</h1>
 
     @Scripts.Render("~/bundles/bootstrap")
 </body>

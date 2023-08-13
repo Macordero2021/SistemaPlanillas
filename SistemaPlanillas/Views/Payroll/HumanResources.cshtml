@@ -1,7 +1,8 @@
 ﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
 
 @{
-    int idModel = ViewBag.userId;
+    string idModel = ViewBag.idModel;
+}
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -31,7 +32,7 @@
                         <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                        <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
                     </li>
                     <li>
                         <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
@@ -50,7 +51,7 @@
         <div class="container">
             <div class="look-container">
                 <h1>LOOK UP FOR AN SPECIFIC USER</h1>
-                <form action="@Url.Action("AssignRole", "Admin", new { id = @idModel })" method="get" class="search-form">
+                <form action="@Url.Action("HumanResources", "Payroll", new { id = idModel })" method="get" class="search-form">
                     <div class="input-group">
                         <div class="form-outline">
                             <input name="nameOrEmail" placeholder="Search for an user using the name or email" class="form-control" />
@@ -87,7 +88,7 @@
                             <td>@UserCompositeModel.Salary_Type.SalaryType</td>
                             <td>@UserCompositeModel.Salary.SalaryAmount</td>
                             <td>
-                                <form action="/Payroll/HumanResources" method="get">
+                                <form action="@Url.Action("EditHumanResources", "Payroll", new { id = idModel })" method="get">
                                     <input type="hidden" name="id2" value="@UserCompositeModel.User.id" />
                                     <input type="hidden" name="idUserLogin" value="@idModel" />
                                     <button type="submit" class="btn btn-primary">Editar<i class='bx bx-edit-alt'></i></button>

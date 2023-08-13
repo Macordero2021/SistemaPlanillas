@@ -1,9 +1,16 @@
-﻿using SistemaPlanillas.Models;
+﻿using SistemaPlanillas.Controllers.Services;
+using SistemaPlanillas.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
+using static SistemaPlanillas.Controllers.Services.RoleService;
 
 namespace SistemaPlanillas.Controllers
 {
@@ -11,7 +18,7 @@ namespace SistemaPlanillas.Controllers
     {
         private DataBase1Config _db = new DataBase1Config();
 
-        public ActionResult HumanResources(int userId, string nameOrEmail)
+        public ActionResult HumanResources(int id, string nameOrEmail)
         {
             // Verificar si nameOrEmail no es nulo y luego eliminar los espacios en blanco del inicio y final
             if (nameOrEmail != null)
@@ -48,7 +55,7 @@ namespace SistemaPlanillas.Controllers
                                  }).ToList();
 
             // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
-            ViewBag.userId = userId;
+            ViewBag.idModel = id.ToString();
 
             return View(usersWithInfo);
         }
@@ -59,6 +66,12 @@ namespace SistemaPlanillas.Controllers
         {
             Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
             return View(user);
+        }
+
+        public ActionResult EditHumanResources(int id)
+        {
+            ViewBag.idModel = id.ToString();
+            return View();
         }
     }
 }

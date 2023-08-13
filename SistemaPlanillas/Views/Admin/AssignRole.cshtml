@@ -1,7 +1,7 @@
 ﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
 
 @{
-    string idModel = ViewBag.idModel;
+    int idModel = ViewBag.idModel;
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -31,10 +31,10 @@
                         <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = @idModel  })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("RoleModule", "Admin", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("RoleModule", "Admin", new { userId = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("AssignRole", "Admin", new { id = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
+                        <a class="nav-link" href="@Url.Action("AssignRole", "Admin", new { userId = @idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -50,7 +50,7 @@
         <div class="container">
             <div class="look-container">
                 <h1>LOOK UP FOR AN SPECIFIC USER</h1>
-                <form action="@Url.Action("AssignRole", "Admin", new { id = @idModel })" method="get" class="search-form">
+                <form action="@Url.Action("AssignRole", "Admin", new { userId = @idModel })" method="get" class="search-form">
                     <div class="input-group">
                         <div class="form-outline">
                             <input name="nameOrEmail" placeholder="Search for an user using the name or email" class="form-control" />
