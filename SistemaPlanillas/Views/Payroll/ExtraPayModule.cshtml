@@ -1,6 +1,7 @@
 ﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
 
 @{
+    ViewBag.Title = "ExtraordinaryPaymentModule";
     string idModel = ViewBag.idModel;
     string UserDepart = ViewBag.UserDept;
 }
@@ -10,7 +11,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deductions</title>
+    <title>Extraordinay Payments</title>
 
     <!-- Custom styles for this template -->
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
@@ -67,20 +68,20 @@
                             <input name="nameOrEmail" placeholder="Search for an user using the name or email" class="form-control" />
                         </div>
                         <button type="submit" class="btn btn-primary d-flex align-items-center">
-                            <i class='bx bx-search-alt me-2'></i>Buscar
+                            <i class='bx bx-search-alt me-2'></i>Search
                         </button>
                     </div>
                 </form>
             </div>
 
-            <h1>LIST OF DEDUCTIONS</h1>
+            <h1>LIST OF EXTRAORDINAY PAYMENTS</h1>
 
             <form action="/Payroll/CreateDeductionForm" method="get">
                 <input type="hidden" name="idUserLogin" value="@idModel" />
-                <button type="submit" class="btn btn-primary create">Create Deduction <i class='bx bx-message-square-add'></i></button>
+                <button type="submit" class="btn btn-primary create">Create Extra Payment <i class='bx bx-message-square-add'></i></button>
             </form>
 
-            <br />  
+            <br />
 
 
             <table class="table">
@@ -89,7 +90,7 @@
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Descripcion</th>
-                        <th scope="col">Tipo deduccion</th>
+                        <th scope="col">Tipo Pago</th>
                         <th scope="col">Monto</th>
                         <th scope="col">Accion</th>
                         <th scope="col">Action</th>
@@ -102,20 +103,20 @@
                         <tr>
                             <td>@UserCompositeModel.User.name</td>
                             <td>@UserCompositeModel.User.email</td>
-                            <td>@UserCompositeModel.deductions.notes</td>
-                            <td>@UserCompositeModel.deduction_Type.deduction_name</td>
-                            <td>@UserCompositeModel.deductions.deduction_value</td>
+                            <td>@UserCompositeModel.Extraordinary_Payment.notes</td>
+                            <td>@UserCompositeModel.Payment_Type.payment_name</td>
+                            <td>@UserCompositeModel.Extraordinary_Payment.payment_value</td>
 
                             <td>
                                 <form action="/Payroll/EditDeductionForm" method="get">
-                                    <input type="hidden" name="idUserEdit" value="@UserCompositeModel.deductions.id_deduction" />
+                                    <input type="hidden" name="idUserEdit" value="PENDIENTE" /><!--PENDING-->
                                     <input type="hidden" name="idUserLogin" value="@idModel" />
                                     <button type="submit" class="btn btn-primary">Editar<i class='bx bx-edit-alt'></i></button>
                                 </form>
                             </td>
                             <td>
                                 <form action="/Payroll/deleteDeduction" method="get">
-                                    <input type="hidden" name="idUserDelete" value="@UserCompositeModel.deductions.id_deduction" />
+                                    <input type="hidden" name="idUserDelete" value="PENDIENTE" /> <!--PENDING-->
                                     <input type="hidden" name="idUserLogin" value="@idModel" />
                                     <button type="submit" class="btn btn-primary delete">Eliminar<i class='bx bx-message-square-x'></i></button>
                                 </form>

@@ -236,6 +236,8 @@ namespace SistemaPlanillas.Models
         public Deductions deductions { get; set; }
         public Deduction_type deduction_Type { get; set; }
         public List<Deduction_type> deduction_TypeList { get; set; }
+        public Extraordinary_payment Extraordinary_Payment { get; set; }
+        public payment_type Payment_Type { get; set; }
     }
 
     //Composite model to retrieve the information of all the users

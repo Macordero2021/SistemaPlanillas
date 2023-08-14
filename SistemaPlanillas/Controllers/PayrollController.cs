@@ -54,16 +54,20 @@ namespace SistemaPlanillas.Controllers
                                      Salary_Type = salaryType
                                  }).ToList();
 
-            Users userModel = _db.Users.Where(x => x.id == id).FirstOrDefault();
-            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
-
-            ViewBag.UserDept = department.name_departament;
             // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
             ViewBag.idModel = id.ToString();
 
             return View(usersWithInfo);
         }
 
+        public ActionResult PayrollModule(int id)
+        {
+            Users user = _db.Users.Where(x => x.id == id).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == user.Fk_Id_Deparment).FirstOrDefault();
+
+            ViewBag.UserDept = department.name_departament;
+            return View(user);
+        }
 
         public ActionResult DeductionsModule(int id, string nameOrEmail)
         {
@@ -96,6 +100,10 @@ namespace SistemaPlanillas.Controllers
                                            deduction_Type = deductionType
                                        }).ToList();
 
+            Users userModel = _db.Users.Where(x => x.id == id).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
+
+            ViewBag.UserDept = department.name_departament;
 
             // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
             ViewBag.idModel = id.ToString();
@@ -103,13 +111,46 @@ namespace SistemaPlanillas.Controllers
             return View(usersWithDeductions);
         }
 
-        public ActionResult PayrollModule(int id)
+        public ActionResult ExtraPayModule(int id, string nameOrEmail)
         {
-            Users user = _db.Users.Where(x => x.id == id).FirstOrDefault();
-            var department = _db.Departaments.Where(x => x.id == user.Fk_Id_Deparment).FirstOrDefault();
+            // Verificar si nameOrEmail no es nulo y luego eliminar los espacios en blanco del inicio y final
+            if (nameOrEmail != null)
+            {
+                nameOrEmail = nameOrEmail.Trim();
+            }
+
+            List<Users> users;
+
+            if (string.IsNullOrEmpty(nameOrEmail))
+            {
+                // Retrieve all users if no nameOrEmail provided.
+                users = _db.Users.ToList();
+            }
+            else
+            {
+                // Retrieve users matching the provided nameOrEmail.
+                users = _db.Users.Where(x => x.name.Contains(nameOrEmail) || x.email.Contains(nameOrEmail)).ToList();
+            }
+
+            var usersWithExtraordinaryPayment = (from user in users
+                                                 join extraordinaryPayment in _db.Extraordinary_payment on user.id equals extraordinaryPayment.fk_idUser
+                                                 join paymentType in _db.payment_type on extraordinaryPayment.fk_id_payment equals paymentType.id_payment
+                                                 select new UserCompositeModel
+                                                 {
+                                                     User = user,
+                                                     Extraordinary_Payment = extraordinaryPayment,
+                                                     Payment_Type = paymentType
+                                                 }).ToList();
+
+            Users userModel = _db.Users.Where(x => x.id == id).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
 
             ViewBag.UserDept = department.name_departament;
-            return View(user);
+
+            // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
+            ViewBag.idModel = id.ToString();
+
+            return View(usersWithExtraordinaryPayment);
         }
 
         public ActionResult EditHumanResources(int id)
@@ -191,7 +232,6 @@ namespace SistemaPlanillas.Controllers
             return RedirectToAction("HumanResources", new { id = idModel, nameOrEmail = "" });
         }
 
-
         public ActionResult CreateDeductionForm()
         {
             string idUserLogin = Request.QueryString["idUserLogin"];
@@ -208,11 +248,16 @@ namespace SistemaPlanillas.Controllers
                 deduction_TypeList = deductionsType,
             };
 
+            int idUserLoginInt = Convert.ToInt32(Request.QueryString["idUserLogin"]);
+            Users userModel = _db.Users.Where(x => x.id == idUserLoginInt).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
+
+            ViewBag.UserDept = department.name_departament;
+
             ViewBag.idModel = idUserLogin;
 
             return View(viewModel);
         }
-
 
         [HttpPost]
         public ActionResult storeDeduction(FormCollection form)
@@ -245,7 +290,6 @@ namespace SistemaPlanillas.Controllers
 
                 return RedirectToAction("DeductionsModule", new {id = idModel});
             }
-
         }
 
         public ActionResult deleteDeduction()
@@ -287,6 +331,12 @@ namespace SistemaPlanillas.Controllers
                 deductions = deductions,
                 deduction_Type = deductionTypeActual
             };
+
+            int idUserLoginInt = Convert.ToInt32(Request.QueryString["idUserLogin"]);
+            Users userModel = _db.Users.Where(x => x.id == idUserLoginInt).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
+
+            ViewBag.UserDept = department.name_departament;
 
             ViewBag.idModel = idUserLogin;
 
