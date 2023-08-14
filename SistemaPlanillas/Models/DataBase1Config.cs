@@ -234,7 +234,10 @@ namespace SistemaPlanillas.Models
         public Salary_Type Salary_Type { get; set; }
         public Deductions deductions { get; set; }
         public List<Deduction_type> deduction_TypeList { get; set; }
+        public Deduction_type deduction_Type { get; set; }
         public List<Users> UsersList { get; set; }
+
+
 
 
     }

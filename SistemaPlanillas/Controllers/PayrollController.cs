@@ -82,25 +82,21 @@ namespace SistemaPlanillas.Controllers
                 users = _db.Users.Where(x => x.name.Contains(nameOrEmail) || x.email.Contains(nameOrEmail)).ToList();
             }
 
-            var usersWithInfo = (from user in users
-                                 join roleDept in _db.User_RolAndDepartment on user.id equals roleDept.fk_id_user
-                                 join dept in _db.Departaments on roleDept.fk_id_departament equals dept.id
-                                 join status in _db.User_Status on user.fk_id_status equals status.id
-                                 join salary in _db.Salary on user.id equals salary.fk_user
-                                 join salaryType in _db.Salary_Type on salary.fk_salary_type equals salaryType.id
-                                 select new UserCompositeModel
-                                 {
-                                     User = user,
-                                     Department = dept,
-                                     Status = status,
-                                     Salary = salary,
-                                     Salary_Type = salaryType
-                                 }).ToList();
+            var usersWithDeductions = (from user in users
+                                       join deduction in _db.Deductions on user.id equals deduction.fk_idUser
+                                       join deductionType in _db.Deduction_type on deduction.fk_idDeductionType equals deductionType.id_Deduction_type
+                                       select new UserCompositeModel
+                                       {
+                                           User = user,
+                                           deductions = deduction,
+                                           deduction_Type = deductionType
+                                       }).ToList();
+
 
             // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
             ViewBag.idModel = id.ToString();
 
-            return View(usersWithInfo);
+            return View(usersWithDeductions);
         }
 
 

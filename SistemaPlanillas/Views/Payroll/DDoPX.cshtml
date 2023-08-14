@@ -90,9 +90,10 @@
                         <tr>
                             <td>@UserCompositeModel.User.name</td>
                             <td>@UserCompositeModel.User.email</td>
-                            <td>@UserCompositeModel.Department.name_departament</td>
-                            <td>@UserCompositeModel.Status.name_status</td>
-                            <td>@UserCompositeModel.Status.name_status</td>
+                            <td>@UserCompositeModel.deductions.notes</td>
+                            <td>@UserCompositeModel.deduction_Type.deduction_name</td>
+                            <td>@UserCompositeModel.deductions.deduction_value</td>
+
                             <td>
                                 <form action="/Payroll/EditHumanResources" method="get">
                                     <input type="hidden" name="id" value="@UserCompositeModel.User.id" />
