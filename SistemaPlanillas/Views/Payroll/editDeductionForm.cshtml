@@ -50,30 +50,22 @@
                 <div class="form-group">
                     <h1>Create deduction</h1>
 
-                    <div class="form-group">
-                        <label for="NewDepartments" class="form-label mt-4">Email</label>
-                        <select class="form-select" id="NewDepartments" name="email" required>
-                            <option>Choose a user</option>
-                            @foreach (var users in Model.UsersList)
-                            {
-                                {
-                                    <option>@users.email</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <label for="NewDepartments" class="form-label mt-4">Description</label>
-
+                    <label for="NewDepartments" class="form-label mt-4">Email</label>
                     <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="descripcion" value="@Model.User.email" name="email" readonly>
+                        <label for="floatingInput">Email</label>
+                    </div>
 
-                        <input type="text" class="form-control" id="floatingInput" placeholder="descripcion" value="" name="descripcion">
-                        <label for="floatingInput">descripcion</label>
+                    <label for="NewDepartments" class="form-label mt-4">Description</label>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="@Model.deductions.notes" value="@Model.deductions.notes" name="Description">
+                        <label for="floatingInput">Description</label>
                     </div>
 
                     <div class="form-group">
                         <label for="NewDepartments" class="form-label mt-4">Deductions</label>
                         <select class="form-select" id="NewDepartments" name="typeDeductions" required>
-                            <option>Choose a Deduction type</option>
+                            <option>@Model.deduction_Type.deduction_name</option>
                             @foreach (var deduction in Model.deduction_TypeList)
                             {
                                 {
@@ -82,10 +74,10 @@
                             }
                         </select>
                     </div>
-                    <label for="NewDepartments" class="form-label mt-4">Amount</label>
 
+                    <label for="NewDepartments" class="form-label mt-4">Amount</label>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="amount" value="" name="amount" required>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="amount" value="@Model.deductions.deduction_value" name="amount" required>
                         <label for="floatingInput">amount</label>
                     </div>
 

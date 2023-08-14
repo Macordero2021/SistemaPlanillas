@@ -245,6 +245,53 @@ namespace SistemaPlanillas.Controllers
 
         }
 
+        public ActionResult deleteDeduction()
+        {
+            string idUserLogin = Request.QueryString["idUserLogin"];
+            string idUserDelete = Request.QueryString["idUserDelete"];
+            int idToDelete = int.Parse(idUserDelete);
+            Deductions deleteDeduction = _db.Deductions.Where(x => x.id_deduction == idToDelete).FirstOrDefault();
+            _db.Deductions.Remove(deleteDeduction);
+            _db.SaveChanges();
+            return RedirectToAction("DDoPX", new { id = idUserLogin });
+        }
+
+        public ActionResult editDeductionForm()
+        {
+            string idUserLogin = Request.QueryString["idUserLogin"];
+            string idUserEdit = Request.QueryString["idUserEdit"];
+            int idToEdit = int.Parse(idUserEdit);
+
+            //el id de la tabla de deductions del que se va editar
+            var editDeduction = _db.Deductions.Where(x => x.id_deduction == idToEdit).FirstOrDefault();
+
+            //traer el email
+            Users user = _db.Users.Where(x => x.id == editDeduction.fk_idUser).FirstOrDefault();
+
+            //pasar el nota
+            Deductions deductions = _db.Deductions.Where(x => x.id_deduction == editDeduction.id_deduction).FirstOrDefault ();    
+
+            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
+            List<Deduction_type> deductionsType = _db.Deduction_type.ToList();
+
+            Deduction_type deductionTypeActual = _db.Deduction_type.Where(x => x.id_Deduction_type == editDeduction.fk_idDeductionType).FirstOrDefault();
+
+
+            // Create a view model containing all the retrieved lists and pass it to the view.
+            UserCompositeModel viewModel = new UserCompositeModel
+            {
+                deduction_TypeList = deductionsType,
+                User = user,
+                deductions = deductions,
+                deduction_Type = deductionTypeActual
+            };
+
+            ViewBag.idModel = idUserLogin;
+
+
+            return View(viewModel);
+        }
+
 
 
     }
