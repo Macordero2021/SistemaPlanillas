@@ -227,19 +227,15 @@ namespace SistemaPlanillas.Models
     public class UserCompositeModel
     {
         public Users User { get; set; }
+        public List<Users> UsersList { get; set; }
         public Roles Role { get; set; }
         public Departaments Department { get; set; }
         public User_Status Status { get; set; }
         public Salary Salary { get; set; }
         public Salary_Type Salary_Type { get; set; }
         public Deductions deductions { get; set; }
-        public List<Deduction_type> deduction_TypeList { get; set; }
         public Deduction_type deduction_Type { get; set; }
-        public List<Users> UsersList { get; set; }
-
-
-
-
+        public List<Deduction_type> deduction_TypeList { get; set; }
     }
 
     //Composite model to retrieve the information of all the users

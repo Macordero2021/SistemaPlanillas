@@ -133,37 +133,19 @@ namespace SistemaPlanillas.Controllers
 
                     int userId = user.id;
 
-
-                    if (rolName == "UNDEFINED")
+                    switch (rolName)
                     {
-                        return RedirectToAction("UndefinedView", "Role", new { userId });
-                    }
-                    else if (rolName == "ADMIN")
-                    {
-                        return RedirectToAction("AdminView", "Role", new { userId });
-
-                    }
-                    else if (rolName == "EMPLOYEE")
-                    {
-                        return RedirectToAction("EmployeeView", "Role", new { userId });
-
-                    }
-                    else if (rolName == "PAYROLL CLERK" && deparmentName == "Human Resources")
-                    {
-                        return RedirectToAction("PayrollView", "Role", new { userId });
-
-                    }
-                    else if (rolName == "PAYROLL CLERK" && deparmentName != "Human Resources")
-                    {
-                        //aqui va el punto f.
-                        //aqui entra cualquier usuario que tenga rol planillero
-                        return RedirectToAction("PayrollView2", "Role", new { userId });
-
-                    }
-                    else
-                    {
-                        // Failed to retrieve role, redirect to the LoginForm view.
-                        return View("LoginForm");
+                        case "UNDEFINED":
+                            return RedirectToAction("UndefinedView", "Role", new { userId });
+                        case "ADMIN":
+                            return RedirectToAction("AdminView", "Role", new { userId });
+                        case "EMPLOYEE":
+                            return RedirectToAction("EmployeeView", "Role", new { userId });
+                        case "PAYROLL CLERK":
+                            return RedirectToAction("PayrollView", "Role", new { userId });
+                        default:
+                            // If the role is not recognized or doesn't have a specific action, redirect to LoginForm
+                            return RedirectToAction("LoginForm", "User");
                     }
                 }
                 else

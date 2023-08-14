@@ -1,5 +1,5 @@
-﻿
-@{
+﻿@{
+    string UserDepart = ViewBag.UserDept;
     ViewBag.Title = "PayrollModule";
 }
 
@@ -34,6 +34,13 @@
                     <li>
                         <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
                     </li>
+
+                    @if (ViewBag.UserDept == "Human Resources")
+                    {
+                        <li>
+                            <a class="nav-link" href="@Url.Action("DeductionsModule", "Payroll", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Deductions</font></font></a>
+                        </li>
+                    }
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">

@@ -369,7 +369,7 @@ h1 {
 }
 
 /*
-============================>   ADMIN MODULE: "AssignRole" VIEW   <============================
+============================>   ALL TABLE MODULES TO RETRIEVE THE USERS INFO  <============================
 */
 .assign-role-wrapper {
     display: flex;
@@ -419,6 +419,15 @@ h1 {
     width: 400px;
 }
 
+.assign-role-wrapper .container form button.btn-primary.create {
+    background-color: var(--color-success);
+}
+
+.assign-role-wrapper .container form button.btn-primary.create:hover {
+    background-color: var(--color-success-variant);
+}
+
+
 .assign-role-wrapper .container form button{
     color:var(--color-white);
     background-color: var(--color-primary);
@@ -427,6 +436,14 @@ h1 {
 
 .assign-role-wrapper .container form button:hover {
     background-color: var(--color-primary-variant);
+}
+
+.assign-role-wrapper .container form button.btn-primary.delete {
+    background-color: var(--color-danger);
+}
+
+.assign-role-wrapper .container form button.btn-primary.delete:hover {
+    background-color: var(--color-danger-variant);
 }
 
 .assign-role-wrapper .container table {

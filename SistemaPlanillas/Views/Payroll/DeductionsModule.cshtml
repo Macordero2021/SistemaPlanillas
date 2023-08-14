@@ -26,13 +26,19 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("PayrollView2", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ProfileModule2", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("DDoPX", "Payroll", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Deducciones</font></font></a>
+                        <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="@Url.Action("DeductionsModule", "Payroll", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Deductions</font></font></a>
                     </li>
 
                 </ul>
@@ -49,7 +55,7 @@
         <div class="container">
             <div class="look-container">
                 <h1>LOOK UP FOR AN SPECIFIC USER</h1>
-                <form action="@Url.Action("DDoPX", "Payroll", new { id = idModel })" method="get" class="search-form">
+                <form action="@Url.Action("DeductionsModule", "Payroll", new { id = idModel })" method="get" class="search-form">
                     <div class="input-group">
                         <div class="form-outline">
                             <input name="nameOrEmail" placeholder="Search for an user using the name or email" class="form-control" />
@@ -63,9 +69,9 @@
 
             <h1>LIST OF USERS</h1>
 
-            <form action="/Payroll/formCreateDeduction" method="get">
+            <form action="/Payroll/CreateDeductionForm" method="get">
                 <input type="hidden" name="idUserLogin" value="@idModel" />
-                <button type="submit" class="btn btn-primary">Crear deduccion<i class='bx bx-edit-alt'></i></button>
+                <button type="submit" class="btn btn-primary create">Crear deduccion <i class='bx bx-message-square-add'></i></button>
             </form>
 
             <br />  
@@ -95,7 +101,7 @@
                             <td>@UserCompositeModel.deductions.deduction_value</td>
 
                             <td>
-                                <form action="/Payroll/editDeductionForm" method="get">
+                                <form action="/Payroll/EditDeductionForm" method="get">
                                     <input type="hidden" name="idUserEdit" value="@UserCompositeModel.deductions.id_deduction" />
                                     <input type="hidden" name="idUserLogin" value="@idModel" />
                                     <button type="submit" class="btn btn-primary">Editar<i class='bx bx-edit-alt'></i></button>
@@ -105,7 +111,7 @@
                                 <form action="/Payroll/deleteDeduction" method="get">
                                     <input type="hidden" name="idUserDelete" value="@UserCompositeModel.deductions.id_deduction" />
                                     <input type="hidden" name="idUserLogin" value="@idModel" />
-                                    <button type="submit" class="btn btn-primary" style="background-color: #B22222">Eliminar<i class='bx bx-edit-alt'></i></button>
+                                    <button type="submit" class="btn btn-primary delete">Eliminar<i class='bx bx-message-square-x'></i></button>
                                 </form>
                             </td>
                         </tr>

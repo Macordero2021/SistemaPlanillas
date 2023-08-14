@@ -54,6 +54,10 @@ namespace SistemaPlanillas.Controllers
                                      Salary_Type = salaryType
                                  }).ToList();
 
+            Users userModel = _db.Users.Where(x => x.id == id).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
+
+            ViewBag.UserDept = department.name_departament;
             // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
             ViewBag.idModel = id.ToString();
 
@@ -61,7 +65,7 @@ namespace SistemaPlanillas.Controllers
         }
 
 
-        public ActionResult DDoPX(int id, string nameOrEmail)
+        public ActionResult DeductionsModule(int id, string nameOrEmail)
         {
             // Verificar si nameOrEmail no es nulo y luego eliminar los espacios en blanco del inicio y final
             if (nameOrEmail != null)
@@ -99,11 +103,12 @@ namespace SistemaPlanillas.Controllers
             return View(usersWithDeductions);
         }
 
-
-
         public ActionResult PayrollModule(int id)
         {
             Users user = _db.Users.Where(x => x.id == id).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == user.Fk_Id_Deparment).FirstOrDefault();
+
+            ViewBag.UserDept = department.name_departament;
             return View(user);
         }
 
@@ -187,7 +192,7 @@ namespace SistemaPlanillas.Controllers
         }
 
 
-        public ActionResult formCreateDeduction()
+        public ActionResult CreateDeductionForm()
         {
             string idUserLogin = Request.QueryString["idUserLogin"];
 
@@ -212,8 +217,6 @@ namespace SistemaPlanillas.Controllers
         [HttpPost]
         public ActionResult storeDeduction(FormCollection form)
         {
-
-
             var email = form["email"];
             var descripcion = form["descripcion"];
             var typeDeductions = form["typeDeductions"];
@@ -223,24 +226,24 @@ namespace SistemaPlanillas.Controllers
             if (email == "Choose a use" || descripcion == "" || typeDeductions == "Choose a Deduction type" || amount == "")
             {
                 //returnar a la vista de nuevo a llevar este campo
-                return RedirectToAction("formCreateDeduction", new { idUserLogin = idModel });
+                return RedirectToAction("CreateDeductionForm", new { idUserLogin = idModel });
             }
             else
             {
                 var user = _db.Users.Where(x => x.email == email).FirstOrDefault();
                 var idDeductionType = _db.Deduction_type.Where(x => x.deduction_name == typeDeductions).FirstOrDefault();
-                Deductions storeDeduction = new Deductions {
-                                                            fk_idUser = user.id ,
-                                                            notes = descripcion,
-                                                            fk_idDeductionType = idDeductionType.id_Deduction_type,
-                                                            deduction_value = decimal.Parse(amount)
-                                                            };
+
+                Deductions storeDeduction = new Deductions 
+                {
+                    fk_idUser = user.id ,
+                    notes = descripcion,
+                    fk_idDeductionType = idDeductionType.id_Deduction_type,
+                    deduction_value = decimal.Parse(amount)
+                };
                 _db.Deductions.Add(storeDeduction);
                 _db.SaveChanges();
 
-                return RedirectToAction("DDoPX",new {id = idModel});
-
-
+                return RedirectToAction("DeductionsModule", new {id = idModel});
             }
 
         }
@@ -253,10 +256,10 @@ namespace SistemaPlanillas.Controllers
             Deductions deleteDeduction = _db.Deductions.Where(x => x.id_deduction == idToDelete).FirstOrDefault();
             _db.Deductions.Remove(deleteDeduction);
             _db.SaveChanges();
-            return RedirectToAction("DDoPX", new { id = idUserLogin });
+            return RedirectToAction("DeductionsModule", new { id = idUserLogin });
         }
 
-        public ActionResult editDeductionForm()
+        public ActionResult EditDeductionForm()
         {
             string idUserLogin = Request.QueryString["idUserLogin"];
             string idUserEdit = Request.QueryString["idUserEdit"];
@@ -276,7 +279,6 @@ namespace SistemaPlanillas.Controllers
 
             Deduction_type deductionTypeActual = _db.Deduction_type.Where(x => x.id_Deduction_type == editDeduction.fk_idDeductionType).FirstOrDefault();
 
-
             // Create a view model containing all the retrieved lists and pass it to the view.
             UserCompositeModel viewModel = new UserCompositeModel
             {
@@ -288,11 +290,8 @@ namespace SistemaPlanillas.Controllers
 
             ViewBag.idModel = idUserLogin;
 
-
             return View(viewModel);
         }
-
-
 
     }
 }

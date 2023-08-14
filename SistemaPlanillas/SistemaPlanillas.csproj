@@ -221,11 +221,9 @@
     <Content Include="Views\Employee\ConsultModule.cshtml" />
     <Content Include="Views\Admin\AssignRole.cshtml" />
     <Content Include="Views\Payroll\EditHumanResources.cshtml" />
-    <Content Include="Views\Role\PayrollView2.cshtml" />
-    <Content Include="Views\Payroll\DDoPX.cshtml" />
-    <Content Include="Views\Role\GlobalModules\ProfileModule2.cshtml" />
-    <Content Include="Views\Payroll\formCreateDeduction.cshtml" />
-    <Content Include="Views\Payroll\editDeductionForm.cshtml" />
+    <Content Include="Views\Payroll\DeductionsModule.cshtml" />
+    <Content Include="Views\Payroll\CreateDeductionForm.cshtml" />
+    <Content Include="Views\Payroll\EditDeductionForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

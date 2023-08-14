@@ -69,7 +69,10 @@ namespace SistemaPlanillas.Controllers
         {
             Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
             var userRole = Session["role"];
+            var department = _db.Departaments.Where(x => x.id == user.Fk_Id_Deparment).FirstOrDefault();
+
             ViewBag.UserRole = userRole;
+            ViewBag.UserDept = department.name_departament;
             return View(user);
         }
 
@@ -106,7 +109,7 @@ namespace SistemaPlanillas.Controllers
             };
 
             ViewBag.UserRole = userRole;
-
+            ViewBag.UserDept = department.name_departament;
             return View("GlobalModules/ProfileModule", viewModel);
         }
 
