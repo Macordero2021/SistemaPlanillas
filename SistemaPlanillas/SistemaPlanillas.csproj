@@ -225,6 +225,8 @@
     <Content Include="Views\Payroll\CreateDeductionForm.cshtml" />
     <Content Include="Views\Payroll\EditDeductionForm.cshtml" />
     <Content Include="Views\Payroll\ExtraPayModule.cshtml" />
+    <Content Include="Views\Payroll\CreateExtraPaymentForm.cshtml" />
+    <Content Include="Views\Payroll\EditExtraPaymentForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -237,6 +237,7 @@ namespace SistemaPlanillas.Models
         public Deduction_type deduction_Type { get; set; }
         public List<Deduction_type> deduction_TypeList { get; set; }
         public Extraordinary_payment Extraordinary_Payment { get; set; }
+        public List<payment_type> Payment_TypeList { get; set; }
         public payment_type Payment_Type { get; set; }
     }
 
