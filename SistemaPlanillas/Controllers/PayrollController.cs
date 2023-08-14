@@ -140,7 +140,7 @@ namespace SistemaPlanillas.Controllers
         [HttpPost]
         public ActionResult StoreEditHumanForm(FormCollection form)
         {
-            var idModel = form["idUserAdmin"]; ;
+            var idModel = form["idUserAdmin"]; 
 
             // Retrieve the new and old names of the role from the form data.
             string NewDepartment = form["NewDepartments"];
@@ -189,6 +189,68 @@ namespace SistemaPlanillas.Controllers
             _db.SaveChanges();
             return RedirectToAction("HumanResources", new { id = idModel, nameOrEmail = "" });
         }
+
+
+        public ActionResult formCreateDeduction()
+        {
+            string idUserLogin = Request.QueryString["idUserLogin"];
+
+            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
+            List<Users> users = _db.Users.ToList();
+            List<Deduction_type> deductionsType = _db.Deduction_type.ToList();  
+
+
+            // Create a view model containing all the retrieved lists and pass it to the view.
+            UserCompositeModel viewModel = new UserCompositeModel
+            {
+                UsersList = users,
+                deduction_TypeList = deductionsType,
+            };
+
+            ViewBag.idModel = idUserLogin;
+
+            return View(viewModel);
+        }
+
+
+        [HttpPost]
+        public ActionResult storeDeduction(FormCollection form)
+        {
+
+
+            var email = form["email"];
+            var descripcion = form["descripcion"];
+            var typeDeductions = form["typeDeductions"];
+            var amount = form["amount"];
+            var idModel = form["id"];
+
+            if (email == "Choose a use" || descripcion == "" || typeDeductions == "Choose a Deduction type" || amount == "")
+            {
+                //returnar a la vista de nuevo a llevar este campo
+                return RedirectToAction("formCreateDeduction", new { idUserLogin = idModel });
+            }
+            else
+            {
+                var user = _db.Users.Where(x => x.email == email).FirstOrDefault();
+                var idDeductionType = _db.Deduction_type.Where(x => x.deduction_name == typeDeductions).FirstOrDefault();
+                Deductions storeDeduction = new Deductions {
+                                                            fk_idUser = user.id ,
+                                                            notes = descripcion,
+                                                            fk_idDeductionType = idDeductionType.id_Deduction_type,
+                                                            deduction_value = decimal.Parse(amount)
+                                                            };
+                _db.Deductions.Add(storeDeduction);
+                _db.SaveChanges();
+
+                return RedirectToAction("DDoPX",new {id = idModel});
+
+
+            }
+
+        }
+
+
+
     }
 }
 

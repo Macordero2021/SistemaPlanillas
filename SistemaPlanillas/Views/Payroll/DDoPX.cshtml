@@ -3,7 +3,7 @@
 @{
     string idModel = ViewBag.idModel;
 }
-}
+
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
 <head>
@@ -62,15 +62,24 @@
             </div>
 
             <h1>LIST OF USERS</h1>
+
+            <form action="/Payroll/formCreateDeduction" method="get">
+                <input type="hidden" name="idUserLogin" value="@idModel" />
+                <button type="submit" class="btn btn-primary">Crear deduccion<i class='bx bx-edit-alt'></i></button>
+            </form>
+
+            <br />  
+
+
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Department</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Payment method</th>
-                        <th scope="col">Salary</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Tipo deduccion</th>
+                        <th scope="col">Monto</th>
+                        <th scope="col">Accion</th>
                         <th scope="col">Action</th>
 
                     </tr>
@@ -83,13 +92,19 @@
                             <td>@UserCompositeModel.User.email</td>
                             <td>@UserCompositeModel.Department.name_departament</td>
                             <td>@UserCompositeModel.Status.name_status</td>
-                            <td>@UserCompositeModel.Salary_Type.SalaryType</td>
-                            <td>₡@UserCompositeModel.Salary.SalaryAmount</td>
+                            <td>@UserCompositeModel.Status.name_status</td>
                             <td>
                                 <form action="/Payroll/EditHumanResources" method="get">
                                     <input type="hidden" name="id" value="@UserCompositeModel.User.id" />
                                     <input type="hidden" name="idUserLogin" value="@idModel" />
                                     <button type="submit" class="btn btn-primary">Editar<i class='bx bx-edit-alt'></i></button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/Payroll/EditHumanResources" method="get">
+                                    <input type="hidden" name="id" value="@UserCompositeModel.User.id" />
+                                    <input type="hidden" name="idUserLogin" value="@idModel" />
+                                    <button type="submit" class="btn btn-primary" style="background-color: #B22222">Eliminar<i class='bx bx-edit-alt'></i></button>
                                 </form>
                             </td>
                         </tr>

@@ -232,6 +232,11 @@ namespace SistemaPlanillas.Models
         public User_Status Status { get; set; }
         public Salary Salary { get; set; }
         public Salary_Type Salary_Type { get; set; }
+        public Deductions deductions { get; set; }
+        public List<Deduction_type> deduction_TypeList { get; set; }
+        public List<Users> UsersList { get; set; }
+
+
     }
 
     //Composite model to retrieve the information of all the users
