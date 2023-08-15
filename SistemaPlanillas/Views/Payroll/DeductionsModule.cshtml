@@ -3,6 +3,7 @@
 @{
     string idModel = ViewBag.idModel;
     string UserDepart = ViewBag.UserDept;
+    string idUserEdit = ViewBag.idUserEdit;
 }
 
 
@@ -41,12 +42,6 @@
                     <li>
                         <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("DeductionsModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Deductions</font></font></a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("ExtraPayModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ExtraPayment</font></font></a>
-                    </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -59,29 +54,19 @@
 
     <main class="assign-role-wrapper">
         <div class="container">
-            <div class="look-container">
-                <h1>LOOK UP FOR AN SPECIFIC USER</h1>
-                <form action="@Url.Action("DeductionsModule", "Payroll", new { id = idModel })" method="get" class="search-form">
-                    <div class="input-group">
-                        <div class="form-outline">
-                            <input name="nameOrEmail" placeholder="Search for an user using the name or email" class="form-control" />
-                        </div>
-                        <button type="submit" class="btn btn-primary d-flex align-items-center">
-                            <i class='bx bx-search-alt me-2'></i>Buscar
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <h1>LIST OF DEDUCTIONS</h1>
+            @foreach (var UserCompositeModel in Model)
+            {
+                <h1>List of deductions of: @UserCompositeModel.User.name </h1>
+                break;
+            }
 
             <form action="/Payroll/CreateDeductionForm" method="get">
                 <input type="hidden" name="idUserLogin" value="@idModel" />
+                <input type="hidden" name="idUserEdit" value="@idUserEdit" />
                 <button type="submit" class="btn btn-primary create">Create Deduction <i class='bx bx-message-square-add'></i></button>
             </form>
 
-            <br />  
-
+            <br />
 
             <table class="table">
                 <thead>
@@ -93,7 +78,6 @@
                         <th scope="col">Monto</th>
                         <th scope="col">Accion</th>
                         <th scope="col">Action</th>
-
                     </tr>
                 </thead>
                 <tbody>
@@ -116,6 +100,7 @@
                             <td>
                                 <form action="/Payroll/deleteDeduction" method="get">
                                     <input type="hidden" name="idUserDelete" value="@UserCompositeModel.deductions.id_deduction" />
+                                    <input type="hidden" name="idUserEdit" value="@UserCompositeModel.User.id" />
                                     <input type="hidden" name="idUserLogin" value="@idModel" />
                                     <button type="submit" class="btn btn-primary delete">Eliminar<i class='bx bx-message-square-x'></i></button>
                                 </form>

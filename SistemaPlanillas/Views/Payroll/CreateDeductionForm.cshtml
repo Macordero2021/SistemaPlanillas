@@ -5,7 +5,6 @@
     string UserDepart = ViewBag.UserDept;
 }
 
-
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
 <head>
     <meta charset="utf-8">
@@ -41,12 +40,6 @@
                     <li>
                         <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("DeductionsModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Deductions</font></font></a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("ExtraPayModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ExtraPayment</font></font></a>
-                    </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -62,23 +55,14 @@
             <form action="/PayRoll/storeDeduction" method="post">
                 <div class="form-group">
                     <h1>Create deduction</h1>
-
+                    <input type="hidden" name="idUserEdit" value="@Model.User.id" />
                     <div class="form-group">
                         <label for="NewDepartments" class="form-label mt-4">Email</label>
-                        <select class="form-select" id="NewDepartments" name="email" required>
-                            <option>Choose a user</option>
-                            @foreach (var users in Model.UsersList)
-                            {
-                                {
-                                    <option>@users.email</option>
-                                }
-                            }
-                        </select>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="email" value="@Model.User.email" name="email" readonly>
                     </div>
-                    <label for="NewDepartments" class="form-label mt-4">Description</label>
+                    <label class="form-label mt-4">Description</label>
 
                     <div class="form-floating mb-3">
-
                         <input type="text" class="form-control" id="floatingInput" placeholder="descripcion" value="" name="descripcion">
                         <label for="floatingInput">descripcion</label>
                     </div>

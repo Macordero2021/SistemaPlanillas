@@ -1,5 +1,8 @@
-﻿@{
+﻿@model List<SistemaPlanillas.Models.Users>
+
+@{
     string UserDepart = ViewBag.UserDept;
+    string idModel = ViewBag.idModel;
     ViewBag.Title = "PayrollModule";
 }
 
@@ -12,6 +15,7 @@
     <!-- Custom styles for this template -->
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
     <link href="~/Content/StyleForms.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -23,25 +27,19 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     @if (ViewBag.UserDept == "Human Resources")
                     {
                         <li>
-                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
                         </li>
                     }
                     <li>
-                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("DeductionsModule", "Payroll", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Deductions</font></font></a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("ExtraPayModule", "Payroll", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ExtraPayment</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -53,7 +51,72 @@
         </div>
     </nav>
 
-    <h1>Modulo Planillas</h1>
+    <main class="assign-role-wrapper">
+        <div class="container">
+            <div class="look-container">
+                <h1>LOOK UP FOR AN SPECIFIC USER</h1>
+                <form action="@Url.Action("PayrollModule", "Payroll", new { id = idModel })" method="get" class="search-form">
+                    <div class="input-group">
+                        <div class="form-outline">
+                            <input name="nameOrEmail" placeholder="Search for an user using the name or email" class="form-control" />
+                        </div>
+                        <button type="submit" class="btn btn-primary d-flex align-items-center">
+                            <i class='bx bx-search-alt me-2'></i>Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <h1>LIST OF USERS</h1>
+
+            <br />
+
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var Users in Model)
+                    {
+                        <tr>
+                            <td>@Users.name</td>
+                            <td>@Users.email</td>
+
+                            <td>
+                                <form action="/Payroll/DeductionsModule" method="get">
+                                    <input type="hidden" name="idUserEdit" value="@Users.id" />
+                                    <input type="hidden" name="idUserLogin" value="@idModel" />
+                                    <button type="submit" class="btn btn-primary delete">Deductions<i class='bx bx-edit-alt'></i></button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/Payroll/ExtraPayModule" method="get">
+                                    <input type="hidden" name="idUserEdit" value="@Users.id" /> 
+                                    <input type="hidden" name="idUserLogin" value="@idModel" />
+                                    <button type="submit" class="btn btn-primary create">Extra Payments<i class='bx bx-message-square-x'></i></button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/Payroll/deleteExtraPayment" method="get">
+                                    <input type="hidden" name="idUserEdit" value="@Users.id" />
+                                    <input type="hidden" name="idUserLogin" value="@idModel" />
+                                    <button type="submit" class="btn btn-primary">Payroll<i class='bx bx-message-square-x'></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </main>
 
     @Scripts.Render("~/bundles/bootstrap")
 </body>

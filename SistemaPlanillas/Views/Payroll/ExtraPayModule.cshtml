@@ -42,12 +42,6 @@
                     <li>
                         <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("DeductionsModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Deductions</font></font></a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("ExtraPayModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ExtraPayment</font></font></a>
-                    </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -60,21 +54,11 @@
 
     <main class="assign-role-wrapper">
         <div class="container">
-            <div class="look-container">
-                <h1>LOOK UP FOR AN SPECIFIC USER</h1>
-                <form action="@Url.Action("ExtraPayModule", "Payroll", new { id = idModel })" method="get" class="search-form">
-                    <div class="input-group">
-                        <div class="form-outline">
-                            <input name="nameOrEmail" placeholder="Search for an user using the name or email" class="form-control" />
-                        </div>
-                        <button type="submit" class="btn btn-primary d-flex align-items-center">
-                            <i class='bx bx-search-alt me-2'></i>Search
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <h1>LIST OF EXTRAORDINAY PAYMENTS</h1>
+            @foreach (var UserCompositeModel in Model)
+            {
+                <h1>List of Extraordinary payments of:  @UserCompositeModel.User.name</h1>
+                break;
+            }
 
             <form action="/Payroll/CreateExtraPaymentForm" method="get">
                 <input type="hidden" name="idUserLogin" value="@idModel" />
@@ -109,14 +93,14 @@
 
                             <td>
                                 <form action="/Payroll/EditExtraPaymentForm" method="get">
-                                    <input type="hidden" name="idUserEdit" value="@UserCompositeModel.Extraordinary_Payment.id_extraordinary_payment" /><!--PENDING-->
+                                    <input type="hidden" name="idUserEdit" value="@UserCompositeModel.Extraordinary_Payment.id_extraordinary_payment" />
                                     <input type="hidden" name="idUserLogin" value="@idModel" />
                                     <button type="submit" class="btn btn-primary">Editar<i class='bx bx-edit-alt'></i></button>
                                 </form>
                             </td>
                             <td>
                                 <form action="/Payroll/deleteExtraPayment" method="get">
-                                    <input type="hidden" name="idUserDelete" value="@UserCompositeModel.Extraordinary_Payment.id_extraordinary_payment" /> <!--PENDING-->
+                                    <input type="hidden" name="idUserDelete" value="@UserCompositeModel.Extraordinary_Payment.id_extraordinary_payment" /> 
                                     <input type="hidden" name="idUserLogin" value="@idModel" />
                                     <button type="submit" class="btn btn-primary delete">Eliminar<i class='bx bx-message-square-x'></i></button>
                                 </form>
