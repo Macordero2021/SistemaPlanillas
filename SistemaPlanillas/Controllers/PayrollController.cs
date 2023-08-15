@@ -60,10 +60,92 @@ namespace SistemaPlanillas.Controllers
             return View(usersWithInfo);
         }
 
-        public ActionResult PayrollModule(int id, string nameOrEmail)
+        public ActionResult EditHumanResources(int id)
         {
-            Users userDept = _db.Users.Where(x => x.id == id).FirstOrDefault();
-            var department = _db.Departaments.Where(x => x.id == userDept.Fk_Id_Deparment).FirstOrDefault();
+            string idUserLogin = Request.QueryString["idUserLogin"];
+
+            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
+            Users users = _db.Users.Where(x => x.id == id).FirstOrDefault();
+            User_RolAndDepartment RoleDeparment = _db.User_RolAndDepartment.Where(x => x.fk_id_user == id).FirstOrDefault();
+            User_Status Status1 = _db.User_Status.Where(x => x.id == users.fk_id_status).FirstOrDefault();
+            List<User_Status> status2 = _db.User_Status.ToList();
+            List<Departaments> departaments = _db.Departaments.ToList();
+            List<Salary_Type> salary_Types = _db.Salary_Type.ToList();
+
+            // Create a view model containing all the retrieved lists and pass it to the view.
+            UserToEdit viewModel = new UserToEdit
+            {
+                userToEdit = users,
+                statusToEdit = Status1,
+                StatusList = status2,
+                DepartamentsList = departaments,
+                salary_Types = salary_Types
+            };
+
+            ViewBag.idModel = id.ToString();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult StoreEditHumanForm(FormCollection form)
+        {
+            var idModel = form["idUserAdmin"];
+
+            // Retrieve the new and old names of the role from the form data.
+            string NewDepartment = form["NewDepartments"];
+            string NewStatus = form["NewStatus"];
+            string NewPaymentMethod = form["NewPaymentMethod"];
+            string NewSalary = form["NewSalary"];
+            string idEdit = form["id"];
+            int idEditInt = int.Parse(idEdit.ToString());
+
+            // Retrieve the user's info to update
+            Users UserId2 = _db.Users.Where(x => x.id == idEditInt).FirstOrDefault();
+
+            if (NewDepartment != "Choose a new department")
+            {
+                var idDepartament = _db.Departaments.Where(x => x.name_departament == NewDepartment).FirstOrDefault();
+                UserId2.Fk_Id_Deparment = idDepartament.id;
+
+                var idDeparment2 = _db.User_RolAndDepartment.Where(x => x.fk_id_user == UserId2.id).FirstOrDefault();
+                idDeparment2.fk_id_departament = idDepartament.id;
+
+            }
+
+            if (NewStatus != "Choose a new Status")
+            {
+                var idstatus = _db.User_Status.Where(x => x.name_status == NewStatus).FirstOrDefault();
+                UserId2.fk_id_status = idstatus.id;
+            }
+
+            if (NewPaymentMethod != "Choose a new PaymentMethod")
+            {
+                //eliminar de la tabla de usuarios el campo fk_id_paymentmethod y luego eliminar la tabla que se llama Payment_Method
+                //UserId2.fk_id_paymentmethod = salaryType.id;
+
+                var salaryType = _db.Salary_Type.Where(x => x.SalaryType == NewPaymentMethod).FirstOrDefault();
+                var typeSalaryTableSalary = _db.Salary.Where(x => x.fk_user == UserId2.id).FirstOrDefault();
+                typeSalaryTableSalary.fk_salary_type = salaryType.id;
+            }
+
+            if (NewSalary != "")
+            {
+                var userTableSalary = _db.Salary.Where(x => x.fk_user == UserId2.id).FirstOrDefault();
+                decimal salaryFloat = decimal.Parse(NewSalary);
+                userTableSalary.SalaryAmount = salaryFloat;
+            }
+
+            _db.SaveChanges();
+            return RedirectToAction("HumanResources", new { id = idModel, nameOrEmail = "" });
+        }
+
+        public ActionResult PayrollModule(int userId, string nameOrEmail)
+        {
+            // Verificar si nameOrEmail no es nulo y luego eliminar los espacios en blanco del inicio y final
+            if (nameOrEmail != null)
+            {
+                nameOrEmail = nameOrEmail.Trim();
+            }
 
             List<Users> userList;
             if (string.IsNullOrEmpty(nameOrEmail))
@@ -77,22 +159,20 @@ namespace SistemaPlanillas.Controllers
                 userList = _db.Users.Where(x => x.name.Contains(nameOrEmail) || x.email.Contains(nameOrEmail)).ToList();
             }
 
+            // Get the department of the logged user
+            Users userDept = _db.Users.Where(x => x.id == userId).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userDept.Fk_Id_Deparment).FirstOrDefault();
             ViewBag.UserDept = department.name_departament;
+
             // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
-            ViewBag.idModel = id.ToString();
+            ViewBag.userId = userId;
             return View(userList);
         }
 
-        public ActionResult DeductionsModule()
+        public ActionResult DeductionsModule(int idUserLogin, int idUserEdit)
         {
-            var idUserLogin = Request.QueryString["idUserLogin"];
-            var idUserEdit = Request.QueryString["idUserEdit"];
-
-            int userId = int.Parse(idUserLogin);
-            int id = int.Parse(idUserEdit);
-
             // Retrieve users matching the provided nameOrEmail.
-            List<Users> users = _db.Users.Where(x => x.id == id).ToList();
+            List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
 
             var usersWithDeductions = (from user in users
                                        join deduction in _db.Deductions on user.id equals deduction.fk_idUser
@@ -104,17 +184,139 @@ namespace SistemaPlanillas.Controllers
                                            deduction_Type = deductionType
                                        }).ToList();
 
-            //get the department of the logged user
-            Users userModel = _db.Users.Where(x => x.id == userId).FirstOrDefault();
+            // Get the department of the logged user
+            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
             var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
 
             ViewBag.UserDept = department.name_departament;
 
-            // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
-            ViewBag.idModel = idUserLogin;
+            // Get the id of the logged-in user and the user to edit
+            ViewBag.idUserLogin = idUserLogin;
             ViewBag.idUserEdit = idUserEdit;
 
             return View(usersWithDeductions);
+        }
+
+        public ActionResult CreateDeductionForm(int idUserLogin, int idUserEdit)
+        {
+            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
+            Users user = _db.Users.Where(x => x.id == idUserEdit).FirstOrDefault();
+            List<Deduction_type> deductionsType = _db.Deduction_type.ToList();  
+
+            // Create a view model containing all the retrieved lists and pass it to the view.
+            UserCompositeModel viewModel = new UserCompositeModel
+            {
+                User = user,
+                deduction_TypeList = deductionsType,
+            };
+
+            // Get the department of the logged user
+            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
+            ViewBag.UserDept = department.name_departament;
+
+            // Get the id of the logged-in user
+            ViewBag.idUserLogin = idUserLogin;
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult storeDeduction(string description, string typeDeductions, string amount, int idUserLogin, int idUserEdit)
+        {
+            if (description == "" || typeDeductions == "Choose a Deduction type" || amount == "")
+            {
+                //returnar a la vista de nuevo a llevar este campo
+                //mandan un temp diciendo que debe llenar los campos
+                return RedirectToAction("CreateDeductionForm", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
+            }
+            else
+            {
+                var user = _db.Users.Where(x => x.id == idUserEdit).FirstOrDefault();
+                var idDeductionType = _db.Deduction_type.Where(x => x.deduction_name == typeDeductions).FirstOrDefault();
+
+                Deductions storeDeduction = new Deductions
+                {
+                    fk_idUser = user.id,
+                    notes = description,
+                    fk_idDeductionType = idDeductionType.id_Deduction_type,
+                    deduction_value = decimal.Parse(amount)
+                };
+                _db.Deductions.Add(storeDeduction);
+                _db.SaveChanges();
+
+                TempData["CreateStatus"] = "success";
+
+                return RedirectToAction("DeductionsModule", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
+            }
+        }
+
+        public ActionResult EditDeductionForm(int idUserLogin, int idDeductEdit)
+        {
+            //el id de la tabla de deductions del que se va editar
+            var editDeduction = _db.Deductions.Where(x => x.id_deduction == idDeductEdit).FirstOrDefault();
+
+            //traer el email
+            Users user = _db.Users.Where(x => x.id == editDeduction.fk_idUser).FirstOrDefault();
+            //pasar el deductions para la descripcion
+            Deductions deductions = _db.Deductions.Where(x => x.id_deduction == editDeduction.id_deduction).FirstOrDefault();
+            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
+            List<Deduction_type> deductionsType = _db.Deduction_type.ToList();
+            Deduction_type deductionTypeActual = _db.Deduction_type.Where(x => x.id_Deduction_type == editDeduction.fk_idDeductionType).FirstOrDefault();
+
+            // Create a view model containing all the retrieved lists and pass it to the view.
+            UserCompositeModel viewModel = new UserCompositeModel
+            {
+                deduction_TypeList = deductionsType,
+                User = user,
+                deductions = deductions,
+                deduction_Type = deductionTypeActual
+            };
+
+            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
+            ViewBag.UserDept = department.name_departament;
+
+            ViewBag.idUserLogin = idUserLogin;
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult StoreEditDeduction(string description, string typeDeductions, string amount, int idUserLogin, int idDeductionEdit, int idUserEdit)
+        {
+            if (description == "" || typeDeductions == "Choose a Deduction type" || amount == "")
+            {
+                //returnar a la vista de nuevo a llevar este campo
+
+                //mandan un temp diciendo que debe llenar los campos
+                return RedirectToAction("EditDeductionForm", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
+            }
+            else
+            {
+                //traer el id nuevo tipo de deduccion
+                var deductionTypeId = _db.Deduction_type.Where(x => x.deduction_name == typeDeductions).FirstOrDefault();
+
+                Deductions deductionEditStore = _db.Deductions.Where(x => x.id_deduction == idDeductionEdit).FirstOrDefault();
+                deductionEditStore.notes = description;
+                deductionEditStore.fk_idDeductionType = deductionTypeId.id_Deduction_type;
+                deductionEditStore.deduction_value = decimal.Parse(amount);
+
+                _db.SaveChanges();
+
+                TempData["UpdateStatus"] = "success";
+                return RedirectToAction("DeductionsModule", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
+            }
+        }
+
+        public ActionResult deleteDeduction(int idUserLogin, int idUserEdit, int idDeductDelete)
+        {
+            Deductions deleteDeduction = _db.Deductions.Where(x => x.id_deduction == idDeductDelete).FirstOrDefault();
+            _db.Deductions.Remove(deleteDeduction);
+            _db.SaveChanges();
+
+            TempData["DeleteStatus"] = "success";
+            return RedirectToAction("DeductionsModule", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
         }
 
         public ActionResult ExtraPayModule()
@@ -149,240 +351,6 @@ namespace SistemaPlanillas.Controllers
             return View(usersWithExtraordinaryPayment);
         }
 
-        public ActionResult EditHumanResources(int id)
-        {
-            string idUserLogin = Request.QueryString["idUserLogin"];
-
-            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
-            Users users = _db.Users.Where(x => x.id == id).FirstOrDefault();
-            User_RolAndDepartment RoleDeparment = _db.User_RolAndDepartment.Where(x => x.fk_id_user == id).FirstOrDefault();
-            User_Status Status1 = _db.User_Status.Where(x => x.id == users.fk_id_status).FirstOrDefault();
-            List<User_Status> status2 = _db.User_Status.ToList();
-            List<Departaments> departaments = _db.Departaments.ToList();
-            List<Salary_Type> salary_Types = _db.Salary_Type.ToList();
-
-            // Create a view model containing all the retrieved lists and pass it to the view.
-            UserToEdit viewModel = new UserToEdit
-            {
-                userToEdit = users,
-                statusToEdit = Status1,
-                StatusList = status2,
-                DepartamentsList = departaments,
-                salary_Types = salary_Types
-            };
-
-            ViewBag.idModel = id.ToString();
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public ActionResult StoreEditHumanForm(FormCollection form)
-        {
-            var idModel = form["idUserAdmin"]; 
-
-            // Retrieve the new and old names of the role from the form data.
-            string NewDepartment = form["NewDepartments"];
-            string NewStatus = form["NewStatus"];
-            string NewPaymentMethod = form["NewPaymentMethod"];
-            string NewSalary = form["NewSalary"];
-            string idEdit = form["id"];
-            int idEditInt = int.Parse(idEdit.ToString());
-
-            // Retrieve the user's info to update
-            Users UserId2 = _db.Users.Where(x => x.id == idEditInt).FirstOrDefault();
-
-            if (NewDepartment != "Choose a new department")
-            {
-                var idDepartament = _db.Departaments.Where(x => x.name_departament == NewDepartment).FirstOrDefault();
-                UserId2.Fk_Id_Deparment = idDepartament.id;
-
-                var idDeparment2 = _db.User_RolAndDepartment.Where(x => x.fk_id_user == UserId2.id).FirstOrDefault();  
-                idDeparment2.fk_id_departament = idDepartament.id;      
-
-            }
-            
-            if (NewStatus != "Choose a new Status")
-            {
-                var idstatus = _db.User_Status.Where(x => x.name_status == NewStatus).FirstOrDefault();
-                UserId2.fk_id_status = idstatus.id;
-            }
-
-            if(NewPaymentMethod != "Choose a new PaymentMethod")
-            {
-                //eliminar de la tabla de usuarios el campo fk_id_paymentmethod y luego eliminar la tabla que se llama Payment_Method
-                //UserId2.fk_id_paymentmethod = salaryType.id;
-
-                var salaryType = _db.Salary_Type.Where(x => x.SalaryType == NewPaymentMethod).FirstOrDefault();
-                var typeSalaryTableSalary = _db.Salary.Where(x => x.fk_user == UserId2.id).FirstOrDefault();
-                typeSalaryTableSalary.fk_salary_type = salaryType.id;
-            }
-
-            if (NewSalary != "")
-            {
-                var userTableSalary = _db.Salary.Where(x => x.fk_user == UserId2.id).FirstOrDefault();
-                decimal salaryFloat = decimal.Parse(NewSalary);
-                userTableSalary.SalaryAmount = salaryFloat;
-            }
-
-            _db.SaveChanges();
-            return RedirectToAction("HumanResources", new { id = idModel, nameOrEmail = "" });
-        }
-
-        public ActionResult CreateDeductionForm()
-        {
-            string idUserLogin = Request.QueryString["idUserLogin"];
-            string idUserEdit = Request.QueryString["idUserEdit"];
-
-            int idUserLoginInt = Convert.ToInt32(Request.QueryString["idUserLogin"]);
-            int idEditInt = int.Parse(idUserEdit);
-
-            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
-            Users user = _db.Users.Where(x => x.id == idEditInt).FirstOrDefault();
-            List<Deduction_type> deductionsType = _db.Deduction_type.ToList();  
-
-            // Create a view model containing all the retrieved lists and pass it to the view.
-            UserCompositeModel viewModel = new UserCompositeModel
-            {
-                User = user,
-                deduction_TypeList = deductionsType,
-            };
-
-            Users userModel = _db.Users.Where(x => x.id == idUserLoginInt).FirstOrDefault();
-            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
-            ViewBag.UserDept = department.name_departament;
-
-            ViewBag.idModel = idUserLogin;
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public ActionResult storeDeduction(FormCollection form)
-        {
-            var email = form["email"];
-            var descripcion = form["descripcion"];
-            var typeDeductions = form["typeDeductions"];
-            var amount = form["amount"];
-            var idModel = form["id"];
-            var idUserEdit = form["idUserEdit"];
-
-            if (email == "Choose a use" || descripcion == "" || typeDeductions == "Choose a Deduction type" || amount == "")
-            {
-                //returnar a la vista de nuevo a llevar este campo
-                //mandan un temp diciendo que debe llenar los campos
-                return RedirectToAction("CreateDeductionForm", new { idUserLogin = idModel, idUserEdit = idUserEdit });
-            }
-            else
-            {
-                var user = _db.Users.Where(x => x.email == email).FirstOrDefault();
-                var idDeductionType = _db.Deduction_type.Where(x => x.deduction_name == typeDeductions).FirstOrDefault();
-
-                Deductions storeDeduction = new Deductions 
-                {
-                    fk_idUser = user.id ,
-                    notes = descripcion,
-                    fk_idDeductionType = idDeductionType.id_Deduction_type,
-                    deduction_value = decimal.Parse(amount)
-                };
-                _db.Deductions.Add(storeDeduction);
-                _db.SaveChanges();
-                //returnar el temp donde diga que se creo una deduccion correctamente
-                return RedirectToAction("DeductionsModule", new { idUserLogin = idModel, idUserEdit = idUserEdit });
-            }
-        }
-
-        public ActionResult deleteDeduction()
-        {
-            string idUserLogin = Request.QueryString["idUserLogin"];
-            string idUserDelete = Request.QueryString["idUserDelete"];
-            string idUserEdit = Request.QueryString["idUserEdit"];
-
-            int idToDelete = int.Parse(idUserDelete);
-            int idUserEditInt = int.Parse(idUserEdit);
-
-            Deductions deleteDeduction = _db.Deductions.Where(x => x.id_deduction == idToDelete).FirstOrDefault();
-            _db.Deductions.Remove(deleteDeduction);
-            _db.SaveChanges();
-            //returnar un temp donde diga que la deduccion se elimino correctamente
-            return RedirectToAction("DeductionsModule", new { idUserLogin = idUserLogin, idUserEdit = idUserEditInt });
-        }
-
-        public ActionResult EditDeductionForm()
-        {
-            string idUserLogin = Request.QueryString["idUserLogin"];
-            string idUserEdit = Request.QueryString["idUserEdit"];
-            int idToEdit = int.Parse(idUserEdit);
-
-            //el id de la tabla de deductions del que se va editar
-            var editDeduction = _db.Deductions.Where(x => x.id_deduction == idToEdit).FirstOrDefault();
-
-            //traer el email
-            Users user = _db.Users.Where(x => x.id == editDeduction.fk_idUser).FirstOrDefault();
-
-            //pasar el nota
-            Deductions deductions = _db.Deductions.Where(x => x.id_deduction == editDeduction.id_deduction).FirstOrDefault ();    
-
-            // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
-            List<Deduction_type> deductionsType = _db.Deduction_type.ToList();
-
-            Deduction_type deductionTypeActual = _db.Deduction_type.Where(x => x.id_Deduction_type == editDeduction.fk_idDeductionType).FirstOrDefault();
-
-            // Create a view model containing all the retrieved lists and pass it to the view.
-            UserCompositeModel viewModel = new UserCompositeModel
-            {
-                deduction_TypeList = deductionsType,
-                User = user,
-                deductions = deductions,
-                deduction_Type = deductionTypeActual
-            };
-
-            int idUserLoginInt = Convert.ToInt32(Request.QueryString["idUserLogin"]);
-            Users userModel = _db.Users.Where(x => x.id == idUserLoginInt).FirstOrDefault();
-            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
-
-            ViewBag.UserDept = department.name_departament;
-
-            ViewBag.idModel = idUserLogin;
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public ActionResult storeEditDeduction(FormCollection form)
-        {
-            var email = form["email"];
-            var descripcion = form["description"];
-            var typeDeductions = form["typeDeductions"];
-            var amount = form["amount"];
-            var idModel = form["id"];
-            var idDeduction = form["idDeductionEdit"];
-            var idUserEdit = form["idUserEdit"];
-            if (email == "Choose a use" || descripcion == "" || typeDeductions == "Choose a Deduction type" || amount == "")
-            {
-                //returnar a la vista de nuevo a llevar este campo
-
-                //mandan un temp diciendo que debe llenar los campos
-                return RedirectToAction("EditDeductionForm", new { idUserLogin = idModel, idUserEdit = idUserEdit });
-            }
-            else
-            {
-                //deduccion que se va editar
-                int idDeductionInt = Convert.ToInt32(idDeduction);
-
-                //traer el id nuevo tipo de deduccion
-                var deductionTypeId = _db.Deduction_type.Where(x => x.deduction_name == typeDeductions).FirstOrDefault();
-
-                Deductions deductionEditStore = _db.Deductions.Where(x => x.id_deduction == idDeductionInt).FirstOrDefault();
-                deductionEditStore.notes = descripcion;
-                deductionEditStore.fk_idDeductionType = deductionTypeId.id_Deduction_type;
-                deductionEditStore.deduction_value = decimal.Parse(amount);
-
-                _db.SaveChanges();
-                //enviar un temp que diga que el la deduccion se actualizo correctamente
-                return RedirectToAction("DeductionsModule", new { idUserLogin = idModel, idUserEdit = idUserEdit });
-            }
-        }
-
         public ActionResult CreateExtraPaymentForm()
         {
             string idUserLogin = Request.QueryString["idUserLogin"];
@@ -400,16 +368,15 @@ namespace SistemaPlanillas.Controllers
             };
 
             int idUserLoginInt = Convert.ToInt32(Request.QueryString["idUserLogin"]);
+
             Users userModel = _db.Users.Where(x => x.id == idUserLoginInt).FirstOrDefault();
             var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
-
             ViewBag.UserDept = department.name_departament;
 
             ViewBag.idModel = idUserLogin;
 
             return View(viewModel);
         }
-
 
         [HttpPost]
         public ActionResult storeExtraPayment(FormCollection form)
@@ -452,21 +419,6 @@ namespace SistemaPlanillas.Controllers
                 return RedirectToAction("ExtraPayModule", new { id = idModel });
             }
         }
-
-        public ActionResult deleteExtraPayment()
-        {
-            string idUserLogin = Request.QueryString["idUserLogin"];
-            string idUserDelete = Request.QueryString["idUserDelete"];
-
-            int idToDelete = int.Parse(idUserDelete);
-            Extraordinary_payment deleteExtraPayment = _db.Extraordinary_payment.Where(x => x.id_extraordinary_payment == idToDelete).FirstOrDefault();
-            _db.Extraordinary_payment.Remove(deleteExtraPayment);
-            _db.SaveChanges();
-            //returnar un temp donde diga que la deduccion se elimino correctamente
-            return RedirectToAction("ExtraPayModule", new { id = idUserLogin });
-        }
-
-
 
         public ActionResult EditExtraPaymentForm()
         {
@@ -544,8 +496,18 @@ namespace SistemaPlanillas.Controllers
                 return RedirectToAction("ExtraPayModule", new { id = idModel });
             }
         }
+        public ActionResult deleteExtraPayment()
+        {
+            string idUserLogin = Request.QueryString["idUserLogin"];
+            string idUserDelete = Request.QueryString["idUserDelete"];
 
-
+            int idToDelete = int.Parse(idUserDelete);
+            Extraordinary_payment deleteExtraPayment = _db.Extraordinary_payment.Where(x => x.id_extraordinary_payment == idToDelete).FirstOrDefault();
+            _db.Extraordinary_payment.Remove(deleteExtraPayment);
+            _db.SaveChanges();
+            //returnar un temp donde diga que la deduccion se elimino correctamente
+            return RedirectToAction("ExtraPayModule", new { id = idUserLogin });
+        }
 
     }
 }

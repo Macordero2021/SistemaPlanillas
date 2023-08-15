@@ -1,9 +1,12 @@
 ﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
 
 @{
-    string idModel = ViewBag.idModel;
     string UserDepart = ViewBag.UserDept;
-    string idUserEdit = ViewBag.idUserEdit;
+    int idUserLogin = ViewBag.idUserLogin;
+    int idUserEdit = ViewBag.idUserEdit;
+    var deleteStatus = TempData["DeleteStatus"] as string;
+    var createStatus = TempData["CreateStatus"] as string;
+    var updateStatus = TempData["UpdateStatus"] as string;
 }
 
 
@@ -17,6 +20,10 @@
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
     <link href="~/Content/StyleForms.css" rel="stylesheet" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
 </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -28,19 +35,19 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     @if (ViewBag.UserDept == "Human Resources")
                     {
                         <li>
-                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
                         </li>
                     }
                     <li>
-                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -60,8 +67,8 @@
                 break;
             }
 
-            <form action="/Payroll/CreateDeductionForm" method="get">
-                <input type="hidden" name="idUserLogin" value="@idModel" />
+            <form action="/Payroll/CreateDeductionForm">
+                <input type="hidden" name="idUserLogin" value="@idUserLogin" />
                 <input type="hidden" name="idUserEdit" value="@idUserEdit" />
                 <button type="submit" class="btn btn-primary create">Create Deduction <i class='bx bx-message-square-add'></i></button>
             </form>
@@ -92,16 +99,17 @@
 
                             <td>
                                 <form action="/Payroll/EditDeductionForm" method="get">
-                                    <input type="hidden" name="idUserEdit" value="@UserCompositeModel.deductions.id_deduction" />
-                                    <input type="hidden" name="idUserLogin" value="@idModel" />
+                                    <input type="hidden" name="idDeductEdit" value="@UserCompositeModel.deductions.id_deduction" />
+                                    <input type="hidden" name="idUserLogin" value="@idUserLogin" />
                                     <button type="submit" class="btn btn-primary">Editar<i class='bx bx-edit-alt'></i></button>
                                 </form>
                             </td>
                             <td>
-                                <form action="/Payroll/deleteDeduction" method="get">
-                                    <input type="hidden" name="idUserDelete" value="@UserCompositeModel.deductions.id_deduction" />
+                                <form action="/Payroll/deleteDeduction" method="get" id="deleteForm">
+                                    <input type="hidden" name="idUserLogin" value="@idUserLogin" />
                                     <input type="hidden" name="idUserEdit" value="@UserCompositeModel.User.id" />
-                                    <input type="hidden" name="idUserLogin" value="@idModel" />
+                                    <input type="hidden" name="idDeductDelete" value="@UserCompositeModel.deductions.id_deduction" />
+
                                     <button type="submit" class="btn btn-primary delete">Eliminar<i class='bx bx-message-square-x'></i></button>
                                 </form>
                             </td>
@@ -111,6 +119,57 @@
             </table>
         </div>
     </main>
+
+    @if (!string.IsNullOrEmpty(deleteStatus))
+    {
+        <script>
+            if ('@deleteStatus' === "success") {
+                Swal.fire({
+                    icon: "success",
+                    title: "Deduction Deleted",
+                    timer: 2000,
+                    timerProgressBar: true,
+                });
+            } else if ('@deleteStatus' === "error") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error Deleting Deduction",
+                    text: "An error occurred while deleting the deduction.",
+                });
+            }
+            deleteStatus = "";
+        </script>
+    }
+
+    @if (!string.IsNullOrEmpty(createStatus))
+    {
+        <script>
+            if ('@createStatus' === "success") {
+                Swal.fire({
+                    icon: "success",
+                    title: "Deduction Created",
+                    timer: 2000, 
+                    timerProgressBar: true,
+                });
+            }
+            createStatus = "";
+        </script>
+    }
+
+    @if (!string.IsNullOrEmpty(updateStatus))
+    {
+        <script>
+            if ('@updateStatus' === "success") {
+                Swal.fire({
+                    icon: "success",
+                    title: "Deduction Updated",
+                    timer: 2000,
+                    timerProgressBar: true,
+                });
+            }
+            updateStatus = "";
+        </script>
+    }
 
     @Scripts.Render("~/bundles/bootstrap")
 </body>

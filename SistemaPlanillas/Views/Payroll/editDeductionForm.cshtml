@@ -1,7 +1,7 @@
 ﻿@model SistemaPlanillas.Models.UserCompositeModel
 
 @{
-    string idModel = ViewBag.idModel;
+    int idUserLogin = ViewBag.idUserLogin;
     string UserDepart = ViewBag.UserDept;
 }
 
@@ -27,19 +27,19 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     @if (ViewBag.UserDept == "Human Resources")
                     {
                         <li>
-                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
                         </li>
                     }
                     <li>
-                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -101,7 +101,7 @@
                 </div>
                 <input type="hidden" name="idDeductionEdit" value="@Model.deductions.id_deduction" />
                 <input type="hidden" name="idUserEdit" value="@Model.User.id" />
-                <input type="hidden" name="id" value="@idModel" />
+                <input type="hidden" name="idUserLogin" value="@idUserLogin" />
             </form>
 
         </div><!--================ End of Form container =================-->
