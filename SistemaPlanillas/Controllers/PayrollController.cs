@@ -246,7 +246,6 @@ namespace SistemaPlanillas.Controllers
                 _db.SaveChanges();
 
                 TempData["CreateStatus"] = "success";
-
                 return RedirectToAction("DeductionsModule", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
             }
         }

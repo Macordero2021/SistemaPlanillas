@@ -7,6 +7,8 @@
     var deleteStatus = TempData["DeleteStatus"] as string;
     var createStatus = TempData["CreateStatus"] as string;
     var updateStatus = TempData["UpdateStatus"] as string;
+
+    var userCompositeModel = Model.FirstOrDefault();
 }
 
 
@@ -20,10 +22,8 @@
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
     <link href="~/Content/StyleForms.css" rel="stylesheet" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -61,19 +61,14 @@
 
     <main class="assign-role-wrapper">
         <div class="container">
-            @foreach (var UserCompositeModel in Model)
-            {
-                <h1>List of deductions of: @UserCompositeModel.User.name </h1>
-                break;
-            }
 
-            <form action="/Payroll/CreateDeductionForm">
+            <h1>List of deductions for: @userCompositeModel.User.name </h1>
+
+            <form action="/Payroll/CreateDeductionForm" style="margin-bottom:40px">
                 <input type="hidden" name="idUserLogin" value="@idUserLogin" />
                 <input type="hidden" name="idUserEdit" value="@idUserEdit" />
                 <button type="submit" class="btn btn-primary create">Create Deduction <i class='bx bx-message-square-add'></i></button>
             </form>
-
-            <br />
 
             <table class="table">
                 <thead>
@@ -101,7 +96,7 @@
                                 <form action="/Payroll/EditDeductionForm" method="get">
                                     <input type="hidden" name="idDeductEdit" value="@UserCompositeModel.deductions.id_deduction" />
                                     <input type="hidden" name="idUserLogin" value="@idUserLogin" />
-                                    <button type="submit" class="btn btn-primary">Editar<i class='bx bx-edit-alt'></i></button>
+                                    <button type="submit" class="btn btn-primary">Edit<i class='bx bx-edit-alt'></i></button>
                                 </form>
                             </td>
                             <td>
@@ -110,7 +105,7 @@
                                     <input type="hidden" name="idUserEdit" value="@UserCompositeModel.User.id" />
                                     <input type="hidden" name="idDeductDelete" value="@UserCompositeModel.deductions.id_deduction" />
 
-                                    <button type="submit" class="btn btn-primary delete">Eliminar<i class='bx bx-message-square-x'></i></button>
+                                    <button type="submit" class="btn btn-primary delete">Remove<i class='bx bx-message-square-x'></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -120,24 +115,17 @@
         </div>
     </main>
 
+    <script src="~/Scripts/JS/SweetAlerts.js"></script>
+
     @if (!string.IsNullOrEmpty(deleteStatus))
     {
         <script>
             if ('@deleteStatus' === "success") {
-                Swal.fire({
-                    icon: "success",
-                    title: "Deduction Deleted",
-                    timer: 2000,
-                    timerProgressBar: true,
-                });
+                showSuccessAlert("Deduction Deleted", "");
             } else if ('@deleteStatus' === "error") {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error Deleting Deduction",
-                    text: "An error occurred while deleting the deduction.",
-                });
+                showErrorAlert("Error Deleting Deduction", "An error occurred while deleting the deduction.");
             }
-            deleteStatus = "";
+            @TempData["DeleteStatus"] = null;
         </script>
     }
 
@@ -145,14 +133,9 @@
     {
         <script>
             if ('@createStatus' === "success") {
-                Swal.fire({
-                    icon: "success",
-                    title: "Deduction Created",
-                    timer: 2000, 
-                    timerProgressBar: true,
-                });
+                showSuccessAlert("Deduction Created", "");
             }
-            createStatus = "";
+            @TempData["CreateStatus"] = null;
         </script>
     }
 
@@ -160,14 +143,9 @@
     {
         <script>
             if ('@updateStatus' === "success") {
-                Swal.fire({
-                    icon: "success",
-                    title: "Deduction Updated",
-                    timer: 2000,
-                    timerProgressBar: true,
-                });
+                showSuccessAlert("Deduction Updated", "");
             }
-            updateStatus = "";
+            @TempData["UpdateStatus"] = null;
         </script>
     }
 

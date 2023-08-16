@@ -68,10 +68,7 @@
                 </form>
             </div>
 
-            <h1>LIST OF USERS</h1>
-
-            <br />
-
+            <h1 style="margin-bottom:40px">LIST OF USERS</h1>
 
             <table class="table">
                 <thead>
@@ -95,14 +92,14 @@
                                 <form action="/Payroll/DeductionsModule" method="get">
                                     <input type="hidden" name="idUserLogin" value="@userId" />
                                     <input type="hidden" name="idUserEdit" value="@Users.id" />
-                                    <button type="submit" class="btn btn-primary delete">Deductions <i class='bx bx-edit-alt'></i></button>
+                                    <button type="submit" class="btn btn-primary delete">Deductions<i class='bx bx-edit-alt'></i></button>
                                 </form>
                             </td>
                             <td>
                                 <form action="/Payroll/ExtraPayModule" method="get">
                                     <input type="hidden" name="idUserLogin" value="@userId" />
                                     <input type="hidden" name="idUserEdit" value="@Users.id" />
-                                    <button type="submit" class="btn btn-primary create">Extra Payments<i class='bx bx-message-square-x'></i></button>
+                                    <button type="submit" class="btn btn-primary create">Extra Payments<i class='bx bx-message-square-add'></i></button>
                                 </form>
                             </td>
                             <td>
