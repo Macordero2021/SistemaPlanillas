@@ -1,15 +1,12 @@
 ﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
 
 @{
-    ViewBag.Title = "ExtraPaymentModule";
     string UserDepart = ViewBag.UserDept;
     int idUserLogin = ViewBag.idUserLogin;
     int idUserEdit = ViewBag.idUserEdit;
     var deleteStatus = TempData["DeleteStatus"] as string;
     var createStatus = TempData["CreateStatus"] as string;
     var updateStatus = TempData["UpdateStatus"] as string;
-
-    var userCompositeModel = Model.FirstOrDefault();
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -22,6 +19,9 @@
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
     <link href="~/Content/StyleForms.css" rel="stylesheet" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -60,10 +60,11 @@
     <main class="assign-role-wrapper">
         <div class="container">
 
-            <h1>List of Extraordinary payments for: @userCompositeModel.User.name </h1>
+            <h1>List of Extraordinary payments for the user </h1>
 
             <form action="/Payroll/CreateExtraPaymentForm" method="get" style="margin-bottom:40px">
                 <input type="hidden" name="idUserLogin" value="@idUserLogin" />
+                <input type="hidden" name="idUserEdit" value="@idUserEdit" />
                 <button type="submit" class="btn btn-primary create">Create Extra Payment <i class='bx bx-message-square-add'></i></button>
             </form>
 
@@ -92,7 +93,7 @@
 
                             <td>
                                 <form action="/Payroll/EditExtraPaymentForm" method="get">
-                                    <input type="hidden" name="idUserEdit" value="@UserCompositeModel.Extraordinary_Payment.id_extraordinary_payment" />
+                                    <input type="hidden" name="idExtraEdit" value="@UserCompositeModel.Extraordinary_Payment.id_extraordinary_payment" />
                                     <input type="hidden" name="idUserLogin" value="@idUserLogin" />
                                     <button type="submit" class="btn btn-primary">Edit<i class='bx bx-edit-alt'></i></button>
                                 </form>
@@ -101,7 +102,7 @@
                                 <form action="/Payroll/deleteExtraPayment" method="get">
                                     <input type="hidden" name="idUserLogin" value="@idUserLogin" />
                                     <input type="hidden" name="idUserEdit" value="@UserCompositeModel.User.id" />
-                                    <input type="hidden" name="idDeductDelete" value="@UserCompositeModel.deductions.id_deduction" />
+                                    <input type="hidden" name="idExtraDelete" value="@UserCompositeModel.Extraordinary_Payment.id_extraordinary_payment" />
                                     <button type="submit" class="btn btn-primary delete">Remove<i class='bx bx-message-square-x'></i></button>
                                 </form>
                             </td>
@@ -118,9 +119,7 @@
     {
         <script>
             if ('@deleteStatus' === "success") {
-                showSuccessAlert("Deduction Deleted", "");
-            } else if ('@deleteStatus' === "error") {
-                showErrorAlert("Error Deleting Deduction", "An error occurred while deleting the deduction.");
+                showSuccessAlert("Extra Payment Deleted", "");
             }
             @TempData["DeleteStatus"] = null;
         </script>
@@ -130,7 +129,7 @@
     {
         <script>
             if ('@createStatus' === "success") {
-                showSuccessAlert("Deduction Created", "");
+                showSuccessAlert("Extra Payment Created", "");
             }
             @TempData["CreateStatus"] = null;
         </script>
@@ -140,7 +139,7 @@
     {
         <script>
             if ('@updateStatus' === "success") {
-                showSuccessAlert("Deduction Updated", "");
+                showSuccessAlert("Extra Payment Updated", "");
             }
             @TempData["UpdateStatus"] = null;
         </script>

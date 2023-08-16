@@ -1,7 +1,7 @@
 ﻿@model SistemaPlanillas.Models.UserCompositeModel
 
 @{
-    string idModel = ViewBag.idModel;
+    int idUserLogin = ViewBag.idUserLogin;
     string UserDepart = ViewBag.UserDept;
 }
 
@@ -27,19 +27,19 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     @if (ViewBag.UserDept == "Human Resources")
                     {
                         <li>
-                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
                         </li>
                     }
                     <li>
-                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = idModel })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -58,23 +58,14 @@
                     <h1>Create Extra Payment</h1>
 
                     <div class="form-group">
-                        <label for="NewDepartments" class="form-label mt-4">Email</label>
-                        <select class="form-select" id="NewDepartments" name="email" required>
-                            <option>Choose a user</option>
-                            @foreach (var users in Model.UsersList)
-                            {
-                                {
-                                    <option>@users.email</option>
-                                }
-                            }
-                        </select>
+                        <label for="email" class="form-label mt-4">Email</label>
+                        <input type="text" class="form-control" id="email" placeholder="email" value="@Model.User.email" name="User.email" readonly>
                     </div>
+
                     <label for="NewDepartments" class="form-label mt-4">Description</label>
-
                     <div class="form-floating mb-3">
-
-                        <input type="text" class="form-control" id="floatingInput" placeholder="descripcion" value="" name="descripcion">
-                        <label for="floatingInput">descripcion</label>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="description" value="" name="description">
+                        <label for="floatingInput">description</label>
                     </div>
 
                     <div class="form-group">
@@ -83,38 +74,29 @@
                             <option>Choose a extraordinary payment type</option>
                             @foreach (var extraPayments in Model.Payment_TypeList)
                             {
-                                {
-                                    <option>@extraPayments.payment_name</option>
-                                }
+                                <option value="@extraPayments.payment_name">@extraPayments.payment_name</option>
                             }
                         </select>
                     </div>
-                    <label for="NewDepartments" class="form-label mt-4">Amount</label>
 
+                    <label for="NewDepartments" class="form-label mt-4">Amount</label>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingInput" placeholder="amount" value="" name="amount" required>
-                        <label for="floatingInput">amount</label>
+                        <label for="floatingInput">Amount</label>
                     </div>
-
-                    <!-- Add a button to trigger the SweetAlert message -->
-                    <button type="button" id="successButton" style="display:none;"></button>
 
                     <!--================ Buttons =================-->
                     <div class="button-container">
                         <button type="submit">Save</button>
                         <button type="reset">Cancel</button>
-                        <br />
-
                     </div>
                 </div>
-                <input type="hidden" name="id" value="@idModel" />
+                <input type="hidden" name="idUserLogin" value="@idUserLogin" />
+                <input type="hidden" name="idUserEdit" value="@Model.User.id" />
             </form>
 
         </div><!--================ End of Form container =================-->
     </div><!--================ End of Wrapper =================-->
-
-
-
 
     @Scripts.Render("~/bundles/bootstrap")
 </body>

@@ -56,7 +56,6 @@
             <form action="/PayRoll/storeDeduction" method="post">
                 <div class="form-group">
                     <h1>Create deduction</h1>
-                    <input type="hidden" name="idUserEdit" value="@Model.User.id" />
 
                     <div class="form-group">
                         <label for="email" class="form-label mt-4">Email</label>
@@ -86,17 +85,14 @@
                         <label for="amount">Amount</label>
                     </div>
 
-                    <!-- Add a button to trigger the SweetAlert message -->
-                    <button type="button" id="successButton" style="display:none;"></button>
-
                     <!--================ Buttons =================-->
                     <div class="button-container">
                         <button type="submit">Save</button>
                         <button type="reset">Cancel</button>
-                        <br />
                     </div>
                 </div>
                 <input type="hidden" name="idUserLogin" value="@idUserLogin" />
+                <input type="hidden" name="idUserEdit" value="@Model.User.id" />
             </form>
 
         </div><!--================ End of Form container =================-->

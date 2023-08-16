@@ -171,7 +171,7 @@ namespace SistemaPlanillas.Controllers
 
         public ActionResult DeductionsModule(int idUserLogin, int idUserEdit)
         {
-            // Retrieve users matching the provided nameOrEmail.
+            // Retrieve the user matching the idUserEdit received
             List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
 
             var usersWithDeductions = (from user in users
@@ -318,16 +318,10 @@ namespace SistemaPlanillas.Controllers
             return RedirectToAction("DeductionsModule", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
         }
 
-        public ActionResult ExtraPayModule()
+        public ActionResult ExtraPayModule(int idUserLogin, int idUserEdit)
         {
-            var idUserLogin = Request.QueryString["idUserLogin"];
-            var idUserEdit = Request.QueryString["idUserEdit"];
-
-            int userId = int.Parse(idUserLogin);
-            int id = int.Parse(idUserEdit);
-
-            // Retrieve users matching the provided nameOrEmail.
-            List<Users> users = _db.Users.Where(x => x.id == id).ToList();
+            // Retrieve the user matching the idUserEdit received
+            List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
 
             var usersWithExtraordinaryPayment = (from user in users
                                                  join extraordinaryPayment in _db.Extraordinary_payment on user.id equals extraordinaryPayment.fk_idUser
@@ -340,172 +334,154 @@ namespace SistemaPlanillas.Controllers
                                                  }).ToList();
 
             //get the department of the logged user
-            Users userModel = _db.Users.Where(x => x.id == userId).FirstOrDefault();
+            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
             var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
             ViewBag.UserDept = department.name_departament;
 
-            // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
-            ViewBag.idModel = idUserLogin;
+            // Get the id of the logged-in user and the user to edit
+            ViewBag.idUserLogin = idUserLogin;
+            ViewBag.idUserEdit = idUserEdit;
 
             return View(usersWithExtraordinaryPayment);
         }
 
-        public ActionResult CreateExtraPaymentForm()
+        public ActionResult CreateExtraPaymentForm(int idUserLogin, int idUserEdit)
         {
-            string idUserLogin = Request.QueryString["idUserLogin"];
-
             // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
-            List<Users> users = _db.Users.ToList();
+            Users user = _db.Users.Where(x => x.id == idUserEdit).FirstOrDefault();
             List<payment_type> extraPaymentType = _db.payment_type.ToList();
 
 
             // Create a view model containing all the retrieved lists and pass it to the view.
             UserCompositeModel viewModel = new UserCompositeModel
             {
-                UsersList = users,
+                User = user,
                 Payment_TypeList = extraPaymentType,
             };
 
-            int idUserLoginInt = Convert.ToInt32(Request.QueryString["idUserLogin"]);
-
-            Users userModel = _db.Users.Where(x => x.id == idUserLoginInt).FirstOrDefault();
+            // Get the department of the logged user
+            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
             var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
             ViewBag.UserDept = department.name_departament;
 
-            ViewBag.idModel = idUserLogin;
+            // Get the id of the logged-in user
+            ViewBag.idUserLogin = idUserLogin;
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult storeExtraPayment(FormCollection form)
+        public ActionResult storeExtraPayment(string description, string typePayment, string amount, int idUserLogin, int idUserEdit)
         {
-            var email = form["email"];
-            var descripcion = form["descripcion"];
-            var typePayment = form["typePayment"];
-            var amount = form["amount"];
-            var idModel = form["id"];
-
-            if (email == "Choose a use" || descripcion == "" || typePayment == "Choose a extraordinary payment type" || amount == "")
+            if (description == "" || typePayment == "Choose a extraordinary payment type" || amount == "")
             {
                 //returnar a la vista de nuevo a llevar este campo
                 //mandan un temp diciendo que debe llenar los campos
-                return RedirectToAction("CreateExtraPaymentForm", new { idUserLogin = idModel });
+                return RedirectToAction("CreateExtraPaymentForm", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
             }
             else
             {
-                //usuario encontrado con el email
-                var user = _db.Users.Where(x => x.email == email).FirstOrDefault();
+                var user = _db.Users.Where(x => x.id == idUserEdit).FirstOrDefault();
                 //buscar el id del tipo de extraordinario pago
                 var idExtraPaymentType = _db.payment_type.Where(x => x.payment_name == typePayment).FirstOrDefault();
-
-
 
                 Extraordinary_payment storeExtraOrdinaryPayment = new Extraordinary_payment
                 {
                     fk_idUser = user.id,
-                    notes = descripcion,
+                    notes = description,
                     fk_id_payment = idExtraPaymentType.id_payment,
                     payment_value = decimal.Parse(amount)
                 };
-
-
                 _db.Extraordinary_payment.Add(storeExtraOrdinaryPayment);
                 _db.SaveChanges();
 
-
-                //returnar el temp donde diga que se creo una extraordinaryPayment correctamente
-                return RedirectToAction("ExtraPayModule", new { id = idModel });
+                TempData["CreateStatus"] = "success";
+                return RedirectToAction("ExtraPayModule", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
             }
         }
 
-        public ActionResult EditExtraPaymentForm()
+        public ActionResult EditExtraPaymentForm(int idUserLogin, int idExtraEdit)
         {
-            string idUserLogin = Request.QueryString["idUserLogin"];//usuario logueado
-            string idUserEdit = Request.QueryString["idUserEdit"];//id del usuario que se va loguear
-            int idToEdit = int.Parse(idUserEdit);
-
-
-
             //el id de la tabla de extraPayment del que se va editar
-            var editExtraPayment = _db.Extraordinary_payment.Where(x => x.id_extraordinary_payment == idToEdit).FirstOrDefault();
+            var editExtraPayment = _db.Extraordinary_payment.Where(x => x.id_extraordinary_payment == idExtraEdit).FirstOrDefault();
 
-            //traer el email
+            //traer el "Users" para usar el email
             Users user = _db.Users.Where(x => x.id == editExtraPayment.fk_idUser).FirstOrDefault();
-
-            //pasar el nota
+            //traer el "Extraordinary_payment" para usar el email pasar el nota
             Extraordinary_payment extraPaymentNote = _db.Extraordinary_payment.Where(x => x.id_extraordinary_payment == editExtraPayment.id_extraordinary_payment).FirstOrDefault();
-
             // Retrieve lists of roles, users, user-roles-departments, and user statuses from the database.
             List<payment_type> extraPaymentsType = _db.payment_type.ToList();//aqui paso los tipos de payment
-
             payment_type extraPaymentTypeActual = _db.payment_type.Where(x => x.id_payment == editExtraPayment.fk_id_payment).FirstOrDefault();
 
             // Create a view model containing all the retrieved lists and pass it to the view.
             UserCompositeModel viewModel = new UserCompositeModel
             {
-                Payment_TypeList = extraPaymentsType,//aqui paso la lista de los tipos de pago extraordinarios
-                User = user, // aqui solo paso el email
-                Extraordinary_Payment = extraPaymentNote,//aqui solo paso la nota que se va editar
-                Payment_Type = extraPaymentTypeActual // aqui va el tipo de metodo de pago actual
+                Payment_TypeList = extraPaymentsType,
+                User = user,
+                Extraordinary_Payment = extraPaymentNote,
+                Payment_Type = extraPaymentTypeActual 
             };
 
-            int idUserLoginInt = Convert.ToInt32(Request.QueryString["idUserLogin"]);
-            Users userModel = _db.Users.Where(x => x.id == idUserLoginInt).FirstOrDefault();
+            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
             var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
-
             ViewBag.UserDept = department.name_departament;
 
-            ViewBag.idModel = idUserLogin;
+            ViewBag.idUserLogin = idUserLogin;
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult storeEditExtraPayment(FormCollection form)
+        public ActionResult storeEditExtraPayment(string description, string typePayment, string amount, int idUserLogin, int idExtraEdit, int idUserEdit)
         {
-            var email = form["email"];
-            var descripcion = form["description"];
-            var typePayment = form["typePayment"];
-            var amount = form["amount"];
-            var idModel = form["id"];
-            var idUserEdit = form["idDeductionEdit"];//aqui trae el id de el extraPayment que se va editar
-            if (email == "Choose a use" || descripcion == "" || typePayment == "Choose a Deduction type" || amount == "")
+            if (description == "" || amount == "")
             {
                 //returnar a la vista de nuevo a llevar este campo
 
                 //mandan un temp diciendo que debe llenar los campos
-                return RedirectToAction("EditExtraPaymentForm", new { idUserLogin = idModel, idUserEdit = idUserEdit });
+                return RedirectToAction("EditExtraPaymentForm", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
             }
             else
             {
-                //ExtraPayment que se va editar
-                int idUserEditInt = Convert.ToInt32(idUserEdit);
-
-                //traer el id nuevo tipo de deduccion
+                //traer el id nuevo tipo de extra payment
                 var extraPaymentTypeId = _db.payment_type.Where(x => x.payment_name == typePayment).FirstOrDefault();
 
-                Extraordinary_payment extraPaymentEditStore = _db.Extraordinary_payment.Where(x => x.id_extraordinary_payment == idUserEditInt).FirstOrDefault();
-                extraPaymentEditStore.notes = descripcion;
+                Extraordinary_payment extraPaymentEditStore = _db.Extraordinary_payment.Where(x => x.id_extraordinary_payment == idExtraEdit).FirstOrDefault();
+                extraPaymentEditStore.notes = description;
                 extraPaymentEditStore.fk_id_payment = extraPaymentTypeId.id_payment;
                 extraPaymentEditStore.payment_value = decimal.Parse(amount);
 
                 _db.SaveChanges();
-                //enviar un temp que diga que el la deduccion se actualizo correctamente
-                return RedirectToAction("ExtraPayModule", new { id = idModel });
+
+                TempData["UpdateStatus"] = "success";
+                return RedirectToAction("ExtraPayModule", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
             }
         }
-        public ActionResult deleteExtraPayment()
+        public ActionResult deleteExtraPayment(int idUserLogin, int idUserEdit, int idExtraDelete)
         {
-            string idUserLogin = Request.QueryString["idUserLogin"];
-            string idUserDelete = Request.QueryString["idUserDelete"];
-
-            int idToDelete = int.Parse(idUserDelete);
-            Extraordinary_payment deleteExtraPayment = _db.Extraordinary_payment.Where(x => x.id_extraordinary_payment == idToDelete).FirstOrDefault();
+            Extraordinary_payment deleteExtraPayment = _db.Extraordinary_payment.Where(x => x.id_extraordinary_payment == idExtraDelete).FirstOrDefault();
             _db.Extraordinary_payment.Remove(deleteExtraPayment);
             _db.SaveChanges();
-            //returnar un temp donde diga que la deduccion se elimino correctamente
-            return RedirectToAction("ExtraPayModule", new { id = idUserLogin });
+
+            TempData["DeleteStatus"] = "success";
+            return RedirectToAction("ExtraPayModule", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
+        }
+
+        public ActionResult PayrollSubModule(int idUserLogin, int idUserEdit)
+        {
+            // Retrieve the user matching the idUserEdit received
+            List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
+
+            //get the department of the logged user
+            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
+            ViewBag.UserDept = department.name_departament;
+
+            // Get the id of the logged-in user and the user to edit
+            ViewBag.idUserLogin = idUserLogin;
+            ViewBag.idUserEdit = idUserEdit;
+
+            return View();
         }
 
     }
