@@ -374,10 +374,12 @@ h1 {
 .assign-role-wrapper {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 100%;
     justify-content: center;
     align-items: center;
     margin: 40px auto 0;
-    color:var(--color-dark);
+    color: var(--color-dark);
 }
 
 .assign-role-wrapper h1 {
@@ -386,8 +388,9 @@ h1 {
     color: var(--color-primary);
 }
 
-.assign-role-wrapper .container{
+.assign-role-wrapper .container {
     width: 100%;
+    max-width: 80%; /* size of the table*/
     padding: 40px;
     background-color: var(--color-white);
     transition: var(--transition);
@@ -415,7 +418,7 @@ h1 {
     width: 400px;
 }
 
-.assign-role-wrapper .container .input-group input:hover{
+.assign-role-wrapper .container .input-group input .form-control{
     width: 400px;
 }
 

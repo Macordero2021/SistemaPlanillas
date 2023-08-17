@@ -58,8 +58,8 @@
                 <form action="@Url.Action("PayrollModule", "Payroll")" method="get" class="search-form">
                     <input type="hidden" name="userId" value="@userId" />
                     <div class="input-group">
-                        <div class="form-outline">
-                            <input name="nameOrEmail" placeholder="Search for an user using the name or email" class="form-control" />
+                        <div class="form-outline" >
+                            <input name="nameOrEmail" placeholder="Search for an specific user using the name or email" class="form-control" style="width:500px;"/>
                         </div>
                         <button type="submit" class="btn btn-primary d-flex align-items-center">
                             <i class='bx bx-search-alt me-2'></i>Search
@@ -74,11 +74,12 @@
                 <thead>
                     <tr>
                         <th scope="col">Name</th>
+                        <th scope="col">Last Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Action</th>
                         <th scope="col">Action</th>
                         <th scope="col">Action</th>
-
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,13 +87,20 @@
                     {
                         <tr>
                             <td>@Users.name</td>
+                            <td>@Users.lastname</td>
                             <td>@Users.email</td>
-
                             <td>
-                                <form action="/Payroll/DeductionsModule" method="get">
+                                <form action="/Payroll/PayrollSubModule" method="get">
                                     <input type="hidden" name="idUserLogin" value="@userId" />
                                     <input type="hidden" name="idUserEdit" value="@Users.id" />
-                                    <button type="submit" class="btn btn-primary delete">Deductions<i class='bx bx-edit-alt'></i></button>
+                                    <button type="submit" class="btn btn-primary">Payroll<i class='bx bx-wallet-alt'></i></button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/Payroll/ExecutePayroll" method="get">
+                                    <input type="hidden" name="idUserLogin" value="@userId" />
+                                    <input type="hidden" name="idUserEdit" value="@Users.id" />
+                                    <button type="submit" class="btn btn-primary">Execute Payroll<i class='bx bx-wallet-alt'></i></button>
                                 </form>
                             </td>
                             <td>
@@ -103,10 +111,10 @@
                                 </form>
                             </td>
                             <td>
-                                <form action="/Payroll/PayrollSubModule" method="get">
+                                <form action="/Payroll/DeductionsModule" method="get">
                                     <input type="hidden" name="idUserLogin" value="@userId" />
                                     <input type="hidden" name="idUserEdit" value="@Users.id" />
-                                    <button type="submit" class="btn btn-primary">Payroll<i class='bx bx-wallet-alt'></i></button>
+                                    <button type="submit" class="btn btn-primary delete">Deductions<i class='bx bx-message-square-minus'></i></button>
                                 </form>
                             </td>
                         </tr>

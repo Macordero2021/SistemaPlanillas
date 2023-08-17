@@ -221,14 +221,15 @@
     <Content Include="Views\Admin\RoleModule.cshtml" />
     <Content Include="Views\Employee\ConsultModule.cshtml" />
     <Content Include="Views\Admin\AssignRole.cshtml" />
-    <Content Include="Views\Payroll\EditHumanResources.cshtml" />
+    <Content Include="Views\Payroll\HumanResources\EditHumanResources.cshtml" />
     <Content Include="Views\Payroll\DeductionsModule.cshtml" />
-    <Content Include="Views\Payroll\CreateDeductionForm.cshtml" />
-    <Content Include="Views\Payroll\EditDeductionForm.cshtml" />
+    <Content Include="Views\Payroll\Deduction\CreateDeductionForm.cshtml" />
+    <Content Include="Views\Payroll\Deduction\EditDeductionForm.cshtml" />
     <Content Include="Views\Payroll\ExtraPayModule.cshtml" />
-    <Content Include="Views\Payroll\CreateExtraPaymentForm.cshtml" />
-    <Content Include="Views\Payroll\EditExtraPaymentForm.cshtml" />
-    <Content Include="Views\Payroll\PayrollSubModule.cshtml" />
+    <Content Include="Views\Payroll\ExtraPayment\CreateExtraPaymentForm.cshtml" />
+    <Content Include="Views\Payroll\ExtraPayment\EditExtraPaymentForm.cshtml" />
+    <Content Include="Views\Payroll\Payroll\PayrollSubModule.cshtml" />
+    <Content Include="Views\Payroll\Payroll\ExecutePayroll.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

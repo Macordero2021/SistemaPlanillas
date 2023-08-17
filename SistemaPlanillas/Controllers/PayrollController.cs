@@ -83,7 +83,7 @@ namespace SistemaPlanillas.Controllers
             };
 
             ViewBag.idModel = id.ToString();
-            return View(viewModel);
+            return View("HumanResources/EditHumanResources", viewModel);
         }
 
         [HttpPost]
@@ -218,7 +218,7 @@ namespace SistemaPlanillas.Controllers
             // Get the id of the logged-in user
             ViewBag.idUserLogin = idUserLogin;
 
-            return View(viewModel);
+            return View("Deduction/CreateDeductionForm", viewModel);
         }
 
         [HttpPost]
@@ -278,7 +278,7 @@ namespace SistemaPlanillas.Controllers
 
             ViewBag.idUserLogin = idUserLogin;
 
-            return View(viewModel);
+            return View("Deduction/EditDeductionForm", viewModel);
         }
 
         [HttpPost]
@@ -367,7 +367,7 @@ namespace SistemaPlanillas.Controllers
             // Get the id of the logged-in user
             ViewBag.idUserLogin = idUserLogin;
 
-            return View(viewModel);
+            return View("ExtraPayment/CreateExtraPaymentForm", viewModel);
         }
 
         [HttpPost]
@@ -428,7 +428,7 @@ namespace SistemaPlanillas.Controllers
 
             ViewBag.idUserLogin = idUserLogin;
 
-            return View(viewModel);
+            return View("ExtraPayment/EditExtraPaymentForm", viewModel);
         }
 
         [HttpPost]
@@ -481,7 +481,24 @@ namespace SistemaPlanillas.Controllers
             ViewBag.idUserLogin = idUserLogin;
             ViewBag.idUserEdit = idUserEdit;
 
-            return View();
+            return View("Payroll/PayrollSubModule");
+        }
+
+        public ActionResult ExecutePayroll(int idUserLogin, int idUserEdit)
+        {
+            // Retrieve the user matching the idUserEdit received
+            List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
+
+            //get the department of the logged user
+            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
+            ViewBag.UserDept = department.name_departament;
+
+            // Get the id of the logged-in user and the user to edit
+            ViewBag.idUserLogin = idUserLogin;
+            ViewBag.idUserEdit = idUserEdit;
+
+            return View("Payroll/ExecutePayroll");
         }
 
     }
