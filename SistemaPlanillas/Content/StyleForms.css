@@ -388,6 +388,14 @@ h1 {
     color: var(--color-primary);
 }
 
+.assign-role-wrapper .payrollSubmodule  {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
 .assign-role-wrapper .container {
     width: 100%;
     max-width: 80%; /* size of the table*/
@@ -430,14 +438,13 @@ h1 {
     background-color: var(--color-success-variant);
 }
 
-
-.assign-role-wrapper .container form button{
+.assign-role-wrapper .container button{
     color:var(--color-white);
     background-color: var(--color-primary);
     border-radius: var(--border-radius);
 }
 
-.assign-role-wrapper .container form button:hover {
+.assign-role-wrapper .container button:hover {
     background-color: var(--color-primary-variant);
 }
 

@@ -201,6 +201,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\JS\SweetAlerts.js" />
+    <Content Include="Scripts\JS\ToggleForm.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\JS\profile.js" />
     <Content Include="Views\Web.config" />
@@ -228,8 +229,10 @@
     <Content Include="Views\Payroll\ExtraPayModule.cshtml" />
     <Content Include="Views\Payroll\ExtraPayment\CreateExtraPaymentForm.cshtml" />
     <Content Include="Views\Payroll\ExtraPayment\EditExtraPaymentForm.cshtml" />
-    <Content Include="Views\Payroll\Payroll\PayrollSubModule.cshtml" />
-    <Content Include="Views\Payroll\Payroll\ExecutePayroll.cshtml" />
+    <Content Include="Views\Payroll\PayrollSubModule.cshtml" />
+    <Content Include="Views\Payroll\Payroll\ProcessPayView.cshtml" />
+    <Content Include="Views\Payroll\Payroll\PayHistoryView.cshtml" />
+    <Content Include="Views\Payroll\Payroll\PayReportView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -318,6 +318,7 @@ namespace SistemaPlanillas.Controllers
             return RedirectToAction("DeductionsModule", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
         }
 
+        // ===========================================> ExtraPayModule VIEW <===========================================
         public ActionResult ExtraPayModule(int idUserLogin, int idUserEdit)
         {
             // Retrieve the user matching the idUserEdit received
@@ -467,10 +468,20 @@ namespace SistemaPlanillas.Controllers
             return RedirectToAction("ExtraPayModule", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit });
         }
 
-        public ActionResult PayrollSubModule(int idUserLogin, int idUserEdit)
+        // ===========================================> PayrollSubModule VIEW <===========================================
+        public ActionResult PayrollSubModule(int idUserLogin)
         {
-            // Retrieve the user matching the idUserEdit received
-            List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
+            // Retrieve all the users in the db
+            List<Users> users = _db.Users.ToList();
+
+            var usersWithInfo = (from user in users
+                                 join salary in _db.Salary on user.id equals salary.fk_user
+                                 join salaryType in _db.Salary_Type on salary.fk_salary_type equals salaryType.id
+                                 select new UserCompositeModel
+                                 {
+                                     User = user,
+                                     Salary_Type = salaryType
+                                 }).ToList();
 
             //get the department of the logged user
             Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
@@ -479,12 +490,12 @@ namespace SistemaPlanillas.Controllers
 
             // Get the id of the logged-in user and the user to edit
             ViewBag.idUserLogin = idUserLogin;
-            ViewBag.idUserEdit = idUserEdit;
 
-            return View("Payroll/PayrollSubModule");
+            return View(usersWithInfo);
         }
 
-        public ActionResult ExecutePayroll(int idUserLogin, int idUserEdit)
+        // ===========================================> ProcessPayView VIEW <===========================================
+        public ActionResult ProcessPayView(int idUserLogin, int idUserEdit)
         {
             // Retrieve the user matching the idUserEdit received
             List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
@@ -498,7 +509,43 @@ namespace SistemaPlanillas.Controllers
             ViewBag.idUserLogin = idUserLogin;
             ViewBag.idUserEdit = idUserEdit;
 
-            return View("Payroll/ExecutePayroll");
+            return View("Payroll/ProcessPayView");
+        }
+
+        // ===========================================> PayReportView VIEW <===========================================
+        public ActionResult PayReportView(int idUserLogin, int idUserEdit)
+        {
+            // Retrieve the user matching the idUserEdit received
+            List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
+
+            //get the department of the logged user
+            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
+            ViewBag.UserDept = department.name_departament;
+
+            // Get the id of the logged-in user and the user to edit
+            ViewBag.idUserLogin = idUserLogin;
+            ViewBag.idUserEdit = idUserEdit;
+
+            return View("Payroll/PayReportView");
+        }
+
+        // ===========================================> PayHistoryView VIEW <===========================================
+        public ActionResult PayHistoryView(int idUserLogin, int idUserEdit)
+        {
+            // Retrieve the user matching the idUserEdit received
+            List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
+
+            //get the department of the logged user
+            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
+            ViewBag.UserDept = department.name_departament;
+
+            // Get the id of the logged-in user and the user to edit
+            ViewBag.idUserLogin = idUserLogin;
+            ViewBag.idUserEdit = idUserEdit;
+
+            return View("Payroll/PayHistoryView");
         }
 
     }

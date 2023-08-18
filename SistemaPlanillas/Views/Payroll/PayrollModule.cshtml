@@ -53,13 +53,14 @@
 
     <main class="assign-role-wrapper">
         <div class="container">
+            <!-- HEADER SECTION -->
             <div class="look-container">
                 <h1>LOOK UP FOR AN SPECIFIC USER</h1>
                 <form action="@Url.Action("PayrollModule", "Payroll")" method="get" class="search-form">
                     <input type="hidden" name="userId" value="@userId" />
                     <div class="input-group">
-                        <div class="form-outline" >
-                            <input name="nameOrEmail" placeholder="Search for an specific user using the name or email" class="form-control" style="width:500px;"/>
+                        <div class="form-outline">
+                            <input name="nameOrEmail" placeholder="Search for an specific user using the name or email" class="form-control" style="width:500px;" />
                         </div>
                         <button type="submit" class="btn btn-primary d-flex align-items-center">
                             <i class='bx bx-search-alt me-2'></i>Search
@@ -68,16 +69,22 @@
                 </form>
             </div>
 
-            <h1 style="margin-bottom:40px">LIST OF USERS</h1>
+            <!-- PAYROLL SUB-MODULE SECTION -->
+            <div class="payrollSubmodule">
+                <h1>VIEW THE PAYMENT'S MODULE </h1>
+                <form action="/Payroll/PayrollSubModule" method="get" >
+                    <input type="hidden" name="idUserLogin" value="@userId" />
+                    <button type="submit" class="btn btn-primary">Payroll Module<i class='bx bx-wallet-alt'></i></button>
+                </form>
+            </div>
 
+            <!-- TABLE SECTION -->
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Last Name</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Action</th>
-                        <th scope="col">Action</th>
                         <th scope="col">Action</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -90,18 +97,6 @@
                             <td>@Users.lastname</td>
                             <td>@Users.email</td>
                             <td>
-                                <form action="/Payroll/PayrollSubModule" method="get">
-                                    <input type="hidden" name="idUserLogin" value="@userId" />
-                                    <input type="hidden" name="idUserEdit" value="@Users.id" />
-                                    <button type="submit" class="btn btn-primary">Payroll<i class='bx bx-wallet-alt'></i></button>
-                                </form>
-                            </td>
-                            <td>
-                                <form action="/Payroll/ExecutePayroll" method="get">
-                                    <input type="hidden" name="idUserLogin" value="@userId" />
-                                    <input type="hidden" name="idUserEdit" value="@Users.id" />
-                                    <button type="submit" class="btn btn-primary">Execute Payroll<i class='bx bx-wallet-alt'></i></button>
-                                </form>
                             </td>
                             <td>
                                 <form action="/Payroll/ExtraPayModule" method="get">
