@@ -500,6 +500,17 @@ namespace SistemaPlanillas.Controllers
             // Retrieve the user matching the idUserEdit received
             List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
 
+            //mandar el salario del usuario que se va editar
+            var salary = _db.Salary.Where(x=>x.fk_user == idUserEdit).Select(x=> x.SalaryAmount).FirstOrDefault();
+
+            //traer todas las deducciones del usuario que se esta editando
+            var deductions = _db.Deductions.Where(x => x.fk_idUser == idUserEdit).Sum(x => x.deduction_value);
+
+            //traer todos los pagos extraordinarios
+            var paymentsExtraordinary = _db.Extraordinary_payment.Where(x => x.fk_idUser == idUserEdit).Sum(x => x.payment_value);
+
+
+
             //get the department of the logged user
             Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
             var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
@@ -508,6 +519,11 @@ namespace SistemaPlanillas.Controllers
             // Get the id of the logged-in user and the user to edit
             ViewBag.idUserLogin = idUserLogin;
             ViewBag.idUserEdit = idUserEdit;
+
+            ViewBag.salary = salary;
+            ViewBag.deductions = deductions;
+            ViewBag.paymentsExtraordinary = paymentsExtraordinary;
+
 
             return View("Payroll/ProcessPayView");
         }
