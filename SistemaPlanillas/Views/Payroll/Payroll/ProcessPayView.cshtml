@@ -76,9 +76,9 @@
            <form action="/Payment/storePaymentMensual" method="post" style="display:none">
 
                <h1>Mensual</h1>
-               <select class="form-select" aria-label="Default select example" id="selectDias">
+               <select class="form-select" aria-label="Default select example" id="selectDias" required name="diasSeleccionados">
                    <option selected>Dias trabajados</option>
-                   @for (int i = 1; i <= 31; i++)
+                   @for (int i = 0; i <= 31; i++)
                    {
                        <option value="@i">@i</option>
                    }
@@ -89,7 +89,7 @@
                </div>
                <div class="mb-3 mt-3">
                    <label class="form-label">Monto de pago:</label>
-                   <input type="text" class="form-control" value="" placeholder="Monto de pago" name="montoPago" readonly>
+                   <input type="text" class="form-control" id="monto" value="" placeholder="Monto de pago" name="montoPago" readonly>
                </div>
                <br />
 
@@ -173,7 +173,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: 'tu_url_del_servidor',
+                url: '/Payment/formula',
                 data: {
                     dias: selectedValue,
                     salary: selectedValueSalary,
@@ -182,7 +182,14 @@
                     
                 }, 
                 success: function (response) {
-                   
+                    // 'response' contendrá el resultado en formato JSON
+                    var total = response.total;
+
+                    console.log(total);
+                    var selectElementMonto = $('#monto');
+
+                    selectElementMonto[0].value = total;
+
                 }
             });
 
