@@ -27,6 +27,7 @@
         var hourlyPaymentsExtraordinaryInput = document.getElementById('hourlyPaymentsExtraordinary');
         var hourlyCalculatedAmountInput = document.getElementById('hourlyCalculatedAmount');
 
+
         hoursWorkedInput.addEventListener('change', function () {
             var hoursWorked = parseInt(hoursWorkedInput.value);
             var hourlySalary = parseFloat(hourlySalaryInput.value);

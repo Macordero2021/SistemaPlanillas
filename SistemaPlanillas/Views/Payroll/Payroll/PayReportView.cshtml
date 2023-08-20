@@ -114,20 +114,27 @@
             else
             {
                 <!-- REPORT  BUTTONS SECTION -->
-                <div class="row" style="margin-bottom:30px;">
-                    <!-- APPROVE SECTION -->
-                    <div class="col-md-2">
-                        <form action="/Payment/approveHourlyPayment" method="get">
-                            <button type="submit" class="btn btn-primary">Approve Payment<i class='bx bx-check-circle'></i></button>
-                        </form>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="totalEarningsSum" value="@ViewBag.TotalEarningsSum." placeholder="totalEarnings" disabled>
-                            <label for="totalEarnings">Total Earnings:</label>
-                        </div>
+        <div class="row" style="margin-bottom:30px;">
+            <!-- APPROVE SECTION -->
+            @foreach (var UserCompositeModel in Model)
+            {
+                <div class="col-md-2">
+                    <form action="/Payment/approveHourlyPayment" method="get">
+                        <input type="hidden" name="idUserEdit" value="@idUserEdit" />
+                        <input type="hidden" name="idUserLogin" value="@idUserLogin" />
+                        <input type="hidden" name="salaryType" value="@salaryType" />
+                        <button type="submit" class="btn btn-primary">Approve Payment<i class='bx bx-check-circle'></i></button>
+                    </form>
+                </div>
+                break;
+            }
+                <div class="col-md-2">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="totalEarningsSum" value="@ViewBag.TotalEarningsSum." placeholder="totalEarnings" disabled>
+                        <label for="totalEarnings">Total Earnings:</label>
                     </div>
                 </div>
+            </div>
 
                 <!-- TABLE FOR HOURLY PAYMENTS SECTION -->
                 <table class="table" id="monthlyTable">
@@ -154,6 +161,10 @@
                                 <!-- DECLINED PAYMENT SECTION -->
                                 <td>
                                     <form action="/Payment/declineHourlyPayment" method="post">
+                                        <input type="hidden" name="idHourly" value="@UserCompositeModel.HourlyPayroll.id_hourly_payroll" />
+                                        <input type="hidden" name="idUserEdit" value="@idUserEdit" />
+                                        <input type="hidden" name="idUserLogin" value="@idUserLogin" />
+                                        <input type="hidden" name="salaryType" value="@salaryType" />   
                                         <button type="submit" class="btn btn-primary delete">Decline Payment<i class='bx bx-x-circle'></i></button>
                                     </form>
                                 </td>

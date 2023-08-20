@@ -14,6 +14,11 @@ using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using static SistemaPlanillas.Controllers.Services.RoleService;
 
+
+using System;
+using System.Globalization;
+using System.Linq;
+
 namespace SistemaPlanillas.Controllers
 {
     public class PaymentController : Controller
@@ -38,7 +43,7 @@ namespace SistemaPlanillas.Controllers
         }
 
         [HttpPost]
-        public ActionResult StoreHourlyPayment(int idUserLogin, int idUserEdit, string dayWorked, int hoursWorked, string note, decimal hourlyCalculatedAmount)
+        public ActionResult StoreHourlyPayment(int idUserLogin, int idUserEdit, string dayWorked, int hoursWorked, string note, string hourlyCalculatedAmount)
         {
             // Convertir la fecha de yyyy-MM-dd a dd/MM/yyyy
             DateTime parsedDate = DateTime.ParseExact(dayWorked, "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -50,7 +55,7 @@ namespace SistemaPlanillas.Controllers
                 work_day = formattedDate,
                 worked_hours = hoursWorked,
                 notes = note,
-                total_earnings = hourlyCalculatedAmount,
+                total_earnings = decimal.Parse(hourlyCalculatedAmount),
                 Payment_Status = "Pending"
             };
             _db.hourly_payroll.Add(hourlyPayment);
@@ -91,14 +96,61 @@ namespace SistemaPlanillas.Controllers
             return RedirectToAction("PayReportView", "Payroll", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, salaryType = SalaryType });
         }
 
-        public ActionResult approveHourlyPayment(int idUserEdit, int idUserLogin, int idMonthly, string SalaryType)
+        public ActionResult approveHourlyPayment(int idUserEdit, int idUserLogin, string SalaryType)
         {
+
+            var total_earnings = _db.hourly_payroll.Where(x => x.fk_iduser == idUserEdit).Select(x => x.total_earnings).Sum();
+            var time = _db.hourly_payroll.Where(x => x.fk_iduser == idUserEdit).Select(x => x.work_day).FirstOrDefault();
+
+
+
+
+
+            // Convertir el string a un objeto DateTime utilizando ParseExact
+            DateTime date = DateTime.ParseExact(time, "dd/MM/yyyy", null);
+
+            // Obtener el mes de la fecha como entero
+            int currentMonth = date.Month;
+
+
+
+
+            Payroll_history approveMonthly = new Payroll_history
+            {
+                fk_idUser = idUserEdit,
+                payment_day = DateTime.Now.ToString("dd/MM/yyyy"),
+                payment_amount = total_earnings,
+                fk_id_payment = currentMonth,
+                payment_type = SalaryType
+            };
+            _db.Payroll_history.Add(approveMonthly);
+            _db.SaveChanges();
+
+            var timeList = _db.hourly_payroll.Where(x => x.fk_iduser == idUserEdit && x.Payment_Status == "Pending").ToList();
+
+
+            foreach (var hourlyPayroll in timeList)
+            {
+                // Convertir el string a un objeto DateTime utilizando ParseExact
+                DateTime date2 = DateTime.ParseExact(hourlyPayroll.work_day, "dd/MM/yyyy", null);
+                // Obtener el mes de la fecha como entero
+                int currentMonth2 = date2.Month;
+                if (currentMonth2 == currentMonth)
+                {
+                    hourlyPayroll.Payment_Status = "Approved";
+                    _db.SaveChanges();
+                }
+            }
+
             return RedirectToAction("PayReportView", "Payroll", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, salaryType = SalaryType });
         }
 
-        public ActionResult declineHourlyPayment(int idUserEdit, int idUserLogin, int idMonthly, string SalaryType)
+        public ActionResult declineHourlyPayment(int idUserEdit, int idUserLogin, int idHourly, string SalaryType)
         {
-
+            // Buscar el registro a eliminar
+            hourly_payroll hourlyPaymentToDelete = _db.hourly_payroll.Find(idHourly);
+            _db.hourly_payroll.Remove(hourlyPaymentToDelete);
+            _db.SaveChanges();
             return RedirectToAction("PayReportView", "Payroll", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, salaryType = SalaryType });
         }
 
