@@ -20,6 +20,9 @@ namespace SistemaPlanillas.Models
 
         public decimal? total_earnings { get; set; }
 
+        [StringLength(50)]
+        public string Payment_Status { get; set; }
+
         public virtual Users Users { get; set; }
     }
 }

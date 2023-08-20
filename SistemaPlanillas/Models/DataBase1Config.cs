@@ -84,6 +84,10 @@ namespace SistemaPlanillas.Models
                 .Property(e => e.total_earnings)
                 .HasPrecision(10, 2);
 
+            modelBuilder.Entity<hourly_payroll>()
+                .Property(e => e.Payment_Status)
+                .IsUnicode(false);
+
             modelBuilder.Entity<Monthly_payroll>()
                 .Property(e => e.notes)
                 .IsUnicode(false);
@@ -91,6 +95,10 @@ namespace SistemaPlanillas.Models
             modelBuilder.Entity<Monthly_payroll>()
                 .Property(e => e.total_earnings)
                 .HasPrecision(10, 2);
+
+            modelBuilder.Entity<Monthly_payroll>()
+                .Property(e => e.Payment_Status)
+                .IsUnicode(false);
 
             modelBuilder.Entity<Payment_Method>()
                 .Property(e => e.name_paymentmethod)
@@ -111,11 +119,6 @@ namespace SistemaPlanillas.Models
                 .WithOptional(e => e.payment_type)
                 .HasForeignKey(e => e.fk_id_payment);
 
-            modelBuilder.Entity<payment_type>()
-                .HasMany(e => e.Payroll_history)
-                .WithOptional(e => e.payment_type)
-                .HasForeignKey(e => e.fk_id_payment);
-
             modelBuilder.Entity<Payroll_history>()
                 .Property(e => e.payment_day)
                 .IsUnicode(false);
@@ -123,6 +126,10 @@ namespace SistemaPlanillas.Models
             modelBuilder.Entity<Payroll_history>()
                 .Property(e => e.payment_amount)
                 .HasPrecision(10, 2);
+
+            modelBuilder.Entity<Payroll_history>()
+                .Property(e => e.payment_type)
+                .IsUnicode(false);
 
             modelBuilder.Entity<Roles>()
                 .Property(e => e.name_rol)

@@ -12,7 +12,6 @@ namespace SistemaPlanillas.Models
         public payment_type()
         {
             Extraordinary_payment = new HashSet<Extraordinary_payment>();
-            Payroll_history = new HashSet<Payroll_history>();
         }
 
         [Key]
@@ -23,8 +22,5 @@ namespace SistemaPlanillas.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Extraordinary_payment> Extraordinary_payment { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Payroll_history> Payroll_history { get; set; }
     }
 }

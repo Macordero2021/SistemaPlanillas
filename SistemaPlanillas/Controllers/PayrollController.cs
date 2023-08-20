@@ -541,7 +541,7 @@ namespace SistemaPlanillas.Controllers
                                     join salary in _db.Salary on user.id equals salary.fk_user
                                     join monthlyPayroll in _db.Monthly_payroll
                                     on user.id equals monthlyPayroll.fk_iduser
-                                    where user.id == idUserEdit
+                                    where user.id == idUserEdit && monthlyPayroll.Payment_Status == "Pending"
                                     select new UserCompositeModel
                                     {
                                         User = user,
@@ -556,14 +556,14 @@ namespace SistemaPlanillas.Controllers
                                     join hourlyPayroll in _db.hourly_payroll
                                     on user.id equals hourlyPayroll.fk_iduser
                                     where user.id == idUserEdit &&
-                                          hourlyPayroll.work_day.EndsWith(currentYearMonth)
+                                          hourlyPayroll.work_day.EndsWith(currentYearMonth) &&
+                                          hourlyPayroll.Payment_Status == "Pending"
                                     orderby hourlyPayroll.work_day
                                     select new UserCompositeModel
                                     {
                                         User = user,
                                         HourlyPayroll = hourlyPayroll,
                                     }).ToList();
-                Console.WriteLine(currentYearMonth);
             }
 
             // Retrieve the user matching the idUserEdit received

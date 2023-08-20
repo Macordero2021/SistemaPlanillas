@@ -70,7 +70,6 @@
                             <th scope="col">Total days Worked</th>
                             <th scope="col">Total Earnings</th>
                             <th scope="col">Action</th>
-                            <th scope="col">Action</th>
 
                         </tr>
                     </thead>
@@ -86,16 +85,14 @@
 
                                 <!-- APPROVE PAYMENT SECTION -->
                                 <td>
-                                    <form action="" method="get">
+                                    <form action="/Payment/approveMonthyPayment" method="get">
+                                        <input type="hidden" name="idUserEdit" value="@idUserEdit" />
+                                        <input type="hidden" name="idUserLogin" value="@idUserLogin" />
+                                        <input type="hidden" name="idMonthly" value="@UserCompositeModel.MonthlyPayroll.id_monthly_payroll" />
+                                        <input type="hidden" name="SalaryType" value="@salaryType" />
                                         <button type="submit" class="btn btn-primary">Approve Payment<i class='bx bx-check-circle'></i></button>
                                     </form>
-                                </td>
-                                <!-- DECLINED PAYMENT SECTION -->
-                                <td>
-                                    <form action="" method="get">
-                                        <button type="submit" class="btn btn-primary delete">Decline Payment<i class='bx bx-x-circle'></i></button>
-                                    </form>
-                                </td>
+                                </td>       
                             </tr>
 
                         }
@@ -110,12 +107,6 @@
                     <div class="col-md-2">
                         <form action="" method="get">
                             <button type="submit" class="btn btn-primary">Approve Payment<i class='bx bx-check-circle'></i></button>
-                        </form>
-                    </div>
-                     <!-- DECLINED SECTION -->
-                    <div class="col-md-2">
-                        <form action="" method="get">
-                            <button type="submit" class="btn btn-primary delete">Decline Payment<i class='bx bx-x-circle'></i></button>
                         </form>
                     </div>
                 </div>

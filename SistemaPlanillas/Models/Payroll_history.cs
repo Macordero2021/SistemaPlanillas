@@ -20,7 +20,8 @@ namespace SistemaPlanillas.Models
 
         public int? fk_id_payment { get; set; }
 
-        public virtual payment_type payment_type { get; set; }
+        [StringLength(10)]
+        public string payment_type { get; set; }
 
         public virtual Users Users { get; set; }
     }
