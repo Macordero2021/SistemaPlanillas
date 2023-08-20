@@ -14,11 +14,6 @@ using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using static SistemaPlanillas.Controllers.Services.RoleService;
 
-
-using System;
-using System.Globalization;
-using System.Linq;
-
 namespace SistemaPlanillas.Controllers
 {
     public class PaymentController : Controller

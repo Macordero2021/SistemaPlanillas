@@ -17,7 +17,11 @@ namespace SistemaPlanillas.Models
         public virtual DbSet<Deductions> Deductions { get; set; }
         public virtual DbSet<Departaments> Departaments { get; set; }
         public virtual DbSet<Extraordinary_payment> Extraordinary_payment { get; set; }
+        public virtual DbSet<History_approvedLicenses> History_approvedLicenses { get; set; }
+        public virtual DbSet<History_deniedLicenses> History_deniedLicenses { get; set; }
         public virtual DbSet<hourly_payroll> hourly_payroll { get; set; }
+        public virtual DbSet<License_Application> License_Application { get; set; }
+        public virtual DbSet<License_Type> License_Type { get; set; }
         public virtual DbSet<Monthly_payroll> Monthly_payroll { get; set; }
         public virtual DbSet<Payment_Method> Payment_Method { get; set; }
         public virtual DbSet<payment_type> payment_type { get; set; }
@@ -28,6 +32,7 @@ namespace SistemaPlanillas.Models
         public virtual DbSet<User_RolAndDepartment> User_RolAndDepartment { get; set; }
         public virtual DbSet<User_Status> User_Status { get; set; }
         public virtual DbSet<User_Updates> User_Updates { get; set; }
+        public virtual DbSet<UserHolidays> UserHolidays { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -72,6 +77,14 @@ namespace SistemaPlanillas.Models
                 .Property(e => e.payment_value)
                 .HasPrecision(10, 2);
 
+            modelBuilder.Entity<History_approvedLicenses>()
+                .Property(e => e.notes)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<History_deniedLicenses>()
+                .Property(e => e.notes)
+                .IsUnicode(false);
+
             modelBuilder.Entity<hourly_payroll>()
                 .Property(e => e.work_day)
                 .IsUnicode(false);
@@ -87,6 +100,40 @@ namespace SistemaPlanillas.Models
             modelBuilder.Entity<hourly_payroll>()
                 .Property(e => e.Payment_Status)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<License_Application>()
+                .Property(e => e.daysLicense)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<License_Application>()
+                .Property(e => e.notes)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<License_Application>()
+                .Property(e => e.status_license)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<License_Type>()
+                .Property(e => e.name_license)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<License_Type>()
+                .HasMany(e => e.License_Application)
+                .WithRequired(e => e.License_Type)
+                .HasForeignKey(e => e.fk_id_license_type)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<License_Type>()
+                .HasMany(e => e.License_Application1)
+                .WithRequired(e => e.License_Type1)
+                .HasForeignKey(e => e.fk_id_license_type)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<License_Type>()
+                .HasMany(e => e.License_Application2)
+                .WithRequired(e => e.License_Type2)
+                .HasForeignKey(e => e.fk_id_license_type)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Monthly_payroll>()
                 .Property(e => e.notes)
@@ -165,6 +212,10 @@ namespace SistemaPlanillas.Models
                 .HasForeignKey(e => e.fk_id_status)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<UserHolidays>()
+                .Property(e => e.Holidays)
+                .IsUnicode(false);
+
             modelBuilder.Entity<Users>()
                 .Property(e => e.name)
                 .IsUnicode(false);
@@ -201,6 +252,24 @@ namespace SistemaPlanillas.Models
                 .HasForeignKey(e => e.fk_iduser);
 
             modelBuilder.Entity<Users>()
+                .HasMany(e => e.License_Application)
+                .WithRequired(e => e.Users)
+                .HasForeignKey(e => e.fk_id_user)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Users>()
+                .HasMany(e => e.License_Application1)
+                .WithRequired(e => e.Users1)
+                .HasForeignKey(e => e.fk_id_user)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Users>()
+                .HasMany(e => e.License_Application2)
+                .WithRequired(e => e.Users2)
+                .HasForeignKey(e => e.fk_id_user)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Users>()
                 .HasMany(e => e.Monthly_payroll)
                 .WithOptional(e => e.Users)
                 .HasForeignKey(e => e.fk_iduser);
@@ -227,9 +296,14 @@ namespace SistemaPlanillas.Models
                 .WithRequired(e => e.Users)
                 .HasForeignKey(e => e.fk_user_create)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Users>()
+                .HasMany(e => e.UserHolidays)
+                .WithRequired(e => e.Users)
+                .HasForeignKey(e => e.fk_id_user)
+                .WillCascadeOnDelete(false);
         }
     }
-
     //Composite model to retrieve the information for an user or users
     public class UserCompositeModel
     {

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using BCrypt.Net;
 
 namespace SistemaPlanillas.Controllers.Services
 {
@@ -75,7 +76,7 @@ namespace SistemaPlanillas.Controllers.Services
                 lastname = lastName,
                 email = email,
                 phone = phone,
-                password = pass1,
+                password = BCrypt.Net.BCrypt.HashPassword(pass1), // Encriptar la contraseña
                 fk_id_status = 1,
                 fk_id_paymentmethod = 1,
                 Fk_Id_Deparment = idDepartment

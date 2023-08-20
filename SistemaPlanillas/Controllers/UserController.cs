@@ -112,10 +112,9 @@ namespace SistemaPlanillas.Controllers
             string password = form["pass1"];
 
             // Check if the provided credentials match any user in the database.
-            var user = _db.Users.FirstOrDefault(u => u.email == email && u.password == password);
+            var user = _db.Users.FirstOrDefault(u => u.email == email);
 
-            // User found, continue with the login process.
-            if (user != null)
+            if (user != null && BCrypt.Net.BCrypt.Verify(password, user.password))
             {
                 // Get the role ID from the User_RolAndDepartment table to find the user's role.
                 User_RolAndDepartment idRolUser = _db.User_RolAndDepartment.FirstOrDefault(x => x.fk_id_user == user.id);
