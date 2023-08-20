@@ -18,55 +18,37 @@ namespace SistemaPlanillas.Controllers
     {
         private DataBase1Config _db = new DataBase1Config();
 
-        public ActionResult storePaymentMensual(FormCollection form)
+        [HttpPost]
+        public ActionResult storeMonthlyPayment(int idUserLogin, int idUserEdit, string selectedDays, string note, string calculatedAmount)
         {
-
-            var idUserLogin = form["idUserLogin"];
-            var idUserEdit = form["idUserEdit"];
-            var diasSeleccionados = form["diasSeleccionados"];
-            var note = form["note"];
-            var montoPago = form["montoPago"];
-
-
-
             Monthly_payroll storeMonthly = new Monthly_payroll
             {
-                fk_iduser = int.Parse(idUserEdit),
-                total_workDays = int.Parse(diasSeleccionados),
+                fk_iduser = idUserEdit,
+                total_workDays = int.Parse(selectedDays),
                 notes = note,
-                total_earnings = decimal.Parse(montoPago)
+                total_earnings = decimal.Parse(calculatedAmount)
             };
             _db.Monthly_payroll.Add(storeMonthly);
             _db.SaveChanges();
 
+            return RedirectToAction("PayrollSubModule", "Payroll", new { idUserLogin = idUserLogin });
+        }
+
+        [HttpPost]
+        public ActionResult StoreHourlyPayment(int idUserLogin, int idUserEdit, string dayWorked, int hoursWorked, string note, decimal hourlyCalculatedAmount)
+        {
+            hourly_payroll hourlyPayment = new hourly_payroll
+            {
+                fk_iduser = idUserEdit,
+                work_day = dayWorked,
+                worked_hours = hoursWorked,
+                notes = note,
+                total_earnings = hourlyCalculatedAmount
+            };
+            _db.hourly_payroll.Add(hourlyPayment);
+            _db.SaveChanges();
 
             return RedirectToAction("PayrollSubModule", "Payroll", new { idUserLogin = idUserLogin });
-
-        }
-
-        public ActionResult storePaymentHoras(FormCollection form)
-        {
-            var idUserLogin = form["idUserLogin"];
-            var idUserEdit = form["idUserEdit"];
-            var horasTrabajadas = form["horasTrabajadas"];
-            var note = form["note"];
-            var montoPago = form["montoPago"];
-
-            return View();
-        }
-
-
-        public ActionResult formula(int dias, decimal salary, decimal deducciones, decimal pagosExtraordinarios)
-        {
-
-            var total = (salary / 22)* dias + pagosExtraordinarios - deducciones;
-
-            // Crear un objeto anónimo o una clase para almacenar el resultado
-            var result = new { total };
-
-            // Devolver el resultado en formato JSON
-            return Json(result, JsonRequestBehavior.AllowGet);
-
         }
 
     }

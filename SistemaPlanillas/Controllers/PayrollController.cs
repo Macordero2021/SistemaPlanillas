@@ -495,7 +495,7 @@ namespace SistemaPlanillas.Controllers
         }
 
         // ===========================================> ProcessPayView VIEW <===========================================
-        public ActionResult ProcessPayView(int idUserLogin, int idUserEdit)
+        public ActionResult ProcessPayView(int idUserLogin, int idUserEdit, string salaryType)
         {
             // Retrieve the user matching the idUserEdit received
             List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
@@ -509,23 +509,23 @@ namespace SistemaPlanillas.Controllers
             //traer todos los pagos extraordinarios
             var paymentsExtraordinary = _db.Extraordinary_payment.Where(x => x.fk_idUser == idUserEdit).Sum(x => x.payment_value);
 
-
-
             //get the department of the logged user
             Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
             var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
-            ViewBag.UserDept = department.name_departament;
 
-            // Get the id of the logged-in user and the user to edit
-            ViewBag.idUserLogin = idUserLogin;
-            ViewBag.idUserEdit = idUserEdit;
+            // Create an instance of PayrollViewModel
+            var viewModel = new PayrollViewModel
+            {
+                UserDepart = department.name_departament, // Set the department
+                IdUserLogin = idUserLogin,
+                IdUserEdit = idUserEdit,
+                SalaryType = salaryType,
+                Salary = salary ?? 0, 
+                Deductions = deductions ?? 0,
+                PaymentsExtraordinary = paymentsExtraordinary ?? 0
+            };
 
-            ViewBag.salary = salary;
-            ViewBag.deductions = deductions;
-            ViewBag.paymentsExtraordinary = paymentsExtraordinary;
-
-
-            return View("Payroll/ProcessPayView");
+            return View("Payroll/ProcessPayView", viewModel);
         }
 
         // ===========================================> PayReportView VIEW <===========================================

@@ -93,7 +93,7 @@ h1 {
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 0;
 }
 
 .form-group h1 {
@@ -113,6 +113,10 @@ h1 {
     color: var(--color-primary);
 }
 
+.form-floating textarea {
+    resize: none;
+}
+
 .form-floating input:focus,
 .form-floating textarea:focus {
     outline: 2px solid var(--color-primary);
@@ -128,7 +132,6 @@ h1 {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-
 
 /*
 ============================>   Buttons container   <============================

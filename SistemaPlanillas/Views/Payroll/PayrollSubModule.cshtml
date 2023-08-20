@@ -87,11 +87,12 @@
                                 <td>@UserCompositeModel.User.name</td>
                                 <td>@UserCompositeModel.User.email</td>
 
-                                <!-- "PAY" SECTION -->
+                                <!-- "PROCEED PAYMENT" SECTION -->
                                 <td>
                                     <form action="/Payroll/ProcessPayView" method="get">
                                         <input type="hidden" name="idUserEdit" value="@UserCompositeModel.User.id" />
                                         <input type="hidden" name="idUserLogin" value="@idUserLogin" />
+                                        <input type="hidden" name="salaryType" value="@UserCompositeModel.Salary_Type.SalaryType" />
                                         <button type="submit" class="btn btn-primary">Proceed Payment<i class='bx bx-money'></i></button>
                                     </form>
                                 </td>
@@ -142,6 +143,7 @@
                                     <form action="/Payroll/ProcessPayView" method="get">
                                         <input type="hidden" name="idUserEdit" value="@UserCompositeModel.User.id" />
                                         <input type="hidden" name="idUserLogin" value="@idUserLogin" />
+                                        <input type="hidden" name="salaryType" value="@UserCompositeModel.Salary_Type.SalaryType" />
                                         <button type="submit" class="btn btn-primary">Proceed Payment<i class='bx bx-money'></i></button>
                                     </form>
                                 </td>
