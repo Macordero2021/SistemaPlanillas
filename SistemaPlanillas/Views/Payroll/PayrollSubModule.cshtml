@@ -3,6 +3,7 @@
 @{
     string UserDepart = ViewBag.UserDept;
     int idUserLogin = ViewBag.idUserLogin;
+    var pendingStatus = TempData["PendingStatus"] as string;
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -58,11 +59,13 @@
             <h1>PAYMENT SUBMODULE </h1>
 
             <!-- PAYROLL BUTTONS SECTION -->
-            <div class="row" style="margin-bottom:30px;"><!-- Monthly SECTION -->
+            <div class="row" style="margin-bottom:30px;">
+                <!-- Monthly SECTION -->
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-primary" id="monthlyBtn">Monthly<i class='bx bx-calendar'></i></button>
                 </div>
-                <div class="col-md-2"><!-- Hourly SECTION -->
+                <div class="col-md-2">
+                    <!-- Hourly SECTION -->
                     <button type="submit" class="btn btn-primary" id="hourlyBtn">Hourly<i class='bx bx-calendar'></i></button>
                 </div>
             </div>
@@ -174,5 +177,16 @@
     </main>
 
     <script src="~/Scripts/JS/ToggleForm.js"></script>
+    <script src="~/Scripts/JS/SweetAlerts.js"></script>
+
+    @if (!string.IsNullOrEmpty(pendingStatus))
+    {
+        <script>
+            if ('@pendingStatus' === "pending") {
+                showErrorAlert("There is already a pending payment to be approved", "");
+            }
+            @TempData["PendingStatus"] = null;
+        </script>
+    }
 </body>
 </html>

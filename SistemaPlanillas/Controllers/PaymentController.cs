@@ -63,7 +63,6 @@ namespace SistemaPlanillas.Controllers
         {
             var amount = _db.Monthly_payroll.Where(x => x.id_monthly_payroll == idMonthly).Select(x => x.total_earnings).SingleOrDefault();
 
-            
             Payroll_history approveMonthly = new Payroll_history
             {
                 fk_idUser = idUserEdit,
@@ -72,13 +71,33 @@ namespace SistemaPlanillas.Controllers
                 fk_id_payment = idMonthly,
                 payment_type = SalaryType
             };
-           _db.Payroll_history.Add(approveMonthly);
-           _db.SaveChanges();
+            _db.Payroll_history.Add(approveMonthly);
+            _db.SaveChanges();
 
             Monthly_payroll editStatusPayment = _db.Monthly_payroll.Where(x => x.id_monthly_payroll == idMonthly).FirstOrDefault();
             editStatusPayment.Payment_Status = "Approved";
             _db.SaveChanges();
 
+            return RedirectToAction("PayReportView", "Payroll", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, salaryType = SalaryType });
+        }
+
+        public ActionResult declineMonthyPayment(int idUserEdit, int idUserLogin, int idMonthly, string SalaryType)
+        {
+            // Buscar el registro a eliminar
+            Monthly_payroll monthlyPaymentToDelete = _db.Monthly_payroll.Find(idMonthly);
+            _db.Monthly_payroll.Remove(monthlyPaymentToDelete);
+            _db.SaveChanges();
+
+            return RedirectToAction("PayReportView", "Payroll", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, salaryType = SalaryType });
+        }
+
+        public ActionResult approveHourlyPayment(int idUserEdit, int idUserLogin, int idMonthly, string SalaryType)
+        {
+            return RedirectToAction("PayReportView", "Payroll", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, salaryType = SalaryType });
+        }
+
+        public ActionResult declineHourlyPayment(int idUserEdit, int idUserLogin, int idMonthly, string SalaryType)
+        {
 
             return RedirectToAction("PayReportView", "Payroll", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, salaryType = SalaryType });
         }

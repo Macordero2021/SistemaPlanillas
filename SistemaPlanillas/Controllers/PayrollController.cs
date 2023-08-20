@@ -3,6 +3,7 @@ using SistemaPlanillas.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Reflection;
@@ -499,41 +500,52 @@ namespace SistemaPlanillas.Controllers
         // ===========================================> ProcessPayView VIEW <===========================================
         public ActionResult ProcessPayView(int idUserLogin, int idUserEdit, string salaryType)
         {
-            // Retrieve the user matching the idUserEdit received
-            List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
+            var existingPendingPayment = _db.Monthly_payroll.Any(p => p.fk_iduser == idUserEdit && p.Payment_Status == "Pending");
 
-            //mandar el salario del usuario que se va editar
-            var salary = _db.Salary.Where(x=>x.fk_user == idUserEdit).Select(x=> x.SalaryAmount).FirstOrDefault();
-
-            //traer todas las deducciones del usuario que se esta editando
-            var deductions = _db.Deductions.Where(x => x.fk_idUser == idUserEdit).Sum(x => x.deduction_value);
-
-            //traer todos los pagos extraordinarios
-            var paymentsExtraordinary = _db.Extraordinary_payment.Where(x => x.fk_idUser == idUserEdit).Sum(x => x.payment_value);
-
-            //get the department of the logged user
-            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
-            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
-
-            // Create an instance of PayrollViewModel
-            var viewModel = new PayrollViewModel
+            if (existingPendingPayment)
             {
-                UserDepart = department.name_departament, // Set the department
-                IdUserLogin = idUserLogin,
-                IdUserEdit = idUserEdit,
-                SalaryType = salaryType,
-                Salary = salary ?? 0, 
-                Deductions = deductions ?? 0,
-                PaymentsExtraordinary = paymentsExtraordinary ?? 0
-            };
+                TempData["PendingStatus"] = "pending";
+                return RedirectToAction("PayrollSubModule", "Payroll", new { idUserLogin = idUserLogin });
+            }
+            else
+            {
+                // Retrieve the user matching the idUserEdit received
+                List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
 
-            return View("Payroll/ProcessPayView", viewModel);
+                //mandar el salario del usuario que se va editar
+                var salary = _db.Salary.Where(x => x.fk_user == idUserEdit).Select(x => x.SalaryAmount).FirstOrDefault();
+
+                //traer todas las deducciones del usuario que se esta editando
+                var deductions = _db.Deductions.Where(x => x.fk_idUser == idUserEdit).Sum(x => x.deduction_value);
+
+                //traer todos los pagos extraordinarios
+                var paymentsExtraordinary = _db.Extraordinary_payment.Where(x => x.fk_idUser == idUserEdit).Sum(x => x.payment_value);
+
+                //get the department of the logged user
+                Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
+                var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
+
+                // Create an instance of PayrollViewModel
+                var viewModel = new PayrollViewModel
+                {
+                    UserDepart = department.name_departament, // Set the department
+                    IdUserLogin = idUserLogin,
+                    IdUserEdit = idUserEdit,
+                    SalaryType = salaryType,
+                    Salary = salary ?? 0,
+                    Deductions = deductions ?? 0,
+                    PaymentsExtraordinary = paymentsExtraordinary ?? 0
+                };
+
+                return View("Payroll/ProcessPayView", viewModel);
+            }
         }
 
         // ===========================================> PayReportView VIEW <===========================================
         public ActionResult PayReportView(int idUserLogin, int idUserEdit, string salaryType)
         {
             List<UserCompositeModel> usersWithPayment = new List<UserCompositeModel>();
+            decimal totalEarningsSum = 0;
 
             if (salaryType == "Monthly")
             {
@@ -564,6 +576,8 @@ namespace SistemaPlanillas.Controllers
                                         User = user,
                                         HourlyPayroll = hourlyPayroll,
                                     }).ToList();
+
+                totalEarningsSum = usersWithPayment.Select(u => u.HourlyPayroll.total_earnings ?? 0).Sum();
             }
 
             // Retrieve the user matching the idUserEdit received
@@ -578,6 +592,7 @@ namespace SistemaPlanillas.Controllers
             ViewBag.idUserLogin = idUserLogin;
             ViewBag.idUserEdit = idUserEdit;
             ViewBag.salaryType = salaryType;
+            ViewBag.TotalEarningsSum = totalEarningsSum;
 
             return View("Payroll/PayReportView", usersWithPayment);
         }

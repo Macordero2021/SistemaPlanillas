@@ -5,6 +5,8 @@
     string salaryType = ViewBag.salaryType;
     int idUserLogin = ViewBag.idUserLogin;
     int idUserEdit = ViewBag.idUserEdit;
+
+    decimal TotalEarningsSum = ViewBag.TotalEarningsSum;
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -92,9 +94,19 @@
                                         <input type="hidden" name="SalaryType" value="@salaryType" />
                                         <button type="submit" class="btn btn-primary">Approve Payment<i class='bx bx-check-circle'></i></button>
                                     </form>
-                                </td>       
-                            </tr>
+                                </td>
+                                <!-- DECLINED PAYMENT SECTION -->
+                                <td>
+                                    <form action="/Payment/declineMonthyPayment" method="post">
+                                        <input type="hidden" name="idUserEdit" value="@idUserEdit" />
+                                        <input type="hidden" name="idUserLogin" value="@idUserLogin" />
+                                        <input type="hidden" name="idMonthly" value="@UserCompositeModel.MonthlyPayroll.id_monthly_payroll" />
+                                        <input type="hidden" name="SalaryType" value="@salaryType" />
+                                        <button type="submit" class="btn btn-primary delete">Decline Payment<i class='bx bx-x-circle'></i></button>
+                                    </form>
+                                </td>
 
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -105,9 +117,15 @@
                 <div class="row" style="margin-bottom:30px;">
                     <!-- APPROVE SECTION -->
                     <div class="col-md-2">
-                        <form action="" method="get">
+                        <form action="/Payment/approveHourlyPayment" method="get">
                             <button type="submit" class="btn btn-primary">Approve Payment<i class='bx bx-check-circle'></i></button>
                         </form>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="totalEarningsSum" value="@ViewBag.TotalEarningsSum." placeholder="totalEarnings" disabled>
+                            <label for="totalEarnings">Total Earnings:</label>
+                        </div>
                     </div>
                 </div>
 
@@ -120,7 +138,7 @@
                             <th scope="col">Work Day</th>
                             <th scope="col">Work Hours</th>
                             <th scope="col">Total Earnings</th>
-
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -133,6 +151,12 @@
                                 <td>@UserCompositeModel.HourlyPayroll.work_day</td>
                                 <td>@UserCompositeModel.HourlyPayroll.worked_hours</td>
                                 <td>@UserCompositeModel.HourlyPayroll.total_earnings</td>
+                                <!-- DECLINED PAYMENT SECTION -->
+                                <td>
+                                    <form action="/Payment/declineHourlyPayment" method="post">
+                                        <button type="submit" class="btn btn-primary delete">Decline Payment<i class='bx bx-x-circle'></i></button>
+                                    </form>
+                                </td>
                             </tr>
                         }
                     </tbody>
