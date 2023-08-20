@@ -239,6 +239,8 @@ namespace SistemaPlanillas.Models
         public Extraordinary_payment Extraordinary_Payment { get; set; }
         public List<payment_type> Payment_TypeList { get; set; }
         public payment_type Payment_Type { get; set; }
+        public Monthly_payroll MonthlyPayroll { get; set; }
+        public hourly_payroll HourlyPayroll { get; set; }
     }
 
     //Composite model to retrieve the information of all the users
@@ -247,6 +249,7 @@ namespace SistemaPlanillas.Models
         public Users userToEdit { get; set; }
         public User_Status statusToEdit { get; set; }
         public Roles roleToEdit { get; set; }
+        public Salary Salary { get; set; }
         public List<Roles> RolesList { get; set; }
         public List<User_Status> StatusList { get; set; }
         public List<Departaments> DepartamentsList { get; set; }

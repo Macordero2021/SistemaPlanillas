@@ -70,6 +70,7 @@ namespace SistemaPlanillas.Controllers
             User_Status Status1 = _db.User_Status.Where(x => x.id == users.fk_id_status).FirstOrDefault();
             List<User_Status> status2 = _db.User_Status.ToList();
             List<Departaments> departaments = _db.Departaments.ToList();
+            Salary salary = _db.Salary.Where(x => x.fk_user == id).FirstOrDefault();
             List<Salary_Type> salary_Types = _db.Salary_Type.ToList();
 
             // Create a view model containing all the retrieved lists and pass it to the view.
@@ -79,6 +80,7 @@ namespace SistemaPlanillas.Controllers
                 statusToEdit = Status1,
                 StatusList = status2,
                 DepartamentsList = departaments,
+                Salary = salary,
                 salary_Types = salary_Types
             };
 
@@ -529,8 +531,41 @@ namespace SistemaPlanillas.Controllers
         }
 
         // ===========================================> PayReportView VIEW <===========================================
-        public ActionResult PayReportView(int idUserLogin, int idUserEdit)
+        public ActionResult PayReportView(int idUserLogin, int idUserEdit, string salaryType)
         {
+            List<UserCompositeModel> usersWithPayment = new List<UserCompositeModel>();
+
+            if (salaryType == "Monthly")
+            {
+                usersWithPayment = (from user in _db.Users
+                                    join salary in _db.Salary on user.id equals salary.fk_user
+                                    join monthlyPayroll in _db.Monthly_payroll
+                                    on user.id equals monthlyPayroll.fk_iduser
+                                    where user.id == idUserEdit
+                                    select new UserCompositeModel
+                                    {
+                                        User = user,
+                                        MonthlyPayroll = monthlyPayroll,
+                                    }).ToList();
+            }
+            else
+            {
+                string currentYearMonth = DateTime.Now.ToString("MM/yyyy"); // Obtener el mes y año actual en formato MM/yyyy
+
+                usersWithPayment = (from user in _db.Users
+                                    join hourlyPayroll in _db.hourly_payroll
+                                    on user.id equals hourlyPayroll.fk_iduser
+                                    where user.id == idUserEdit &&
+                                          hourlyPayroll.work_day.EndsWith(currentYearMonth)
+                                    orderby hourlyPayroll.work_day
+                                    select new UserCompositeModel
+                                    {
+                                        User = user,
+                                        HourlyPayroll = hourlyPayroll,
+                                    }).ToList();
+                Console.WriteLine(currentYearMonth);
+            }
+
             // Retrieve the user matching the idUserEdit received
             List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
 
@@ -542,8 +577,9 @@ namespace SistemaPlanillas.Controllers
             // Get the id of the logged-in user and the user to edit
             ViewBag.idUserLogin = idUserLogin;
             ViewBag.idUserEdit = idUserEdit;
+            ViewBag.salaryType = salaryType;
 
-            return View("Payroll/PayReportView");
+            return View("Payroll/PayReportView", usersWithPayment);
         }
 
         // ===========================================> PayHistoryView VIEW <===========================================

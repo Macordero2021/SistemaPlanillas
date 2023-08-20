@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -37,10 +38,14 @@ namespace SistemaPlanillas.Controllers
         [HttpPost]
         public ActionResult StoreHourlyPayment(int idUserLogin, int idUserEdit, string dayWorked, int hoursWorked, string note, decimal hourlyCalculatedAmount)
         {
+            // Convertir la fecha de yyyy-MM-dd a dd/MM/yyyy
+            DateTime parsedDate = DateTime.ParseExact(dayWorked, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            string formattedDate = parsedDate.ToString("dd/MM/yyyy");
+
             hourly_payroll hourlyPayment = new hourly_payroll
             {
                 fk_iduser = idUserEdit,
-                work_day = dayWorked,
+                work_day = formattedDate,
                 worked_hours = hoursWorked,
                 notes = note,
                 total_earnings = hourlyCalculatedAmount

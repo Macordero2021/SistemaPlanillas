@@ -1,6 +1,8 @@
-﻿
+﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
+
 @{
     string UserDepart = ViewBag.UserDept;
+    string salaryType = ViewBag.salaryType;
     int idUserLogin = ViewBag.idUserLogin;
     int idUserEdit = ViewBag.idUserEdit;
 }
@@ -51,6 +53,103 @@
             </div>
         </div>
     </nav>
+
+    <main class="assign-role-wrapper">
+        <div class="container">
+
+            <h1>PAYMENT REPORT </h1>
+
+            @if (ViewBag.salaryType == "Monthly")
+            {
+                <!-- TABLE FOR MONTHLY PAYMENTS SECTION -->
+                <table class="table" id="monthlyTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Total days Worked</th>
+                            <th scope="col">Total Earnings</th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var UserCompositeModel in Model)
+                        {
+
+                            <tr>
+                                <td>@UserCompositeModel.User.name</td>
+                                <td>@UserCompositeModel.User.email</td>
+                                <td>@UserCompositeModel.MonthlyPayroll.total_workDays</td>
+                                <td>@UserCompositeModel.MonthlyPayroll.total_earnings</td>
+
+                                <!-- APPROVE PAYMENT SECTION -->
+                                <td>
+                                    <form action="" method="get">
+                                        <button type="submit" class="btn btn-primary">Approve Payment<i class='bx bx-check-circle'></i></button>
+                                    </form>
+                                </td>
+                                <!-- DECLINED PAYMENT SECTION -->
+                                <td>
+                                    <form action="" method="get">
+                                        <button type="submit" class="btn btn-primary delete">Decline Payment<i class='bx bx-x-circle'></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <!-- REPORT  BUTTONS SECTION -->
+                <div class="row" style="margin-bottom:30px;">
+                    <!-- APPROVE SECTION -->
+                    <div class="col-md-2">
+                        <form action="" method="get">
+                            <button type="submit" class="btn btn-primary">Approve Payment<i class='bx bx-check-circle'></i></button>
+                        </form>
+                    </div>
+                     <!-- DECLINED SECTION -->
+                    <div class="col-md-2">
+                        <form action="" method="get">
+                            <button type="submit" class="btn btn-primary delete">Decline Payment<i class='bx bx-x-circle'></i></button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- TABLE FOR HOURLY PAYMENTS SECTION -->
+                <table class="table" id="monthlyTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Work Day</th>
+                            <th scope="col">Work Hours</th>
+                            <th scope="col">Total Earnings</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var UserCompositeModel in Model)
+                        {
+
+                            <tr>
+                                <td>@UserCompositeModel.User.name</td>
+                                <td>@UserCompositeModel.User.email</td>
+                                <td>@UserCompositeModel.HourlyPayroll.work_day</td>
+                                <td>@UserCompositeModel.HourlyPayroll.worked_hours</td>
+                                <td>@UserCompositeModel.HourlyPayroll.total_earnings</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+        </div>
+    </main>
 
 </body>
 </html>
