@@ -21,6 +21,8 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -114,27 +116,45 @@
             else
             {
                 <!-- REPORT  BUTTONS SECTION -->
-        <div class="row" style="margin-bottom:30px;">
-            <!-- APPROVE SECTION -->
-            @foreach (var UserCompositeModel in Model)
-            {
-                <div class="col-md-2">
-                    <form action="/Payment/approveHourlyPayment" method="get">
-                        <input type="hidden" name="idUserEdit" value="@idUserEdit" />
-                        <input type="hidden" name="idUserLogin" value="@idUserLogin" />
-                        <input type="hidden" name="salaryType" value="@salaryType" />
-                        <button type="submit" class="btn btn-primary">Approve Payment<i class='bx bx-check-circle'></i></button>
-                    </form>
-                </div>
-                break;
-            }
-                <div class="col-md-2">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="totalEarningsSum" value="@ViewBag.TotalEarningsSum." placeholder="totalEarnings" disabled>
-                        <label for="totalEarnings">Total Earnings:</label>
+                <div class="row" style="margin-bottom:30px;">
+                    <!-- APPROVE SECTION -->
+                    <div class="col-md-2">
+                        <form action="/Payment/approveHourlyPayment" method="get" id="approveForm">
+                            <input type="hidden" name="idUserEdit" value="@idUserEdit" />
+                            <input type="hidden" name="idUserLogin" value="@idUserLogin" />
+                            <input type="hidden" name="SalaryType" value="@salaryType" />
+                            <input type="hidden" name="selectedMonth" value="@ViewBag.SelectedMonth" />
+                            <button type="submit" class="btn btn-primary" @(ViewBag.SelectedMonth == null ? "disabled" : "")>
+                                Approve Payment<i class='bx bx-check-circle'></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="totalEarningsSum" value="@ViewBag.TotalEarningsSum." placeholder="totalEarnings" disabled>
+                            <label for="totalEarnings">Total Earnings:</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <!-- Month worked -->
+                        <div class="form-group">
+                            <form action="/Payroll/PayReportView" method="get" id="filterForm">
+                                <select class="form-select" aria-label="Default select example" id="monthSelected" name="selectedMonth" required onchange="this.form.submit()">
+                                    <option value="" disabled>Select month</option>
+                                    @for (int i = 1; i <= 12; i++)
+                                    {
+                                        <option value="@i" @(ViewBag.SelectedMonth == i ? "selected" : "")>@i</option>
+                                    }
+                                </select>
+                                <input type="hidden" name="idUserEdit" value="@idUserEdit" />
+                                <input type="hidden" name="idUserLogin" value="@idUserLogin" />
+                                <input type="hidden" name="salaryType" value="@salaryType" />
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
                 <!-- TABLE FOR HOURLY PAYMENTS SECTION -->
                 <table class="table" id="monthlyTable">
@@ -164,7 +184,7 @@
                                         <input type="hidden" name="idHourly" value="@UserCompositeModel.HourlyPayroll.id_hourly_payroll" />
                                         <input type="hidden" name="idUserEdit" value="@idUserEdit" />
                                         <input type="hidden" name="idUserLogin" value="@idUserLogin" />
-                                        <input type="hidden" name="salaryType" value="@salaryType" />   
+                                        <input type="hidden" name="salaryType" value="@salaryType" />
                                         <button type="submit" class="btn btn-primary delete">Decline Payment<i class='bx bx-x-circle'></i></button>
                                     </form>
                                 </td>
@@ -176,6 +196,28 @@
 
         </div>
     </main>
+
+    <script>
+        // Al cargar la página
+        $(document).ready(function () {
+            if (selectedMonth !== null) {
+                $("#monthSelected").val(selectedMonth);
+            }
+        });
+
+        // Al cambiar el valor del select
+        function submitFormOnChange() {
+            document.getElementById("filterForm").submit();
+        }
+
+        // Al cargar la página o al refrescarla
+        $(window).on("load", function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            if (!urlParams.get("selectedMonth")) {
+                $("#monthSelected").prop("selectedIndex", 0);
+            }
+        });
+    </script>
 
 </body>
 </html>

@@ -98,22 +98,12 @@ namespace SistemaPlanillas.Controllers
 
         public ActionResult approveHourlyPayment(int idUserEdit, int idUserLogin, string SalaryType)
         {
-
             var total_earnings = _db.hourly_payroll.Where(x => x.fk_iduser == idUserEdit).Select(x => x.total_earnings).Sum();
-            var time = _db.hourly_payroll.Where(x => x.fk_iduser == idUserEdit).Select(x => x.work_day).FirstOrDefault();
 
-
-
-
-
-            // Convertir el string a un objeto DateTime utilizando ParseExact
-            DateTime date = DateTime.ParseExact(time, "dd/MM/yyyy", null);
+            int selectedMonth = Convert.ToInt32(Request["selectedMonth"]);
 
             // Obtener el mes de la fecha como entero
-            int currentMonth = date.Month;
-
-
-
+            int currentMonth = selectedMonth;
 
             Payroll_history approveMonthly = new Payroll_history
             {
@@ -127,7 +117,6 @@ namespace SistemaPlanillas.Controllers
             _db.SaveChanges();
 
             var timeList = _db.hourly_payroll.Where(x => x.fk_iduser == idUserEdit && x.Payment_Status == "Pending").ToList();
-
 
             foreach (var hourlyPayroll in timeList)
             {

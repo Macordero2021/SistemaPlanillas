@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -542,7 +543,7 @@ namespace SistemaPlanillas.Controllers
         }
 
         // ===========================================> PayReportView VIEW <===========================================
-        public ActionResult PayReportView(int idUserLogin, int idUserEdit, string salaryType)
+        public ActionResult PayReportView(int idUserLogin, int idUserEdit, string salaryType, int? selectedMonth)
         {
             List<UserCompositeModel> usersWithPayment = new List<UserCompositeModel>();
             decimal totalEarningsSum = 0;
@@ -562,20 +563,44 @@ namespace SistemaPlanillas.Controllers
             }
             else
             {
-                string currentYearMonth = DateTime.Now.ToString("MM/yyyy"); // Obtener el mes y año actual en formato MM/yyyy
+                var query = from user in _db.Users
+                            join hourlyPayroll in _db.hourly_payroll
+                            on user.id equals hourlyPayroll.fk_iduser
+                            where user.id == idUserEdit && hourlyPayroll.Payment_Status == "Pending"
+                            select new UserCompositeModel
+                            {
+                                User = user,
+                                HourlyPayroll = hourlyPayroll,
+                            };
 
-                usersWithPayment = (from user in _db.Users
-                                    join hourlyPayroll in _db.hourly_payroll
-                                    on user.id equals hourlyPayroll.fk_iduser
-                                    where user.id == idUserEdit &&
-                                          hourlyPayroll.work_day.EndsWith(currentYearMonth) &&
-                                          hourlyPayroll.Payment_Status == "Pending"
-                                    orderby hourlyPayroll.work_day
-                                    select new UserCompositeModel
-                                    {
-                                        User = user,
-                                        HourlyPayroll = hourlyPayroll,
-                                    }).ToList();
+                if (selectedMonth.HasValue)
+                {
+                    int selectedMonthValue = selectedMonth.GetValueOrDefault(); // Obtener el valor de monthSelected o su valor por defecto (0)
+
+                    // Filtrar por el mes seleccionado
+                    query = query.Where(u => u.HourlyPayroll.work_day != null);
+                }
+
+                // Obtener todos los registros sin filtrar por mes
+                List<UserCompositeModel> usersWithPaymentUnfiltered = query.ToList();
+
+                if (selectedMonth.HasValue)
+                {
+                    int selectedMonthValue = selectedMonth.GetValueOrDefault(); // Obtener el valor de monthSelected o su valor por defecto (0)
+
+                    // Filtrar y ordenar en memoria
+                    usersWithPayment = usersWithPaymentUnfiltered
+                        .Where(u => DateTime.ParseExact(u.HourlyPayroll.work_day, "dd/MM/yyyy", CultureInfo.InvariantCulture).Month == selectedMonthValue)
+                        .OrderBy(u => DateTime.ParseExact(u.HourlyPayroll.work_day, "dd/MM/yyyy", CultureInfo.InvariantCulture))
+                        .ToList();
+                }
+                else
+                {
+                    // Ordenar por fechas en memoria
+                    usersWithPayment = usersWithPaymentUnfiltered
+                        .OrderBy(u => DateTime.ParseExact(u.HourlyPayroll.work_day, "dd/MM/yyyy", CultureInfo.InvariantCulture))
+                        .ToList();
+                }
 
                 totalEarningsSum = usersWithPayment.Select(u => u.HourlyPayroll.total_earnings ?? 0).Sum();
             }
@@ -593,6 +618,7 @@ namespace SistemaPlanillas.Controllers
             ViewBag.idUserEdit = idUserEdit;
             ViewBag.salaryType = salaryType;
             ViewBag.TotalEarningsSum = totalEarningsSum;
+            ViewBag.SelectedMonth = selectedMonth;
 
             return View("Payroll/PayReportView", usersWithPayment);
         }
