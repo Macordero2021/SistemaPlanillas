@@ -44,11 +44,13 @@ namespace SistemaPlanillas.Controllers
 
             //traer el email
             Users user = _db.Users.Where(x => x.id == idUserEdit).FirstOrDefault();
+            UserHolidays Holidays = _db.UserHolidays.Where(x => x.fk_id_user == idUserEdit).FirstOrDefault();
 
             // Create a view model containing all the retrieved lists and pass it to the view.
             UserCompositeModel viewModel = new UserCompositeModel
             {
                 User = user,
+                UserHolidays = Holidays
             };
 
             Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
@@ -58,6 +60,17 @@ namespace SistemaPlanillas.Controllers
             ViewBag.idUserLogin = idUserLogin;
 
             return View(viewModel);
+        }
+
+        public ActionResult storeEditUserHolidays(int idUserLogin, int idUserEdit, string Holidays)
+        {
+
+            UserHolidays NewHolidays = _db.UserHolidays.Where(x => x.fk_id_user == idUserEdit).FirstOrDefault();
+
+            NewHolidays.Holidays = Holidays;
+
+            _db.SaveChanges();
+            return RedirectToAction("HolidaysModule", new { userId = idUserLogin});
         }
     }
 }

@@ -80,6 +80,7 @@ namespace SistemaPlanillas.Controllers.Services
                 fk_id_status = 1,
                 fk_id_paymentmethod = 1,
                 Fk_Id_Deparment = idDepartment
+
             };
 
             _db.Users.Add(newUser);
@@ -123,6 +124,16 @@ namespace SistemaPlanillas.Controllers.Services
                 _db.User_RolAndDepartment.Add(storeRolesDepartament);
                 _db.SaveChanges();
             }
+
+            UserHolidays holidays = new UserHolidays
+            {
+                fk_id_user = idLastUser,
+                Holidays = "0"
+
+            };
+            _db.UserHolidays.Add(holidays);
+            _db.SaveChanges();
+
 
             return UserServiceResult.Success;
         }

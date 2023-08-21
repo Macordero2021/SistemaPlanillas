@@ -56,20 +56,26 @@
 
     <div class="wrapper">
         <div class="form-container">
-            <form action="/PayRoll/storeEditDeduction" method="post">
+            <form action="/Licence/storeEditUserHolidays" method="post">
                 <div class="form-group">
-                    <h1>Edit deduction</h1>
+                    <h1>Edit Holidays</h1>
 
-                    <label for="NewDepartments" class="form-label mt-4">Email</label>
+                    <label for="Name" class="form-label mt-4">Name</label>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="descripcion" value="@Model.User.name" name="name" readonly>
+                        <label for="floatingInput">Name</label>
+                    </div>
+
+                    <label for="Email" class="form-label mt-4">Email</label>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingInput" placeholder="descripcion" value="@Model.User.email" name="email" readonly>
                         <label for="floatingInput">Email</label>
                     </div>
 
-                    <label for="NewDepartments" class="form-label mt-4">Amount</label>
+                    <label for="NewHolidays" class="form-label mt-4">Holidays</label>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="amount" value="@Model.deductions.deduction_value" name="amount" required>
-                        <label for="floatingInput">amount</label>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Holidays" value="@Model.UserHolidays.Holidays" name="Holidays" required>
+                        <label for="floatingInput">Holidays</label>
                     </div>
 
                     <!--================ Buttons =================-->
@@ -78,7 +84,6 @@
                         <button type="reset">Cancel</button>
                     </div>
                 </div>
-                <input type="hidden" name="idDeductionEdit" value="@Model.deductions.id_deduction" />
                 <input type="hidden" name="idUserEdit" value="@Model.User.id" />
                 <input type="hidden" name="idUserLogin" value="@idUserLogin" />
             </form>
