@@ -259,7 +259,7 @@
     <Content Include="Views\Payroll\Payroll\ProcessPayView.cshtml" />
     <Content Include="Views\Payroll\Payroll\PayHistoryView.cshtml" />
     <Content Include="Views\Payroll\Payroll\PayReportView.cshtml" />
-    <Content Include="Views\Payroll\HolidaysModule.cshtml" />
+    <Content Include="Views\Licence\HolidaysModule.cshtml" />
     <Content Include="Views\Role\GlobalModules\CreateLicence.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -271,7 +271,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="SQL Scripts\" />
-    <Folder Include="Views\Licence\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

@@ -1,0 +1,85 @@
+﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
+@{
+    int idUserLogin = ViewBag.idUserLogin;
+}
+
+<html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Report</title>
+
+    <!-- Custom styles for this template -->
+    <link href="/Content/bootstrap-transform.css" rel="stylesheet">
+    <link href="~/Content/StyleForms.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">XYZ S.A.</font></font></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Navegación de palanca">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                    </li>
+                    @if (ViewBag.UserDept == "Human Resources")
+                    {
+                        <li>
+                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                        </li>
+                    }
+                    <li>
+                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Home")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Log Out</font></font></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="assign-role-wrapper">
+        <div class="container">
+
+            <h1>User Holidays</h1>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Days</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var UserCompositeModel in Model)
+                    {
+                        <tr>
+                            <td>@UserCompositeModel.User.name</td>
+                            <td>@UserCompositeModel.User.email</td>
+                            <td>@UserCompositeModel.UserHolidays.Holidays</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+
+</body>
+</html>

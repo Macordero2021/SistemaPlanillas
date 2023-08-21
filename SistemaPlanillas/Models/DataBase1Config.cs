@@ -322,6 +322,7 @@ namespace SistemaPlanillas.Models
         public payment_type Payment_Type { get; set; }
         public Monthly_payroll MonthlyPayroll { get; set; }
         public hourly_payroll HourlyPayroll { get; set; }
+        public UserHolidays UserHolidays { get; set; }
     }
 
     //Composite model to retrieve the information of all the users

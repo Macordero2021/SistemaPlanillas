@@ -641,6 +641,21 @@ namespace SistemaPlanillas.Controllers
             return View("Payroll/PayHistoryView");
         }
 
+        public ActionResult HolidaysModule(int userId)
+        {
+
+            ViewBag.idUserLogin = userId;
+
+
+            //get the department of the logged user
+            Users userModel = _db.Users.Where(x => x.id == userId).FirstOrDefault();
+            var department = _db.Departaments.Where(x => x.id == userModel.Fk_Id_Deparment).FirstOrDefault();
+            ViewBag.UserDept = department.name_departament;
+
+
+            return View();
+        }
+
     }
 }
 

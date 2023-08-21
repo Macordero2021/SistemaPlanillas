@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     string UserDepart = ViewBag.UserDept;
 
     string test = ViewBag.UserDept;
@@ -39,6 +38,10 @@
                     }
                     <li>
                         <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
+                    </li>
+
+                    <li>
+                        <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assing Holidays</font></font></a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
