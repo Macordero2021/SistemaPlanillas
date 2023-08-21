@@ -262,6 +262,7 @@
     <Content Include="Views\Licence\HolidaysModule.cshtml" />
     <Content Include="Views\Licence\EditUserHoliday.cshtml" />
     <Content Include="Views\Licence\Licences.cshtml" />
+    <Content Include="Views\Licence\LicencesViewUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

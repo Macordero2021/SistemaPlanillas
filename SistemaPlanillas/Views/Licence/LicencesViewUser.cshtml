@@ -1,0 +1,167 @@
+﻿@model SistemaPlanillas.Models.UserCompositeModel
+
+
+@{
+    string UserDepart = ViewBag.UserDept;
+    int idUserLogin = ViewBag.idUserLogin;
+    var deleteStatus = TempData["DeleteStatus"] as string;
+    var createStatus = TempData["CreateStatus"] as string;
+    var updateStatus = TempData["UpdateStatus"] as string;
+}
+
+<html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Licenses User</title>
+
+    <!-- Custom styles for this template -->
+    <link href="/Content/bootstrap-transform.css" rel="stylesheet">
+    <link href="~/Content/StyleForms.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">XYZ S.A.</font></font></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Navegación de palanca">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                    </li>
+                    @if (ViewBag.UserDept == "Human Resources")
+                    {
+                        <li>
+                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assing Holidays</font></font></a>
+                        </li>
+                    }
+                    <li>
+                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Home")"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Log Out</font></font></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="assign-role-wrapper">
+        <div class="container">
+
+            <h1>List of licenses for the user </h1>
+
+            <form action="/Licence/Licences" method="get" style="margin-bottom:40px">
+                <input type="hidden" name="id" value="@idUserLogin" />
+                <button type="submit" class="btn btn-primary create">Create license <i class='bx bx-message-square-add'></i></button>
+            </form>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Type license</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Days license</th>
+                        <th scope="col">Note</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var UserCompositeModel in Model.License_ApplicationList)
+                    {
+                        <tr>
+                            @foreach (var UserCompositeModelType in Model.License_List_Type)
+                            {
+                                if (UserCompositeModel.fk_id_license_type == UserCompositeModelType.id_license_type)
+                                {
+                                    <td>
+                                        @UserCompositeModelType.name_license
+                                    </td>
+                                    break;
+                                }
+
+                            }
+                            <td class="fechaInicio">@UserCompositeModel.startDate</td>
+                            <td class="fechaFin">@UserCompositeModel.endDay</td>
+                            <td>@UserCompositeModel.daysLicense</td>
+                            <td>@UserCompositeModel.notes</td>
+                            <td>@UserCompositeModel.status_license</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        window.onload = function () {
+            var fechaInicioElements = document.querySelectorAll(".fechaInicio");
+            fechaInicioElements.forEach(function (element) {
+                var parts = element.innerText.split(" ");
+                var fecha = parts[0];
+                element.innerText = fecha;
+            });
+
+            var fechaInicioElements2 = document.querySelectorAll(".fechaFin");
+            fechaInicioElements2.forEach(function (element2) {
+                var parts = element2.innerText.split(" ");
+                var fecha = parts[0];
+                element2.innerText = fecha;
+            });
+        }
+    </script>
+
+
+
+
+
+    <script src="~/Scripts/JS/SweetAlerts.js"></script>
+
+    @if (!string.IsNullOrEmpty(deleteStatus))
+    {
+        <script>
+            if ('@deleteStatus' === "success") {
+                showSuccessAlert("Extra Payment Deleted", "");
+            }
+            @TempData["DeleteStatus"] = null;
+        </script>
+    }
+
+    @if (!string.IsNullOrEmpty(createStatus))
+    {
+        <script>
+            if ('@createStatus' === "success") {
+                showSuccessAlert("Extra Payment Created", "");
+            }
+            @TempData["CreateStatus"] = null;
+        </script>
+    }
+
+    @if (!string.IsNullOrEmpty(updateStatus))
+    {
+        <script>
+            if ('@updateStatus' === "success") {
+                showSuccessAlert("Extra Payment Updated", "");
+            }
+            @TempData["UpdateStatus"] = null;
+        </script>
+    }
+
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

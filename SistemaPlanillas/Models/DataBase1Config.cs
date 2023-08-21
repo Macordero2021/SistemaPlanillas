@@ -328,6 +328,7 @@ namespace SistemaPlanillas.Models
         public hourly_payroll HourlyPayroll { get; set; }
         public UserHolidays UserHolidays { get; set; }
         public List<License_Type> License_List_Type { get; set; }
+        public List<License_Application> License_ApplicationList { get; set; }
     }
 
     //Composite model to retrieve the information of all the users
