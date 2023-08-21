@@ -73,8 +73,18 @@
                             <td>@UserCompositeModel.User.name</td>
                             <td>@UserCompositeModel.User.email</td>
                             <td>@UserCompositeModel.UserHolidays.Holidays</td>
+
+                            <td>
+                                <form action="/Licence/EditUserHoliday" method="get">
+                                    <input type="hidden" name="idUserLogin" value="@idUserLogin" />
+                                    <input type="hidden" name="idUserEdit" value="@UserCompositeModel.User.id" />
+                                    <button type="submit" class="btn btn-primary">Edit<i class='bx bx-edit-alt'></i></button>
+                                </form>
+                            </td>
                         </tr>
                     }
+
+
                 </tbody>
             </table>
         </div>
