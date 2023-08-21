@@ -127,6 +127,7 @@
                             <input type="hidden" name="idUserLogin" value="@idUserLogin" />
                             <input type="hidden" name="SalaryType" value="@salaryType" />
                             <input type="hidden" name="selectedMonth" value="@ViewBag.SelectedMonth" />
+                            <input type="hidden" name="totalEarnings" value="@ViewBag.TotalEarningsSum" />
                             <button type="submit" class="btn btn-primary" @(ViewBag.SelectedMonth == null ? "disabled" : "")>
                                 Approve Payment<i class='bx bx-check-circle'></i>
                             </button>
@@ -135,7 +136,7 @@
 
                     <div class="col-md-2">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="totalEarningsSum" value="@ViewBag.TotalEarningsSum." placeholder="totalEarnings" disabled>
+                            <input type="text" class="form-control" id="totalEarningsSum" value="@ViewBag.TotalEarningsSum" placeholder="totalEarnings" disabled>
                             <label for="totalEarnings">Total Earnings:</label>
                         </div>
                     </div>

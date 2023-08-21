@@ -18,10 +18,11 @@ namespace SistemaPlanillas.Models
 
         public decimal? payment_amount { get; set; }
 
-        public int? fk_id_payment { get; set; }
-
         [StringLength(10)]
         public string payment_type { get; set; }
+
+        [StringLength(50)]
+        public string id_payment { get; set; }
 
         public virtual Users Users { get; set; }
     }

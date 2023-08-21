@@ -178,6 +178,10 @@ namespace SistemaPlanillas.Models
                 .Property(e => e.payment_type)
                 .IsUnicode(false);
 
+            modelBuilder.Entity<Payroll_history>()
+                .Property(e => e.id_payment)
+                .IsUnicode(false);
+
             modelBuilder.Entity<Roles>()
                 .Property(e => e.name_rol)
                 .IsUnicode(false);

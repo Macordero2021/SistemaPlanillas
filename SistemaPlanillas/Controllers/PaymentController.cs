@@ -68,7 +68,7 @@ namespace SistemaPlanillas.Controllers
                 fk_idUser = idUserEdit,
                 payment_day = DateTime.Now.ToString("dd/MM/yyyy"),
                 payment_amount = amount,
-                fk_id_payment = idMonthly,
+                id_payment = idMonthly.ToString(),
                 payment_type = SalaryType
             };
             _db.Payroll_history.Add(approveMonthly);
@@ -91,21 +91,21 @@ namespace SistemaPlanillas.Controllers
             return RedirectToAction("PayReportView", "Payroll", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, salaryType = SalaryType });
         }
 
-        public ActionResult approveHourlyPayment(int idUserEdit, int idUserLogin, string SalaryType)
+        public ActionResult approveHourlyPayment(int idUserEdit, int idUserLogin, string SalaryType, string totalEarnings)
         {
-            var total_earnings = _db.hourly_payroll.Where(x => x.fk_iduser == idUserEdit).Select(x => x.total_earnings).Sum();
-
             int selectedMonth = Convert.ToInt32(Request["selectedMonth"]);
 
-            // Obtener el mes de la fecha como entero
-            int currentMonth = selectedMonth;
+            DateTime selectedDate = new DateTime(DateTime.Now.Year, selectedMonth, 1);
+
+            // Formatear la fecha en el formato "mm/yyyy"
+            string formattedDate = selectedDate.ToString("MM/yyyy");
 
             Payroll_history approveMonthly = new Payroll_history
             {
                 fk_idUser = idUserEdit,
                 payment_day = DateTime.Now.ToString("dd/MM/yyyy"),
-                payment_amount = total_earnings,
-                fk_id_payment = currentMonth,
+                payment_amount = decimal.Parse(totalEarnings),
+                id_payment = formattedDate,
                 payment_type = SalaryType
             };
             _db.Payroll_history.Add(approveMonthly);
@@ -116,10 +116,10 @@ namespace SistemaPlanillas.Controllers
             foreach (var hourlyPayroll in timeList)
             {
                 // Convertir el string a un objeto DateTime utilizando ParseExact
-                DateTime date2 = DateTime.ParseExact(hourlyPayroll.work_day, "dd/MM/yyyy", null);
+                DateTime date = DateTime.ParseExact(hourlyPayroll.work_day, "dd/MM/yyyy", null);
                 // Obtener el mes de la fecha como entero
-                int currentMonth2 = date2.Month;
-                if (currentMonth2 == currentMonth)
+                int currentMonth = date.Month;
+                if (currentMonth == selectedMonth)
                 {
                     hourlyPayroll.Payment_Status = "Approved";
                     _db.SaveChanges();
