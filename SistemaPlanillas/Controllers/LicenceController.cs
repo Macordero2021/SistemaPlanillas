@@ -37,5 +37,12 @@ namespace SistemaPlanillas.Controllers
 
             return View(usersWithInfo);
         }
+
+        public ActionResult EditUserHoliday(int idUserLogin, int idUserEdit)
+        {
+            UserHolidays idEditUserHoliday = _db.UserHolidays.Where(x => x.fk_id_user == idUserEdit).FirstOrDefault();            
+
+            return View();
+        }
     }
 }
