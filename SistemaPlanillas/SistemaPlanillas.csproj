@@ -261,6 +261,7 @@
     <Content Include="Views\Payroll\Payroll\PayReportView.cshtml" />
     <Content Include="Views\Licence\HolidaysModule.cshtml" />
     <Content Include="Views\Licence\EditUserHoliday.cshtml" />
+    <Content Include="Views\Licence\Licences.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
