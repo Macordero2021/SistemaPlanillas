@@ -38,7 +38,7 @@
                             <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
                         </li>
                         <li>
-                            <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = idUserLogin})"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assing Holidays</font></font></a>
+                            <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assing Holidays</font></font></a>
                         </li>
                     }
                     <li>
@@ -66,24 +66,6 @@
                         <label for="floatingInput">Email</label>
                     </div>
 
-                    <label for="NewDepartments" class="form-label mt-4">Description</label>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="@Model.deductions.notes" value="@Model.deductions.notes" name="description">
-                        <label for="floatingInput">Description</label>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="NewDepartments" class="form-label mt-4">Deductions</label>
-                        <select class="form-select" id="NewDepartments" name="typeDeductions" required>
-                            @foreach (var deduction in Model.deduction_TypeList)
-                            {
-                                {
-                                    <option>@deduction.deduction_name</option>
-                                }
-                            }
-                        </select>
-                    </div>
-
                     <label for="NewDepartments" class="form-label mt-4">Amount</label>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingInput" placeholder="amount" value="@Model.deductions.deduction_value" name="amount" required>
@@ -93,7 +75,7 @@
                     <!--================ Buttons =================-->
                     <div class="button-container">
                         <button type="submit">Save</button>
-                        <button type="reset" onclick="goBack()">Cancel</button>
+                        <button type="reset">Cancel</button>
                     </div>
                 </div>
                 <input type="hidden" name="idDeductionEdit" value="@Model.deductions.id_deduction" />
@@ -103,13 +85,6 @@
 
         </div><!--================ End of Form container =================-->
     </div><!--================ End of Wrapper =================-->
-
-    <script>
-        function goBack() {
-            // Utiliza el objeto history para retroceder en el historial del navegador
-            history.back();
-        }
-    </script>
 
     @Scripts.Render("~/bundles/bootstrap")
 </body>
