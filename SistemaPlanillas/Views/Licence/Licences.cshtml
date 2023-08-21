@@ -1,5 +1,4 @@
 ﻿@model SistemaPlanillas.Models.UserCompositeModel
-
 @{
     string UserRole = ViewBag.UserRole;
     string UserDepart = ViewBag.UserDept;
@@ -34,6 +33,19 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js" integrity="sha512-42PE0rd+wZ2hNXftlM78BSehIGzezNeQuzihiBCvUEB3CVxHvsShF86wBWwQORNxNINlBPuq7rG4WWhNiTVHFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+
+
+
+
+
 </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -59,7 +71,6 @@
                         <li>
                             <a class="nav-link" href="@Url.Action("AssignRole", "Admin", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
                         </li>
-
                         <li>
                             <a class="nav-link" href="@Url.Action("Licences", "Licence", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Licence</font></font></a>
                         </li>
@@ -86,7 +97,6 @@
                             <li>
                                 <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assing Holidays</font></font></a>
                             </li>
-
                         }
                         <li>
                             <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
@@ -94,7 +104,6 @@
                         <li>
                             <a class="nav-link" href="@Url.Action("Licences", "Licence", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Licence</font></font></a>
                         </li>
-
                     }
 
                 </ul>
@@ -107,105 +116,66 @@
         </div>
     </nav>
 
-    <main class="profile-wrapper">
-        <div class="profile-container">
-            <div>
-                <h1 style="margin-bottom:50px;">Hi @Model.User.name!</h1>
-            </div>
 
-            <h1 class="table-title">Your personal Information</h1>
-            <input type="hidden" id="userId" value="@Model.User.id" />
-            <table class="table">
+    <div class="wrapper">
+        <div class="form-container">
+            <form action="/Licence/storeLicenseUser" method="post">
+                <div class="form-group">
+                    <h1>Create Licenset</h1>
 
-                <tbody>
-                    <tr>
-                        <!-- Fila #1 -->
-                        <td>
-                            <div class="input-container">
-                                <i class='bx bx-user-circle'></i>
-                                <strong>Name:</strong> @Model.User.name
-                                <div class="input-wrapper">
-                                    <input type="text" name="name" value="" data-field="name" />
-                                    <button type="button" class="btn-update">Update</button>
-                                    <button type="reset" class="btn-cancel">Cancel</button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="input-container">
-                                <i class='bx bx-buildings'></i>
-                                <strong>Department:</strong> @Model.Department.name_departament
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <!-- Fila #2 -->
-                        <td>
-                            <div class="input-container">
-                                <i class='bx bx-user-circle'></i>
-                                <strong>Last Name(s):</strong> @Model.User.lastname
-                                <div class="input-wrapper">
-                                    <input type="text" name="name" value="" data-field="lastname" />
-                                    <button type="button" class="btn-update">Update</button>
-                                    <button type="reset" class="btn-cancel">Cancel</button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="input-container">
-                                <i class='bx bx-user-voice'></i>
-                                <strong>Your Role:</strong> @ViewBag.UserRole
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <!-- Fila #3 -->
-                        <td>
-                            <div class="input-container">
-                                <i class='bx bx-phone'></i>
-                                <strong>Phone Number:</strong> @Model.User.phone
-                                <div class="input-wrapper">
-                                    <input type="text" name="name" value="" data-field="phone" />
-                                    <button type="button" class="btn-update">Update</button>
-                                    <button type="reset" class="btn-cancel">Cancel</button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="input-container">
-                                <i class='bx bx-credit-card'></i>
-                                <strong>Tipo de pago:</strong> @Model.Status.name_status
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <!-- Fila #4 -->
-                        <td>
-                            <div class="input-container">
-                                <i class='bx bx-envelope'></i>
-                                <strong>Email:</strong> @Model.User.email
-                                <div class="input-wrapper">
-                                    <input type="text" name="name" value="" data-field="email" />
-                                    <button type="button" class="btn-update">Update</button>
-                                    <button type="reset" class="btn-cancel">Cancel</button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="input-container">
-                                <i class='bx bx-money'></i>
-                                <strong>Monto del salario:</strong> @Model.Status.name_status
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    <div class="form-group">
+                        <label class="form-label mt-4">Type license</label>
+                        <select class="form-select" name="typeLicense" required>
+                            <option>Choose a license type</option>
+                            @foreach (var licenses in Model.License_List_Type)
+                            {
+                                <option value="@licenses.name_license">@licenses.name_license</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label mt-4">Select start day </label>
+                        <input type="date" id="birthday" name="startDay">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label mt-4">Select finally day </label>
+                        <input type="date" id="birthday" name="finallyDay">
+                    </div>
 
-        </div>
-    </main>
+                    <div class="form-group">
+                        <label class="form-label mt-4">Select days </label>
+                        <select class="form-select" aria-label="Default select example" name="selectedDays" required>
+                            @for (int i = 0; i <= 31; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </div>
+                    <!-- Notes -->
+                    <label class="form-label mt-4">Notes</label>
+                    <div class="form-floating mb-3">
+                        <textarea type="text" class="form-control" placeholder="Nota" value="" name="notes"></textarea>
+                        <label for="description">Notes</label>
+                    </div>
 
-    <script src="~/Scripts/JS/profile.js"></script>
+                    <!--================ pasar el usuario logueado =================-->
+                    <input type="hidden" name="idUserLogin" value="@Model.User.id" />
+                    <input type="hidden" name="idUserEdit" value="@Model.User.id" />
+
+                    <!--================ Buttons =================-->
+                    <div class="button-container">
+                        <button type="submit">Save</button>
+                        <button type="reset">Cancel</button>
+                    </div>
+                </div>
+            </form>
+
+        </div><!--================ End of Form container =================-->
+    </div><!--================ End of Wrapper =================-->
 
     @Scripts.Render("~/bundles/bootstrap")
 </body>
+
+
+
 </html>
