@@ -624,10 +624,19 @@ namespace SistemaPlanillas.Controllers
         }
 
         // ===========================================> PayHistoryView VIEW <===========================================
-        public ActionResult PayHistoryView(int idUserLogin, int idUserEdit)
+        public ActionResult PayHistoryView(int idUserLogin, int idUserEdit, string salaryType)
         {
             // Retrieve the user matching the idUserEdit received
             List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
+
+            var usersWithInfo = (from user in users
+                                 join salary in _db.Salary on user.id equals salary.fk_user
+                                 join salary_Type in _db.Salary_Type on salary.fk_salary_type equals salary_Type.id
+                                 select new UserCompositeModel
+                                 {
+                                     User = user,
+                                     Salary_Type = salary_Type
+                                 }).ToList();
 
             //get the department of the logged user
             Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
@@ -637,8 +646,9 @@ namespace SistemaPlanillas.Controllers
             // Get the id of the logged-in user and the user to edit
             ViewBag.idUserLogin = idUserLogin;
             ViewBag.idUserEdit = idUserEdit;
+            ViewBag.salaryType = salaryType;
 
-            return View("Payroll/PayHistoryView");
+            return View("Payroll/PayHistoryView", usersWithInfo);
         }
 
     }
