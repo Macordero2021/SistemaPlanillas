@@ -153,5 +153,15 @@ namespace SistemaPlanillas.Controllers
                 return RedirectToAction("LicencesViewUser", new { id = idUserLogin });
             }
         }
+
+        public ActionResult EmployeeLicences(int idUserLogin)
+        {
+
+            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
+
+            // Get the id of the logged-in user and the user to edit
+            ViewBag.idUserLogin = idUserLogin;
+            return View();
+        }
     }
 }

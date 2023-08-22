@@ -86,6 +86,9 @@
                             <li>
                                 <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assing Holidays</font></font></a>
                             </li>
+                            <li>
+                                <a class="nav-link" href="@Url.Action("EmployeeLicences", "Licence", new { idUserLogin = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">EmployeeLicences</font></font></a>
+                            </li>
 
                         }
                         <li>
@@ -94,6 +97,7 @@
                         <li>
                             <a class="nav-link" href="@Url.Action("Licences", "Licence", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Licence</font></font></a>
                         </li>
+
 
                     }
 
