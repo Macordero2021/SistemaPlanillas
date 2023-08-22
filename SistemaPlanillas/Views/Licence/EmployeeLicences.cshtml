@@ -2,6 +2,7 @@
 @{
     int idUserLogin = ViewBag.idUserLogin;
     string idModel = ViewBag.idModel;
+    int pendingLicences = ViewBag.pendingLicences;
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -39,9 +40,7 @@
                     <li>
                         <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Holidays</font></font></a>
                     </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("EmployeeLicences", "Licence", new { idUserLogin = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">EmployeeLicences</font></font></a>
-                    </li>
+                    <li> <a class="nav-link" href="@Url.Action("EmployeeLicences", "Licence", new { id = idUserLogin})"> <font style="vertical-align: inherit;"> <font style="vertical-align: inherit;">EmployeeLicences</font> </font> </a> <span class="badge badge-pill badge-danger">@ViewBag.pendingLicences</span> </li>
                     <li>
                         <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
                     </li>
