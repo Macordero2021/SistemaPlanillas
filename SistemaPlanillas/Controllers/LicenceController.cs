@@ -154,7 +154,6 @@ namespace SistemaPlanillas.Controllers
         {
             List<Users> users = _db.Users.ToList();
 
-
             var usersWithInfo = (from user in users
                                  join aplicationLicence in _db.License_Application on user.id equals aplicationLicence.fk_id_user
                                  join License_type in _db.License_Type on aplicationLicence.fk_id_license_type equals License_type.id_license_type
@@ -166,9 +165,23 @@ namespace SistemaPlanillas.Controllers
                                  }).ToList();
 
             // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
-            ViewBag.idModel = idUserLogin.ToString();
+            ViewBag.idUserLogin = idUserLogin;
 
             return View(usersWithInfo);
+        }
+
+        public ActionResult ApproveApplication(int idApplication, int idUserEdit, int idUserLogin)
+        {
+            return View();
+        }
+
+        public ActionResult DeclineApplication(int idApplication, int idUserEdit, int idUserLogin)
+        {
+            // Buscar el registro a eliminar
+            License_Application ApplicationToDelete = _db.License_Application.Find(idApplication);
+            _db.License_Application.Remove(ApplicationToDelete);
+            _db.SaveChanges();
+            return RedirectToAction("EmployeeLicences", "Licence", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, idApplication = idApplication });
         }
     }
 }
