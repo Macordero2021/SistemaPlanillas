@@ -241,6 +241,13 @@ h1 {
     position: relative;
 }
 
+.badge-custom {
+    background-color: var(--color-danger-variant);
+    color: white; 
+    padding: 5px 10px; 
+    border-radius: 10px; 
+}
+
 /*
 ============================>   GLOBAL MODULE: PROFILE VIEW   <============================
 */

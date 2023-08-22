@@ -164,9 +164,6 @@ namespace SistemaPlanillas.Controllers
                                      License_Type = License_type
                                  }).ToList();
 
-            int pendingLicences = usersWithInfo.Count; // contador de licencias pendientes de aprobacion
-            ViewBag.pendingLicences = pendingLicences;
-
             // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
             ViewBag.idUserLogin = idUserLogin;
 

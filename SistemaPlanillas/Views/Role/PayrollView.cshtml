@@ -3,6 +3,7 @@
 
     string test = ViewBag.UserDept;
     ViewBag.Title = "PayrollView";
+    int pendingLicences = ViewBag.pendingLicences;
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -32,17 +33,22 @@
                     </li>
                     @if (ViewBag.UserDept == "Human Resources")
                     {
-                        <li>
-                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                        <li class="nav-item">
+                           <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
                         </li>
-                        <li>
-                            <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assing Holidays</font></font></a>
+                        <li class="nav-item">
+                           <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assing Holidays</font></font></a>
                         </li>
-                        <li>
+                        <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Holidays</font></font></a>
                         </li>
                         <li>
-                            <a class="nav-link" href="@Url.Action("EmployeeLicences", "Licence", new { idUserLogin = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">EmployeeLicences</font></font></a>
+                            <a class="nav-link" href="@Url.Action("EmployeeLicences", "Licence", new { idUserLogin = @Model.id })">
+                                <span style="display: inline-block; vertical-align: middle;">
+                                    EmployeeLicences
+                                </span>
+                                <span class="badge-custom">@ViewBag.pendingLicences</span>
+                            </a>
                         </li>
                     }
                     <li>

@@ -71,18 +71,13 @@ namespace SistemaPlanillas.Controllers
             var userRole = Session["role"];
             var department = _db.Departaments.Where(x => x.id == user.Fk_Id_Deparment).FirstOrDefault();
 
+            List<License_Application> aplicationLicence = _db.License_Application.Where(x => x.status_license == "Process").ToList();
+
+            int pendingLicences = aplicationLicence.Count; // contador de licencias pendientes de aprobacion
+            ViewBag.pendingLicences = pendingLicences;
+
             ViewBag.UserRole = userRole;
             ViewBag.UserDept = department.name_departament;
-            return View(user);
-        }
-
-        public ActionResult PayrollView2(int userId)
-        {
-            //aqui entra cualquier usuario que tenga rol planillero hacerle una vista
-
-            Users user = _db.Users.Where(x => x.id == userId).FirstOrDefault();
-            var userRole = Session["role"];
-            ViewBag.UserRole = userRole;
             return View(user);
         }
 
