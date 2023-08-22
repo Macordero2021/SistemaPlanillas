@@ -3,6 +3,7 @@
     string UserRole = ViewBag.UserRole;
     string UserDepart = ViewBag.UserDept;
     string viewName = "";
+    var createStatus = TempData["CreateStatus"] as string;
 
     switch (UserRole)
     {
@@ -84,7 +85,7 @@
                             <a class="nav-link" href="@Url.Action("ConsultModule", "Employee", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Consult</font></font></a>
                         </li>
                         <li>
-                            <a class="nav-link" href="@Url.Action("Licences", "Licence", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Licence</font></font></a>
+                            <a class="nav-link" href="@Url.Action("LicencesViewUser", "Licence", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Licence</font></font></a>
                         </li>
                     }
                     else if (ViewBag.UserRole == "PAYROLL CLERK")
@@ -171,9 +172,18 @@
         </div><!--================ End of Form container =================-->
     </div><!--================ End of Wrapper =================-->
 
+    <script src="~/Scripts/JS/SweetAlerts.js"></script>
+
+    @if (!string.IsNullOrEmpty(createStatus))
+    {
+        <script>
+            if ('@createStatus' === "failed") {
+                showErrorAlert("You don't have that amount of days available", "");
+            }
+            @TempData["CreateStatus"] = null;
+        </script>
+    }
     @Scripts.Render("~/bundles/bootstrap")
 </body>
-
-
 
 </html>

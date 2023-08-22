@@ -84,9 +84,6 @@ namespace SistemaPlanillas.Controllers
             var licensesUser = _db.License_Application.Where(x=>x.fk_id_user == idUserLogin.id).ToList(); //licencias del usuario
             var License_List_Type = _db.License_Type.ToList();//tipos de loicencia
 
-
-
-
             var userRole = Session["role"];
 
             // Create a view model containing all the retrieved lists and pass it to the view.
@@ -95,7 +92,6 @@ namespace SistemaPlanillas.Controllers
                License_ApplicationList = licensesUser,
                License_List_Type = License_List_Type
             };
-
 
             ViewBag.idUserLogin = idUserLogin.id;
             ViewBag.UserRole = userRole;
@@ -129,25 +125,33 @@ namespace SistemaPlanillas.Controllers
         [HttpPost]
         public ActionResult storeLicenseUser(int idUserLogin, int idUserEdit, string typeLicense, DateTime startDay, DateTime finallyDay, string selectedDays, string notes)
         {
+            UserHolidays daysHolidays = _db.UserHolidays.Where(x => x.fk_id_user == idUserLogin).FirstOrDefault();
+            int daysAvailable = int.Parse(daysHolidays.Holidays);
 
-
-
-            License_Application idUser = _db.License_Application.Where(x => x.fk_id_user == idUserEdit).FirstOrDefault();
-            int licenceType = _db.License_Type.Where(x => x.name_license == typeLicense).Select(x => x.id_license_type).FirstOrDefault();
-            License_Application license_Application = new License_Application
+            if(int.Parse(selectedDays) >= daysAvailable)
             {
-                fk_id_user = idUserLogin,
-                fk_id_license_type = licenceType,
-                startDate = startDay,
-                endDay = finallyDay,
-                daysLicense = selectedDays,
-                notes = notes,
-                status_license = "Process"
-            };
+                TempData["CreateStatus"] = "failed";
+                return RedirectToAction("Licences", new { id = idUserLogin });
+            }
+            else 
+            { 
+                License_Application idUser = _db.License_Application.Where(x => x.fk_id_user == idUserEdit).FirstOrDefault();
+                int licenceType = _db.License_Type.Where(x => x.name_license == typeLicense).Select(x => x.id_license_type).FirstOrDefault();
+                License_Application license_Application = new License_Application
+                {
+                    fk_id_user = idUserLogin,
+                    fk_id_license_type = licenceType,
+                    startDate = startDay,
+                    endDay = finallyDay,
+                    daysLicense = selectedDays,
+                    notes = notes,
+                    status_license = "Process"
+                };
 
-            _db.License_Application.Add(license_Application);
-            _db.SaveChanges();
-           return RedirectToAction("LicencesViewUser", new { id = idUserLogin });
+                _db.License_Application.Add(license_Application);
+                _db.SaveChanges();
+                return RedirectToAction("LicencesViewUser", new { id = idUserLogin });
+            }
         }
     }
 }
