@@ -152,12 +152,23 @@ namespace SistemaPlanillas.Controllers
 
         public ActionResult EmployeeLicences(int idUserLogin)
         {
+            List<Users> users = _db.Users.ToList();
 
-            Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
 
-            // Get the id of the logged-in user and the user to edit
-            ViewBag.idUserLogin = idUserLogin;
-            return View();
+            var usersWithInfo = (from user in users
+                                 join aplicationLicence in _db.License_Application on user.id equals aplicationLicence.fk_id_user
+                                 join License_type in _db.License_Type on aplicationLicence.fk_id_license_type equals License_type.id_license_type
+                                 select new UserCompositeModel
+                                 {
+                                     User = user,
+                                     License_Application = aplicationLicence,
+                                     License_Type = License_type
+                                 }).ToList();
+
+            // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
+            ViewBag.idModel = idUserLogin.ToString();
+
+            return View(usersWithInfo);
         }
     }
 }

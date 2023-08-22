@@ -1,6 +1,7 @@
-﻿
+﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
 @{
-    int idUserLogin = ViewBag.idUserLogin;
+    string idUserLogin = ViewBag.idUserLogin;
+    string idModel = ViewBag.idModel;
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -45,7 +46,58 @@
         </div>
     </nav>
 
-    <h1>Lista de Licencias de Empleados</h1>
+    <main class="assign-role-wrapper">
+        <div class="container">
+            <h1>LIST OF USERS</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Licence</th>
+                        <th scope="col">Star Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Days Licence</th>
+                        <th scope="col">Notes</th>
+                        <th scope="col">Status Licence</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var UserCompositeModel in Model)
+                    {
+                        <tr>
+                            <td>@UserCompositeModel.User.name</td>
+                            <td>@UserCompositeModel.User.email</td>
+                            <td>@UserCompositeModel.License_Type.name_license</td>
+                            <td>@UserCompositeModel.License_Application.startDate</td>
+                            <td>@UserCompositeModel.License_Application.endDay</td>
+                            <td>@UserCompositeModel.License_Application.daysLicense</td>
+                            <td>@UserCompositeModel.License_Application.notes</td>
+                            <td>@UserCompositeModel.License_Application.status_license</td>
+                            <td>
+                                <form action="" method="get">
+                                    <input type="hidden" name="id" value="@UserCompositeModel.User.id" />
+                                    <input type="hidden" name="idUserLogin" value="@idModel" />
+                                    <button type="submit" class="btn btn-primary">Aprobar<i class='bx bx-edit-alt'></i></button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="" method="get">
+                                    <input type="hidden" name="id" value="@UserCompositeModel.User.id" />
+                                    <input type="hidden" name="idUserLogin" value="@idModel" />
+                                    <button type="submit" class="btn btn-primary">Denegar<i class='bx bx-edit-alt'></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </main>
+
 
     @Scripts.Render("~/bundles/bootstrap")
 </body>

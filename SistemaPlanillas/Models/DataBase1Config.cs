@@ -329,6 +329,9 @@ namespace SistemaPlanillas.Models
         public UserHolidays UserHolidays { get; set; }
         public List<License_Type> License_List_Type { get; set; }
         public List<License_Application> License_ApplicationList { get; set; }
+        public License_Application License_Application { get; set; }
+
+        public License_Type License_Type { get; set; }
     }
 
     //Composite model to retrieve the information of all the users
