@@ -1,4 +1,4 @@
-﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
+﻿@model SistemaPlanillas.Models.ViewModels.MultipleModels
 
 @{
     string UserDepart = ViewBag.UserDept;
@@ -89,13 +89,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var UserCompositeModel in Model)
+                    @if (@Model.UsersWithInfo.SalaryType == "Monthly")
                     {
-                        if (UserCompositeModel.Salary_Type.SalaryType == "Monthly")
+                        foreach (var MonthlyPayments in Model.MonthlyPayments)
                         {
                             <tr>
-                                <td></td>
-                                <td></td>
+                                <td>@Model.UsersWithInfo.Salary</td>
+                                <td>@Model.UsersWithInfo.PaymentsExtraordinary</td>
+                                <td>@Model.UsersWithInfo.Deductions</td>
+                                <td>@MonthlyPayments.MonthlyPayroll.total_workDays</td>
+                                <td>@MonthlyPayments.MonthlyPayroll.total_earnings</td>
                             </tr>
                         }
                     }
@@ -115,14 +118,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var UserCompositeModel in Model)
+                    @if (@Model.UsersWithInfo.SalaryType == "Hourly")
                     {
-                        if (UserCompositeModel.Salary_Type.SalaryType == "Hourly")
+                        foreach (var HourlyPayments in Model.HourlyPayments)
                         {
                             <tr>
-                                <td></td>
-                                <td></td>
+                                <td>@Model.UsersWithInfo.Salary</td>
+                                <td>@Model.UsersWithInfo.PaymentsExtraordinary</td>
+                                <td>@Model.UsersWithInfo.Deductions</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>@HourlyPayments.History.payment_amount</td>
                             </tr>
+                            foreach (var hourlyPayment in HourlyPayments.HourlyPayrolls)
+                            {
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>@hourlyPayment.work_day</td>
+                                    <td>@hourlyPayment.total_earnings</td>
+                                    <td>-</td>
+                                </tr>
+                            }
                         }
                     }
                 </tbody>
