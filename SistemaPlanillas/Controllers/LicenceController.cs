@@ -187,9 +187,25 @@ namespace SistemaPlanillas.Controllers
             return RedirectToAction("EmployeeLicences", "Licence", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, idApplication = idApplication });
         }
 
-        public ActionResult LicencesHistory(int idUserLogin)
+        public ActionResult LicencesHistory(int idUserLogin, string nameOrEmail)
         {
-            List<Users> users = _db.Users.ToList();
+            // Verificar si nameOrEmail no es nulo y luego eliminar los espacios en blanco del inicio y final
+            if (nameOrEmail != null)
+            {
+                nameOrEmail = nameOrEmail.Trim();
+            }
+
+            List<Users> users;
+            if (string.IsNullOrEmpty(nameOrEmail))
+            {
+                // Retrieve all users if no nameOrEmail provided.
+                users = _db.Users.ToList();
+            }
+            else
+            {
+                // Retrieve users matching the provided nameOrEmail.
+                users = _db.Users.Where(x => x.name.Contains(nameOrEmail) || x.email.Contains(nameOrEmail)).ToList();
+            }
 
             var usersWithInfo = (from user in users
                                  join aplicationLicence in _db.License_Application.Where(x => x.status_license == "Approved" || x.status_license == "Denied") on user.id equals aplicationLicence.fk_id_user

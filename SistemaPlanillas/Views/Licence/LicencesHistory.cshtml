@@ -47,6 +47,21 @@
 
     <main class="assign-role-wrapper">
         <div class="container">
+            <div class="look-container">
+                <h1>LOOK UP FOR AN SPECIFIC USER</h1>
+                <form action="/Licence/LicencesHistory" method="get" class="search-form">
+                    <div class="input-group">
+                        <div class="form-outline">
+                            <input name="nameOrEmail" placeholder="Search for an specific user using the name or email" class="form-control" style="width:500px;" />
+                            <input name="idUserLogin" type="hidden" value="@idUserLogin" />
+                        </div>
+                        <button type="submit" class="btn btn-primary d-flex align-items-center">
+                            <i class='bx bx-search-alt me-2'></i>Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+
             <h1>HISTORIC LIST OF USERS</h1>
             <table class="table">
                 <thead>
