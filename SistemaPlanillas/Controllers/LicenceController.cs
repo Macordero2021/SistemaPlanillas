@@ -206,5 +206,25 @@ namespace SistemaPlanillas.Controllers
 
             return View(usersWithInfo);
         }
+
+        public ActionResult CalendarLicences(int id)
+        {
+            List<Users> users = _db.Users.ToList();
+
+            var usersWithInfo = (from user in users
+                                 join aplicationLicence in _db.License_Application.Where(x => x.status_license == "Approved") on user.id equals aplicationLicence.fk_id_user
+                                 join License_type in _db.License_Type on aplicationLicence.fk_id_license_type equals License_type.id_license_type
+                                 select new UserCompositeModel
+                                 {
+                                     User = user,
+                                     License_Application = aplicationLicence,
+                                     License_Type = License_type
+                                 }).ToList();
+
+            // Get the id of the logged-in user from the URL and store it in the ViewBag to be used in the view.
+            ViewBag.idUserLogin = id;
+
+            return View(usersWithInfo);
+        }
     }
 }

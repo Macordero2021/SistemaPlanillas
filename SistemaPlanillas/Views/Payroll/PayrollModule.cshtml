@@ -38,7 +38,13 @@
                             <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = userId })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
                         </li>
                         <li>
+                            <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = userId })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assing Holidays</font></font></a>
+                        </li>
+                        <li>
                             <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = userId })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Holidays</font></font></a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="@Url.Action("EmployeeLicences", "Licence", new { idUserLogin = userId })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">EmployeeLicences</font></font></a>
                         </li>
                     }
                     <li>

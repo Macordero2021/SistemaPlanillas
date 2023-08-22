@@ -7,16 +7,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Report</title>
+    <title>HumanResources</title>
 
     <!-- Custom styles for this template -->
     <link href="/Content/bootstrap-transform.css" rel="stylesheet">
     <link href="~/Content/StyleForms.css" rel="stylesheet" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -33,26 +29,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
-                    @if (ViewBag.UserDept == "Human Resources")
-                    {
-                        <li>
-                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assing Holidays</font></font></a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Holidays</font></font></a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="@Url.Action("EmployeeLicences", "Licence", new { idUserLogin = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">EmployeeLicences</font></font></a>
-                        </li>
-                    }
                     <li>
-                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
+                        <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new { id = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("LicencesViewUser", "Licence", new { id = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Licence</font></font></a>
+                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -66,16 +47,21 @@
 
     <main class="assign-role-wrapper">
         <div class="container">
-
-            <h1>User Holidays</h1>
-
+            <h1>CALENDAR LICENCES</h1>
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Days</th>
+                        <th scope="col">Licence</th>
+                        <th scope="col">Star Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Days Licence</th>
+                        <th scope="col">Notes</th>
+                        <th scope="col">Status Licence</th>
                         <th scope="col">Action</th>
+                        <th scope="col">Action</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -84,24 +70,20 @@
                         <tr>
                             <td>@UserCompositeModel.User.name</td>
                             <td>@UserCompositeModel.User.email</td>
-                            <td>@UserCompositeModel.UserHolidays.Holidays</td>
-
-                            <td>
-                                <form action="/Licence/EditUserHoliday" method="get">
-                                    <input type="hidden" name="idUserLogin" value="@idUserLogin" />
-                                    <input type="hidden" name="idUserEdit" value="@UserCompositeModel.User.id" />
-                                    <button type="submit" class="btn btn-primary">Edit<i class='bx bx-edit-alt'></i></button>
-                                </form>
-                            </td>
+                            <td>@UserCompositeModel.License_Type.name_license</td>
+                            <td>@UserCompositeModel.License_Application.startDate</td>
+                            <td>@UserCompositeModel.License_Application.endDay</td>
+                            <td>@UserCompositeModel.License_Application.daysLicense</td>
+                            <td>@UserCompositeModel.License_Application.notes</td>
+                            <td>@UserCompositeModel.License_Application.status_license</td>
                         </tr>
                     }
-
-
                 </tbody>
             </table>
         </div>
     </main>
 
 
+    @Scripts.Render("~/bundles/bootstrap")
 </body>
 </html>
