@@ -178,6 +178,8 @@
     <Compile Include="Models\User_RolAndDepartment.cs" />
     <Compile Include="Models\User_Status.cs" />
     <Compile Include="Models\User_Updates.cs" />
+    <Compile Include="Models\ViewModels\MultipleModels.cs" />
+    <Compile Include="Models\ViewModels\PayHistoryModel.cs" />
     <Compile Include="Models\ViewModels\PayrollViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -8,6 +8,7 @@ namespace SistemaPlanillas.Models
     public class PayrollViewModel
     {
         public string UserDepart { get; set; }
+        public Users User { get; set; }
         public int IdUserLogin { get; set; }
         public int IdUserEdit { get; set; }
         public string SalaryType { get; set; }

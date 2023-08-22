@@ -1,5 +1,6 @@
 ﻿using SistemaPlanillas.Controllers.Services;
 using SistemaPlanillas.Models;
+using SistemaPlanillas.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -627,16 +628,53 @@ namespace SistemaPlanillas.Controllers
         public ActionResult PayHistoryView(int idUserLogin, int idUserEdit, string salaryType)
         {
             // Retrieve the user matching the idUserEdit received
-            List<Users> users = _db.Users.Where(x => x.id == idUserEdit).ToList();
+            Users user = _db.Users.Where(x => x.id == idUserEdit).FirstOrDefault();
+            //mandar el salario del usuario que se va editar
+            var salary = _db.Salary.Where(x => x.fk_user == idUserEdit).Select(x => x.SalaryAmount).FirstOrDefault();
+            //traer todas las deducciones del usuario que se esta editando
+            var deductions = _db.Deductions.Where(x => x.fk_idUser == idUserEdit).Sum(x => x.deduction_value);
+            //traer todos los pagos extraordinarios
+            var paymentsExtraordinary = _db.Extraordinary_payment.Where(x => x.fk_idUser == idUserEdit).Sum(x => x.payment_value);
 
-            var usersWithInfo = (from user in users
-                                 join salary in _db.Salary on user.id equals salary.fk_user
-                                 join salary_Type in _db.Salary_Type on salary.fk_salary_type equals salary_Type.id
-                                 select new UserCompositeModel
-                                 {
-                                     User = user,
-                                     Salary_Type = salary_Type
-                                 }).ToList();
+
+            // Create an instance of PayrollViewModel
+            var usersWithInfo = new PayrollViewModel
+            {
+                User = user,
+                SalaryType = salaryType,
+                Salary = salary ?? 0,
+                Deductions = deductions ?? 0,
+                PaymentsExtraordinary = paymentsExtraordinary ?? 0
+            };
+
+
+            var monthlyPaymentCompositeModels = (
+                from history in _db.Payroll_history
+                where history.fk_idUser == idUserEdit
+                select new MonthlyPaymentCompositeModel
+                {
+                    History = history,
+                    MonthlyPayroll = _db.Monthly_payroll.FirstOrDefault(monthly => monthly.id_monthly_payroll.ToString() == history.id_payment)
+                }).ToList();
+
+            var hourlyPaymentCompositeModels = (
+                from history in _db.Payroll_history
+                where history.fk_idUser == idUserEdit
+                select new HourlyPaymentCompositeModel
+                {
+                    History = history,
+                    HourlyPayrolls = _db.hourly_payroll
+                        .Where(hourly => hourly.Payment_Status == "Approved" && hourly.work_day.EndsWith(history.id_payment))
+                        .OrderBy(hourly => hourly.work_day)
+                        .ToList()
+                }).ToList();
+
+            var viewModel = new MultipleModels
+            {
+                UsersWithInfo = usersWithInfo,
+                MonthlyPayments = monthlyPaymentCompositeModels,
+                HourlyPayments = hourlyPaymentCompositeModels
+            };
 
             //get the department of the logged user
             Users userModel = _db.Users.Where(x => x.id == idUserLogin).FirstOrDefault();
@@ -648,7 +686,7 @@ namespace SistemaPlanillas.Controllers
             ViewBag.idUserEdit = idUserEdit;
             ViewBag.salaryType = salaryType;
 
-            return View("Payroll/PayHistoryView", usersWithInfo);
+            return View("Payroll/PayHistoryView", viewModel);
         }
 
     }
