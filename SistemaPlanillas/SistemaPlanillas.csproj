@@ -264,6 +264,7 @@
     <Content Include="Views\Licence\Licences.cshtml" />
     <Content Include="Views\Licence\LicencesViewUser.cshtml" />
     <Content Include="Views\Licence\EmployeeLicences.cshtml" />
+    <Content Include="Views\Licence\LicencesHistory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

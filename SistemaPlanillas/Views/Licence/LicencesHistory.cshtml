@@ -1,7 +1,6 @@
 ﻿@model List<SistemaPlanillas.Models.UserCompositeModel>
 @{
     int idUserLogin = ViewBag.idUserLogin;
-    string idModel = ViewBag.idModel;
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -48,12 +47,7 @@
 
     <main class="assign-role-wrapper">
         <div class="container">
-            <h1>LIST OF USERS</h1>
-
-            <form action="/Licence/LicencesHistory" method="get" style="margin-bottom:40px">
-                <input type="hidden" name="idUserLogin" value="@idUserLogin" />
-                <button type="submit" class="btn btn-secondary create">Licences History <i class='bx bx-message-square-add'></i></button>
-            </form>
+            <h1>HISTORIC LIST OF USERS</h1>
             <table class="table">
                 <thead>
                     <tr>
@@ -82,23 +76,6 @@
                             <td>@UserCompositeModel.License_Application.daysLicense</td>
                             <td>@UserCompositeModel.License_Application.notes</td>
                             <td>@UserCompositeModel.License_Application.status_license</td>
-
-                            <td>
-                                <form action="/Licence/ApproveApplication" method="post">
-                                    <input type="hidden" name="idApplication" value="@UserCompositeModel.License_Application.id_licenseApplication" />
-                                    <input type="hidden" name="idUserEdit" value="@UserCompositeModel.User.id" />
-                                    <input type="hidden" name="idUserLogin" value="@idUserLogin" />
-                                    <button type="submit" class="btn btn-primary">Approved Payment<i class='bx bx-x-circle'></i></button>
-                                </form>
-                            </td>
-                            <td>
-                                <form action="/Licence/DeclineApplication" method="post">
-                                    <input type="hidden" name="idApplication" value="@UserCompositeModel.License_Application.id_licenseApplication" />
-                                    <input type="hidden" name="idUserEdit" value="@UserCompositeModel.User.id" />
-                                    <input type="hidden" name="idUserLogin" value="@idUserLogin" />
-                                    <button type="submit" class="btn btn-primary delete">Decline Payment<i class='bx bx-x-circle'></i></button>
-                                </form>
-                            </td>
                         </tr>
                     }
                 </tbody>
