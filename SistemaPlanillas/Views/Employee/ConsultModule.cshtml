@@ -1,6 +1,8 @@
-﻿
+﻿@model SistemaPlanillas.Models.ViewModels.MultipleModels
+
 @{
-    ViewBag.Title = "ConsultModule";
+    string UserDepart = ViewBag.UserDept;
+    int idUserLogin = ViewBag.idUserLogin;
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -23,16 +25,16 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("EmployeeView", "Role", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                        <a class="nav-link" href="@Url.Action("EmployeeView", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("ConsultModule", "Employee", new { userId = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Consult</font></font></a>
+                        <a class="nav-link" href="@Url.Action("ConsultModule", "Employee", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Consult</font></font></a>
                     </li>
                     <li>
-                        <a class="nav-link" href="@Url.Action("LicencesViewUser", "Licence", new { id = @Model.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Licence</font></font></a>
+                        <a class="nav-link" href="@Url.Action("LicencesViewUser", "Licence", new { id = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Licence</font></font></a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -44,7 +46,96 @@
         </div>
     </nav>
 
-    <h1>Modulo Consultas</h1>
+    <main class="assign-role-wrapper">
+        <div class="container">
+
+            <h1>CONSULT MODULE</h1>
+
+            <!-- PAYROLL BUTTONS SECTION -->
+            <div class="row" style="margin-bottom:30px;">
+                <!-- Monthly SECTION -->
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary" id="monthlyBtn">Monthly<i class='bx bx-calendar'></i></button>
+                </div>
+                <div class="col-md-2">
+                    <!-- Hourly SECTION -->
+                    <button type="submit" class="btn btn-primary" id="hourlyBtn">Hourly<i class='bx bx-calendar'></i></button>
+                </div>
+            </div>
+
+            <!-- TABLE FOR MONTHLY SECTION -->
+            <table class="table" id="monthlyTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Salary</th>
+                        <th scope="col">Extra Payments</th>
+                        <th scope="col">Deductions </th>
+                        <th scope="col">Total days Worked</th>
+                        <th scope="col">Total Earnings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (@Model.UsersWithInfo.SalaryType == "Monthly")
+                    {
+                        foreach (var MonthlyPayments in Model.MonthlyPayments)
+                        {
+                            <tr>
+                                <td>@Model.UsersWithInfo.Salary</td>
+                                <td>@Model.UsersWithInfo.PaymentsExtraordinary</td>
+                                <td>@Model.UsersWithInfo.Deductions</td>
+                                <td>@MonthlyPayments.MonthlyPayroll.total_workDays</td>
+                                <td>@MonthlyPayments.MonthlyPayroll.total_earnings</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+            <!-- TABLE FOR HOURLY SECTION -->
+            <table class="table" style="display:none;" id="hourlyTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Salary</th>
+                        <th scope="col">Extra Payments</th>
+                        <th scope="col">Deductions </th>
+                        <th scope="col">Work Day</th>
+                        <th scope="col">Work Hours</th>
+                        <th scope="col">Total Earnings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (@Model.UsersWithInfo.SalaryType == "Hourly")
+                    {
+                        foreach (var HourlyPayments in Model.HourlyPayments)
+                        {
+                            <tr>
+                                <td>@Model.UsersWithInfo.Salary</td>
+                                <td>@Model.UsersWithInfo.PaymentsExtraordinary</td>
+                                <td>@Model.UsersWithInfo.Deductions</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>@HourlyPayments.History.payment_amount</td>
+                            </tr>
+                            foreach (var hourlyPayment in HourlyPayments.HourlyPayrolls)
+                            {
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>@hourlyPayment.work_day</td>
+                                    <td>@hourlyPayment.total_earnings</td>
+                                    <td>-</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+
+    <script src="~/Scripts/JS/ToggleForm.js"></script>
 
     @Scripts.Render("~/bundles/bootstrap")
 </body>
