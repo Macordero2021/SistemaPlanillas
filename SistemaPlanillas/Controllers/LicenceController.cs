@@ -155,7 +155,7 @@ namespace SistemaPlanillas.Controllers
             List<Users> users = _db.Users.ToList();
 
             var usersWithInfo = (from user in users
-                                 join aplicationLicence in _db.License_Application on user.id equals aplicationLicence.fk_id_user
+                                 join aplicationLicence in _db.License_Application.Where(x => x.status_license == "Process") on user.id equals aplicationLicence.fk_id_user
                                  join License_type in _db.License_Type on aplicationLicence.fk_id_license_type equals License_type.id_license_type
                                  select new UserCompositeModel
                                  {
@@ -172,14 +172,17 @@ namespace SistemaPlanillas.Controllers
 
         public ActionResult ApproveApplication(int idApplication, int idUserEdit, int idUserLogin)
         {
-            return View();
+            License_Application ApplicationToDelete = _db.License_Application.Find(idApplication);
+            ApplicationToDelete.status_license = "Approved";
+            _db.SaveChanges();
+            return RedirectToAction("EmployeeLicences", "Licence", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, idApplication = idApplication });
         }
 
         public ActionResult DeclineApplication(int idApplication, int idUserEdit, int idUserLogin)
         {
             // Buscar el registro a eliminar
             License_Application ApplicationToDelete = _db.License_Application.Find(idApplication);
-            _db.License_Application.Remove(ApplicationToDelete);
+            ApplicationToDelete.status_license = "Denied";
             _db.SaveChanges();
             return RedirectToAction("EmployeeLicences", "Licence", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, idApplication = idApplication });
         }
