@@ -1,12 +1,29 @@
 ﻿@model SistemaPlanillas.Models.UserCompositeModel
 
-
 @{
+    string UserRole = ViewBag.UserRole;
     string UserDepart = ViewBag.UserDept;
-    int idUserLogin = ViewBag.idUserLogin;
+    string viewName = "";
+
     var deleteStatus = TempData["DeleteStatus"] as string;
     var createStatus = TempData["CreateStatus"] as string;
     var updateStatus = TempData["UpdateStatus"] as string;
+
+    switch (UserRole)
+    {
+        case "ADMIN":
+            viewName = "AdminView";
+            break;
+        case "EMPLOYEE":
+            viewName = "EmployeeView";
+            break;
+        case "PAYROLL CLERK":
+            viewName = "PayrollView";
+            break;
+        default:
+            viewName = "UndefinedView";
+            break;
+    }
 }
 
 <html coupert-item="9AF8D9A4E502F3784AD24272D81F0381">
@@ -33,26 +50,55 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("PayrollView", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
+                        <a class="nav-link" href="@Url.Action(viewName, "Role", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Home</font></font></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
+                        <a class="nav-link" href="@Url.Action("ProfileModule", "Role", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Profile</font></font></a>
                     </li>
-                    @if (ViewBag.UserDept == "Human Resources")
+
+                    @if (ViewBag.UserRole == "ADMIN")
                     {
                         <li>
-                            <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new {id = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                            <a class="nav-link" href="@Url.Action("RoleModule", "Admin", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Roles</font></font></a>
                         </li>
                         <li>
-                            <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Holidays</font></font></a>
+                            <a class="nav-link" href="@Url.Action("AssignRole", "Admin", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Assign Roles</font></font></a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="@Url.Action("LicencesViewUser", "Licence", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Licence</font></font></a>
                         </li>
                     }
-                    <li>
-                        <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="@Url.Action("LicencesViewUser", "Licence", new { id = idUserLogin })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Licence</font></font></a>
-                    </li>
+                    else if (ViewBag.UserRole == "UNDEFINED")
+                    {
+                    }
+                    else if (ViewBag.UserRole == "EMPLOYEE")
+                    {
+                        <li>
+                            <a class="nav-link" href="@Url.Action("ConsultModule", "Employee", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Consult</font></font></a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="@Url.Action("LicencesViewUser", "Licence", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Licence</font></font></a>
+                        </li>
+                    }
+                    else if (ViewBag.UserRole == "PAYROLL CLERK")
+                    {
+                        if (ViewBag.UserDept == "Human Resources")
+                        {
+                            <li>
+                                <a class="nav-link" href="@Url.Action("HumanResources", "Payroll", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RRHH</font></font></a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="@Url.Action("HolidaysModule", "Licence", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Holidays</font></font></a>
+                            </li>
+                        }
+                        <li>
+                            <a class="nav-link" href="@Url.Action("PayrollModule", "Payroll", new { userId = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Payroll</font></font></a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="@Url.Action("LicencesViewUser", "Licence", new { id = @Model.User.id })"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Licence</font></font></a>
+                        </li>
+                    }
+
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -69,7 +115,7 @@
             <h1>List of licenses for the user </h1>
 
             <form action="/Licence/Licences" method="get" style="margin-bottom:40px">
-                <input type="hidden" name="id" value="@idUserLogin" />
+                <input type="hidden" name="id" value="@Model.User.id" />
                 <button type="submit" class="btn btn-primary create">Create license <i class='bx bx-message-square-add'></i></button>
             </form>
 
@@ -128,10 +174,6 @@
             });
         }
     </script>
-
-
-
-
 
     <script src="~/Scripts/JS/SweetAlerts.js"></script>
 

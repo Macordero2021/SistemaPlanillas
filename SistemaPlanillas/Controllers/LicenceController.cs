@@ -77,7 +77,6 @@ namespace SistemaPlanillas.Controllers
         public ActionResult LicencesViewUser(int id)
         {
             //aqui debo mostrar una vista con las licencias del usuario que esta logueado
-
             Users idUserLogin = _db.Users.Where(x => x.id == id).FirstOrDefault();
             var department = _db.Departaments.Where(x => x.id == idUserLogin.Fk_Id_Deparment).FirstOrDefault();
 
@@ -89,18 +88,15 @@ namespace SistemaPlanillas.Controllers
             // Create a view model containing all the retrieved lists and pass it to the view.
             UserCompositeModel viewModel = new UserCompositeModel
             {
-               License_ApplicationList = licensesUser,
-               License_List_Type = License_List_Type
+                User = idUserLogin,
+                License_ApplicationList = licensesUser,
+                License_List_Type = License_List_Type
             };
 
-            ViewBag.idUserLogin = idUserLogin.id;
             ViewBag.UserRole = userRole;
             ViewBag.UserDept = department.name_departament;
             return View(viewModel);
         }
-
-
-
 
         public ActionResult Licences(int id)
         {
