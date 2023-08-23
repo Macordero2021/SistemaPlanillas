@@ -174,6 +174,17 @@ namespace SistemaPlanillas.Controllers
         {
             License_Application ApplicationToDelete = _db.License_Application.Find(idApplication);
             ApplicationToDelete.status_license = "Approved";
+
+            var usuarioRestarVacaciones = _db.UserHolidays.Where(x => x.fk_id_user == idUserEdit).FirstOrDefault();
+
+
+            int diasARestar = int.Parse(ApplicationToDelete.daysLicense);
+            int diasHoli = int.Parse(usuarioRestarVacaciones.Holidays);
+
+            int DiasQuedan = diasHoli - diasARestar;
+
+            usuarioRestarVacaciones.Holidays = DiasQuedan.ToString();
+
             _db.SaveChanges();
             return RedirectToAction("EmployeeLicences", "Licence", new { idUserLogin = idUserLogin, idUserEdit = idUserEdit, idApplication = idApplication });
         }
